@@ -1,0 +1,9 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.provider :gce do |gce|
+    gce.image = "debian-7"
+    gce.machine_type = "n1-standard-1"
+  end
+end
