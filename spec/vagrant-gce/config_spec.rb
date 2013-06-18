@@ -28,13 +28,13 @@ describe VagrantPlugins::GCE::Config do
       end
     end
 
-    its("image")             { should "debian-7" }
+    its("image")             { should == "debian-7" }
     its("region")            { should == "us-central1" }
     its("zone")              { should == "us-central1-a" }
     its("machine_type")      { should == "n1-standard-1" }
     its("instance_ready_timeout") { should == 30 }
     its("tags")              { should == {} }
-    its("metadata")          { should be_nil }
+    its("metadata")          { should == {} }
   end
 
   describe "overriding defaults" do
@@ -61,14 +61,14 @@ describe VagrantPlugins::GCE::Config do
         end
       end
 
-      its("access_key_id")     { should be_nil }
-      its("secret_access_key") { should be_nil }
+      its("google_client_email") { should be_nil }
+      its("google_key_location") { should be_nil }
     end
 
     context "with GCE credential environment variables" do
       before :each do
-        ENV.stub(:[]).with("AWS_ACCESS_KEY").and_return("access_key")
-        ENV.stub(:[]).with("AWS_SECRET_KEY").and_return("secret_key")
+        ENV.stub(:[]).with("GOOGLE_CLIENT_EMAIL").and_return("client_id_email")
+        ENV.stub(:[]).with("GOOGLE_KEY_LOCATION").and_return("/path/to/key")
       end
 
       subject do
@@ -77,8 +77,8 @@ describe VagrantPlugins::GCE::Config do
         end
       end
 
-      its("access_key_id")     { should == "access_key" }
-      its("secret_access_key") { should == "secret_key" }
+      its("google_client_email") { should == "client_id_email" }
+      its("google_key_location") { should == "/path/to/key" }
     end
   end
 
@@ -86,11 +86,13 @@ describe VagrantPlugins::GCE::Config do
     let(:config_image)           { "foo" }
     let(:config_machine_type)    { "foo" }
     let(:config_region)          { "foo" }
+    let(:config_zone)            { "foo" }
 
     def set_test_values(instance)
       instance.image             = config_image
       instance.machine_type      = config_machine_type
       instance.region            = config_region
+      instance.zone              = config_zone
     end
 
     it "should raise an exception if not finalized" do
@@ -113,6 +115,7 @@ describe VagrantPlugins::GCE::Config do
       its("image")             { should == config_image }
       its("machine_type")      { should == config_machine_type }
       its("region")            { should == config_region }
+      its("zone")              { should == config_zone }
     end
 
     context "with a specific config set" do

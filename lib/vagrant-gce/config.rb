@@ -16,36 +16,50 @@ require "vagrant"
 module VagrantPlugins
   module GCE
     class Config < Vagrant.plugin("2", :config)
-      # The access key ID for accessing GCE.
+      # The GCE endpoint to connect to
       #
       # @return [String]
-      attr_accessor :access_key_id
+      attr_accessor :endpoint
+
+      # The Service Account Client ID Email address
+      #
+      # @return [String]
+      attr_accessor :google_client_email
+
+      # The path to the Service Account private key
+      #
+      # @return [String]
+      attr_accessor :google_key_location
+
+      # The Google Cloud Project ID (not name or number)
+      #
+      # @return [String]
+      attr_accessor :google_project_id
 
       # The image name of the instance to use.
       #
       # @return [String]
       attr_accessor :image
 
-      # The zone to launch the instance into. If nil, it will
-      # use the default us-central1-a.
-      #
-      # @return [String]
-      attr_accessor :zone
-
       # The timeout to wait for an instance to become ready.
       #
       # @return [Fixnum]
       attr_accessor :instance_ready_timeout
+
+      # The name of the keypair to use.
+      #
+      # @return [String]
+      attr_accessor :keypair_name
 
       # The type of machine to launch, such as "n1-standard-1"
       #
       # @return [String]
       attr_accessor :machine_type
 
-      # The name of the keypair to use.
+      # The user metadata string
       #
-      # @return [String]
-      attr_accessor :keypair_name
+      # @return [Hash<String, String>]
+      attr_accessor :metadata
 
       # The private IP address to give this machine (VPC).
       #
@@ -56,21 +70,6 @@ module VagrantPlugins
       #
       # @return [String]
       attr_accessor :region
-
-      # The GCE endpoint to connect to
-      #
-      # @return [String]
-      attr_accessor :endpoint
-
-      # The version of the GCE api to use
-      #
-      # @return [String]
-      attr_accessor :version
-
-      # The secret access key for accessing AWS.
-      #
-      # @return [String]
-      attr_accessor :secret_access_key
 
       # The security groups to set on the instance. For VPC this must
       # be a list of IDs.
@@ -88,27 +87,33 @@ module VagrantPlugins
       # @return [Hash<String, String>]
       attr_accessor :tags
 
-      # The user metadata string
+      # The version of the GCE api to use
       #
-      # @return [Hash<String, String>]
-      attr_accessor :metadata
+      # @return [String]
+      attr_accessor :version
+
+      # The zone to launch the instance into. If nil, it will
+      # use the default us-central1-a.
+      #
+      # @return [String]
+      attr_accessor :zone
 
       def initialize(region_specific=false)
-        @access_key_id      = UNSET_VALUE
-        @image              = UNSET_VALUE
-        @zone               = UNSET_VALUE
+        @google_client_email = UNSET_VALUE
+        @google_key_location = UNSET_VALUE
+        @google_project_id   = UNSET_VALUE
+        @image               = UNSET_VALUE
+        @zone                = UNSET_VALUE
         @instance_ready_timeout = UNSET_VALUE
-        @machine_type       = UNSET_VALUE
-        @keypair_name       = UNSET_VALUE
-        @private_ip_address = UNSET_VALUE
-        @region             = UNSET_VALUE
-        @endpoint           = UNSET_VALUE
-        @version            = UNSET_VALUE
-        @secret_access_key  = UNSET_VALUE
-        @security_groups    = UNSET_VALUE
-        @subnet_id          = UNSET_VALUE
-        @tags               = {}
-        @metadata           = {}
+        @machine_type        = UNSET_VALUE
+        @keypair_name        = UNSET_VALUE
+        @private_ip_address  = UNSET_VALUE
+        @region              = UNSET_VALUE
+        @endpoint            = UNSET_VALUE
+        @version             = UNSET_VALUE
+        @security_groups     = UNSET_VALUE
+        @tags                = {}
+        @metadata            = {}
 
         # Internal state (prefix with __ so they aren't automatically
         # merged)
@@ -181,11 +186,12 @@ module VagrantPlugins
       def finalize!
         # Try to get access keys from standard GCE environment variables; they
         # will default to nil if the environment variables are not present.
-        @access_key_id     = ENV['GCE_ACCESS_KEY'] if @access_key_id     == UNSET_VALUE
-        @secret_access_key = ENV['GCE_SECRET_KEY'] if @secret_access_key == UNSET_VALUE
+        @google_client_email = ENV['GOOGLE_CLIENT_EMAIL'] if @google_client_email == UNSET_VALUE
+        @google_key_location = ENV['GOOGLE_KEY_LOCATION'] if @google_key_location == UNSET_VALUE
+        @google_project_id   = ENV['GOOGLE_PROJECT_ID'] if @google_project_id == UNSET_VALUE
 
         # Image must be nil, since we can't default that
-        @image = nil if @image == UNSET_VALUE
+        @image = "debian-7" if @image == UNSET_VALUE
 
         # Set the default timeout for waiting for an instance to be ready
         @instance_ready_timeout = 30 if @instance_ready_timeout == UNSET_VALUE
@@ -200,16 +206,13 @@ module VagrantPlugins
         @private_ip_address = nil if @private_ip_address == UNSET_VALUE
 
         # Default region is us-central1.
-        @region = "us-central11" if @region == UNSET_VALUE
+        @region = "us-central1" if @region == UNSET_VALUE
         @zone = "us-central1-a" if @zone == UNSET_VALUE
         @endpoint = nil if @endpoint == UNSET_VALUE
         @version = "v1beta15" if @version == UNSET_VALUE
 
         # The security groups are empty by default.
         @security_groups = [] if @security_groups == UNSET_VALUE
-
-        # Subnet is nil by default otherwise we'd launch into VPC.
-        @subnet_id = nil if @subnet_id == UNSET_VALUE
 
         # Compile our region specific configurations only within
         # NON-REGION-SPECIFIC configurations.
@@ -246,12 +249,12 @@ module VagrantPlugins
           # that region.
           config = get_region_config(@region)
 
-          if !config.use_iam_profile
-            errors << I18n.t("vagrant_gce.config.access_key_id_required") if \
-              config.access_key_id.nil?
-            errors << I18n.t("vagrant_gce.config.secret_access_key_required") if \
-              config.secret_access_key.nil?
-          end
+          errors << I18n.t("vagrant_gce.config.google_project_id_required") if \
+            config.google_project_id.nil?
+          errors << I18n.t("vagrant_gce.config.google_client_email_required") if \
+            config.google_client_email.nil?
+          errors << I18n.t("vagrant_gce.config.google_key_location_required") if \
+            config.google_key_location.nil?
 
           errors << I18n.t("vagrant_gce.config.image_required") if config.image.nil?
         end

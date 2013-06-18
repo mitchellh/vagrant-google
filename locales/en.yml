@@ -33,16 +33,18 @@ en:
       was declined.
 
     config:
-      access_key_id_required: |-
-        An access key ID must be specified via "access_key_id"
+      google_client_email_required: |-
+        A Google Service Account client email is required via "google_client_email"
       machine_required: |-
         An MACHINE_TYPE must be configured via "machine"
       private_key_missing: |-
         The specified private key for GCE could not be found
       region_required: |-
         A region must be specified via "region"
-      secret_access_key_required: |-
-        A secret access key is required via "secret_access_key"
+      google_key_location_required: |-
+        A private key pathname is required via "google_key_location"
+      google_project_id_required: |-
+        A Google Cloud Project ID is required via "google_project_id"
 
     errors:
       fog_error: |-

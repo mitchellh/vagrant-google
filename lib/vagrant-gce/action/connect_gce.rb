@@ -38,12 +38,9 @@ module VagrantPlugins
             :provider              => :gce,
             :region                => region
           }
-          if region_config.use_iam_profile
-            fog_config[:use_iam_profile] = true
-          else
-            fog_config[:gce_access_key_id] = region_config.access_key_id
-            fog_config[:gce_secret_access_key] = region_config.secret_access_key
-          end
+          fog_config[:google_client_email] = region_config.google_client_email
+          fog_config[:google_key_location] = region_config.google_key_location
+          fog_config[:google_project_id] = region_config.project_id
 
           fog_config[:endpoint] = region_config.endpoint if region_config.endpoint
           fog_config[:version]  = region_config.version if region_config.version
