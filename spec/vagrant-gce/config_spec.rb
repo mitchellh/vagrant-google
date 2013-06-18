@@ -28,12 +28,12 @@ describe VagrantPlugins::GCE::Config do
       end
     end
 
+    its("name")              { should == "new" }
     its("image")             { should == "debian-7" }
-    its("region")            { should == "us-central1" }
     its("zone")              { should == "us-central1-a" }
+    its("network")           { should == "default" }
     its("machine_type")      { should == "n1-standard-1" }
     its("instance_ready_timeout") { should == 30 }
-    its("tags")              { should == {} }
     its("metadata")          { should == {} }
   end
 
@@ -42,8 +42,8 @@ describe VagrantPlugins::GCE::Config do
     # simple boilerplate test, so I cut corners here. It just sets
     # each of these attributes to "foo" in isolation, and reads the value
     # and asserts the proper result comes back out.
-    [:image, :zone, :instance_ready_timeout, :machine_type, :region,
-      :tags, :metadata].each do |attribute|
+    [:name, :image, :zone, :instance_ready_timeout, :machine_type, :network,
+      :metadata].each do |attribute|
 
       it "should not default #{attribute} if overridden" do
         instance.send("#{attribute}=".to_sym, "foo")
@@ -82,21 +82,23 @@ describe VagrantPlugins::GCE::Config do
     end
   end
 
-  describe "region config" do
+  describe "zone config" do
     let(:config_image)           { "foo" }
     let(:config_machine_type)    { "foo" }
-    let(:config_region)          { "foo" }
+    let(:config_name)            { "foo" }
     let(:config_zone)            { "foo" }
+    let(:config_network)         { "foo" }
 
     def set_test_values(instance)
+      instance.name              = config_name
+      instance.network           = config_network
       instance.image             = config_image
       instance.machine_type      = config_machine_type
-      instance.region            = config_region
       instance.zone              = config_zone
     end
 
     it "should raise an exception if not finalized" do
-      expect { instance.get_region_config("us-central1") }.
+      expect { instance.get_zone_config("us-central1-a") }.
         to raise_error
     end
 
@@ -105,55 +107,58 @@ describe VagrantPlugins::GCE::Config do
         # Set the values on the top-level object
         set_test_values(instance)
 
-        # Finalize so we can get the region config
+        # Finalize so we can get the zone config
         instance.finalize!
 
-        # Get a lower level region
-        instance.get_region_config("us-central1")
+        # Get a lower level zone
+        instance.get_zone_config("us-central1-a")
       end
 
+      its("name")              { should == config_name }
       its("image")             { should == config_image }
       its("machine_type")      { should == config_machine_type }
-      its("region")            { should == config_region }
+      its("network")           { should == config_network }
       its("zone")              { should == config_zone }
     end
 
     context "with a specific config set" do
-      let(:region_name) { "hashi-region" }
+      let(:zone) { "hashi-zone" }
 
       subject do
-        # Set the values on a specific region
-        instance.region_config region_name do |config|
+        # Set the values on a specific zone
+        instance.zone_config zone do |config|
           set_test_values(config)
         end
 
-        # Finalize so we can get the region config
+        # Finalize so we can get the zone config
         instance.finalize!
 
-        # Get the region
-        instance.get_region_config(region_name)
+        # Get the zone
+        instance.get_zone_config(zone)
       end
 
+      its("name")              { should == config_name }
       its("image")             { should == config_image }
       its("machine_type")      { should == config_machine_type }
-      its("region")            { should == region_name }
+      its("network")           { should == config_network }
+      its("zone")              { should == config_zone }
     end
 
     describe "inheritance of parent config" do
-      let(:region_name) { "hashi-region" }
+      let(:zone) { "hashi-zone" }
 
       subject do
-        # Set the values on a specific region
-        instance.region_config region_name do |config|
+        # Set the values on a specific zone
+        instance.zone_config zone do |config|
           config.image = "child"
         end
 
         # Set some top-level values
         instance.image = "parent"
 
-        # Finalize and get the region
+        # Finalize and get the zone
         instance.finalize!
-        instance.get_region_config(region_name)
+        instance.get_zone_config(zone)
       end
 
       its("image")           { should == "child" }
@@ -162,9 +167,9 @@ describe VagrantPlugins::GCE::Config do
     describe "shortcut configuration" do
       subject do
         # Use the shortcut configuration to set some values
-        instance.region_config "us-central1", :image => "child"
+        instance.zone_config "us-central1-a", :image => "child"
         instance.finalize!
-        instance.get_region_config("us-central1")
+        instance.get_zone_config("us-central1-a")
       end
 
       its("image") { should == "child" }

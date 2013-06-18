@@ -31,7 +31,7 @@ module VagrantPlugins
         end
 
         def read_ssh_info(gce, machine)
-          return nil if machine.id.nil?
+          return nil if machine.name.nil?
 
           # Find the machine
           server = gce.servers.get(machine.name, machine.zone)

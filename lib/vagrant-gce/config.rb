@@ -78,7 +78,7 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :zone
 
-      def initialize(region_specific=false)
+      def initialize(zone_specific=false)
         @google_client_email = UNSET_VALUE
         @google_key_location = UNSET_VALUE
         @google_project_id   = UNSET_VALUE
@@ -93,29 +93,29 @@ module VagrantPlugins
 
         # Internal state (prefix with __ so they aren't automatically
         # merged)
-        @__compiled_region_configs = {}
+        @__compiled_zone_configs = {}
         @__finalized = false
-        @__region_config = {}
-        @__region_specific = region_specific
+        @__zone_config = {}
+        @__zone_specific = zone_specific
       end
 
-      # Allows region-specific overrides of any of the settings on this
+      # Allows zone-specific overrides of any of the settings on this
       # configuration object. This allows the user to override things like
-      # image and keypair name for regions. Example:
+      # image and keypair name for zones. Example:
       #
-      #     gce.region_config "us-central1" do |region|
-      #       region.image = "centos-6"
-      #       region.keypair_name = "company-east"
+      #     gce.zone_config "us-central1-a" do |zone|
+      #       zone.image = "centos-6"
+      #       zone.keypair_name = "company-east"
       #     end
       #
-      # @param [String] region The region name to configure.
+      # @param [String] zone The zone name to configure.
       # @param [Hash] attributes Direct attributes to set on the configuration
       #   as a shortcut instead of specifying a full block.
       # @yield [config] Yields a new GCE configuration.
-      def region_config(region, attributes=nil, &block)
-        # Append the block to the list of region configs for that region.
+      def zone_config(zone, attributes=nil, &block)
+        # Append the block to the list of zone configs for that zone.
         # We'll evaluate these upon finalization.
-        @__region_config[region] ||= []
+        @__zone_config[zone] ||= []
 
         # Append a block that sets attributes if we got one
         if attributes
@@ -123,11 +123,11 @@ module VagrantPlugins
             config.set_options(attributes)
           end
 
-          @__region_config[region] << attr_block
+          @__zone_config[zone] << attr_block
         end
 
         # Append a block if we got one
-        @__region_config[region] << block if block_given?
+        @__zone_config[zone] << block if block_given?
       end
 
       #-------------------------------------------------------------------
@@ -136,22 +136,22 @@ module VagrantPlugins
 
       def merge(other)
         super.tap do |result|
-          # Copy over the region specific flag. "True" is retained if either
+          # Copy over the zone specific flag. "True" is retained if either
           # has it.
-          new_region_specific = other.instance_variable_get(:@__region_specific)
+          new_zone_specific = other.instance_variable_get(:@__zone_specific)
           result.instance_variable_set(
-            :@__region_specific, new_region_specific || @__region_specific)
+            :@__zone_specific, new_zone_specific || @__zone_specific)
 
-          # Go through all the region configs and prepend ours onto
+          # Go through all the zone configs and prepend ours onto
           # theirs.
-          new_region_config = other.instance_variable_get(:@__region_config)
-          @__region_config.each do |key, value|
-            new_region_config[key] ||= []
-            new_region_config[key] = value + new_region_config[key]
+          new_zone_config = other.instance_variable_get(:@__zone_config)
+          @__zone_config.each do |key, value|
+            new_zone_config[key] ||= []
+            new_zone_config[key] = value + new_zone_config[key]
           end
 
           # Set it
-          result.instance_variable_set(:@__region_config, new_region_config)
+          result.instance_variable_set(:@__zone_config, new_zone_config)
 
           # Merge in the tags
           result.tags.merge!(self.tags)
@@ -178,33 +178,33 @@ module VagrantPlugins
         # Keypair defaults to nil
         @keypair_name = nil if @keypair_name == UNSET_VALUE
 
-        # Keypair defaults to nil
-        @name = nil if @name == UNSET_VALUE
+        # Instance name defaults to "new"
+        @name = "new" if @name == UNSET_VALUE
 
         # Network defaults to 'default'
-        @network = "default" if @private_ip_address == UNSET_VALUE
+        @network = "default" if @network == UNSET_VALUE
 
         # Default zone is us-central1-a.
         @zone = "us-central1-a" if @zone == UNSET_VALUE
 
-        # Compile our region specific configurations only within
-        # NON-REGION-SPECIFIC configurations.
-        if !@__region_specific
-          @__region_config.each do |region, blocks|
+        # Compile our zone specific configurations only within
+        # NON-zone-SPECIFIC configurations.
+        if !@__zone_specific
+          @__zone_config.each do |zone, blocks|
             config = self.class.new(true).merge(self)
 
             # Execute the configuration for each block
             blocks.each { |b| b.call(config) }
 
-            # The region name of the configuration always equals the
-            # region config name:
-            config.region = region
+            # The zone name of the configuration always equals the
+            # zone config name:
+            config.zone = zone
 
             # Finalize the configuration
             config.finalize!
 
             # Store it for retrieval
-            @__compiled_region_configs[region] = config
+            @__compiled_zone_configs[zone] = config
           end
         end
 
@@ -215,29 +215,34 @@ module VagrantPlugins
       def validate(machine)
         errors = _detected_errors
 
-        errors << I18n.t("vagrant_gce.config.google_project_id_required") if \
-          config.google_project_id.nil?
-        errors << I18n.t("vagrant_gce.config.google_client_email_required") if \
-          config.google_client_email.nil?
-        errors << I18n.t("vagrant_gce.config.google_key_location_required") if \
-          config.google_key_location.nil?
+        errors << I18n.t("vagrant_gce.config.zone_required") if @zone.nil?
+
+        if @zone
+          config = get_zone_config(@zone)
+
+          errors << I18n.t("vagrant_gce.config.google_project_id_required") if \
+            config.google_project_id.nil?
+          errors << I18n.t("vagrant_gce.config.google_client_email_required") if \
+            config.google_client_email.nil?
+          errors << I18n.t("vagrant_gce.config.google_key_location_required") if \
+            config.google_key_location.nil?
+        end
 
         errors << I18n.t("vagrant_gce.config.image_required") if config.image.nil?
-        errors << I18n.t("vagrant_gce.config.zone_required") if @zone.nil?
         errors << I18n.t("vagrant_gce.config.name_required") if @name.nil?
 
         { "GCE Provider" => errors }
       end
 
-      # This gets the configuration for a specific region. It shouldn't
+      # This gets the configuration for a specific zone. It shouldn't
       # be called by the general public and is only used internally.
-      def get_region_config(name)
+      def get_zone_config(name)
         if !@__finalized
           raise "Configuration must be finalized before calling this method."
         end
 
-        # Return the compiled region config
-        @__compiled_region_configs[name] || self
+        # Return the compiled zone config
+        @__compiled_zone_configs[name] || self
       end
     end
   end
