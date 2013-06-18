@@ -16,11 +16,6 @@ require "vagrant"
 module VagrantPlugins
   module GCE
     class Config < Vagrant.plugin("2", :config)
-      # The GCE endpoint to connect to
-      #
-      # @return [String]
-      attr_accessor :endpoint
-
       # The Service Account Client ID Email address
       #
       # @return [String]
@@ -61,36 +56,21 @@ module VagrantPlugins
       # @return [Hash<String, String>]
       attr_accessor :metadata
 
-      # The private IP address to give this machine (VPC).
+      # The name of the instance
       #
       # @return [String]
-      attr_accessor :private_ip_address
+      attr_accessor :name
 
-      # The name of the GCE region in which to create the instance.
+      # The name of the network
       #
       # @return [String]
-      attr_accessor :region
-
-      # The security groups to set on the instance. For VPC this must
-      # be a list of IDs.
-      #
-      # @return [Array<String>]
-      attr_accessor :security_groups
-
-      # The subnet ID to launch the machine into (VPC).
-      #
-      # @return [String]
-      attr_accessor :subnet_id
+      attr_accessor :network
 
       # The tags for the machine.
+      # TODO(erjohnso): not supported in fog
       #
       # @return [Hash<String, String>]
-      attr_accessor :tags
-
-      # The version of the GCE api to use
-      #
-      # @return [String]
-      attr_accessor :version
+      #attr_accessor :tags
 
       # The zone to launch the instance into. If nil, it will
       # use the default us-central1-a.
@@ -103,17 +83,13 @@ module VagrantPlugins
         @google_key_location = UNSET_VALUE
         @google_project_id   = UNSET_VALUE
         @image               = UNSET_VALUE
-        @zone                = UNSET_VALUE
         @instance_ready_timeout = UNSET_VALUE
-        @machine_type        = UNSET_VALUE
         @keypair_name        = UNSET_VALUE
-        @private_ip_address  = UNSET_VALUE
-        @region              = UNSET_VALUE
-        @endpoint            = UNSET_VALUE
-        @version             = UNSET_VALUE
-        @security_groups     = UNSET_VALUE
-        @tags                = {}
+        @machine_type        = UNSET_VALUE
         @metadata            = {}
+        @name                = UNSET_VALUE
+        @network             = UNSET_VALUE
+        @zone                = UNSET_VALUE
 
         # Internal state (prefix with __ so they aren't automatically
         # merged)
@@ -202,17 +178,14 @@ module VagrantPlugins
         # Keypair defaults to nil
         @keypair_name = nil if @keypair_name == UNSET_VALUE
 
-        # Default the private IP to nil since VPC is not default
-        @private_ip_address = nil if @private_ip_address == UNSET_VALUE
+        # Keypair defaults to nil
+        @name = nil if @name == UNSET_VALUE
 
-        # Default region is us-central1.
-        @region = "us-central1" if @region == UNSET_VALUE
+        # Network defaults to 'default'
+        @network = "default" if @private_ip_address == UNSET_VALUE
+
+        # Default zone is us-central1-a.
         @zone = "us-central1-a" if @zone == UNSET_VALUE
-        @endpoint = nil if @endpoint == UNSET_VALUE
-        @version = "v1beta15" if @version == UNSET_VALUE
-
-        # The security groups are empty by default.
-        @security_groups = [] if @security_groups == UNSET_VALUE
 
         # Compile our region specific configurations only within
         # NON-REGION-SPECIFIC configurations.
@@ -242,22 +215,16 @@ module VagrantPlugins
       def validate(machine)
         errors = _detected_errors
 
-        errors << I18n.t("vagrant_gce.config.region_required") if @region.nil?
+        errors << I18n.t("vagrant_gce.config.google_project_id_required") if \
+          config.google_project_id.nil?
+        errors << I18n.t("vagrant_gce.config.google_client_email_required") if \
+          config.google_client_email.nil?
+        errors << I18n.t("vagrant_gce.config.google_key_location_required") if \
+          config.google_key_location.nil?
 
-        if @region
-          # Get the configuration for the region we're using and validate only
-          # that region.
-          config = get_region_config(@region)
-
-          errors << I18n.t("vagrant_gce.config.google_project_id_required") if \
-            config.google_project_id.nil?
-          errors << I18n.t("vagrant_gce.config.google_client_email_required") if \
-            config.google_client_email.nil?
-          errors << I18n.t("vagrant_gce.config.google_key_location_required") if \
-            config.google_key_location.nil?
-
-          errors << I18n.t("vagrant_gce.config.image_required") if config.image.nil?
-        end
+        errors << I18n.t("vagrant_gce.config.image_required") if config.image.nil?
+        errors << I18n.t("vagrant_gce.config.zone_required") if @zone.nil?
+        errors << I18n.t("vagrant_gce.config.name_required") if @name.nil?
 
         { "GCE Provider" => errors }
       end

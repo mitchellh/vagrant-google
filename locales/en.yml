@@ -39,8 +39,10 @@ en:
         An MACHINE_TYPE must be configured via "machine"
       private_key_missing: |-
         The specified private key for GCE could not be found
-      region_required: |-
-        A region must be specified via "region"
+      zone_required: |-
+        A zone must be specified via "zone"
+      name_required: |-
+        An instance name must be specified via "name"
       google_key_location_required: |-
         A private key pathname is required via "google_key_location"
       google_project_id_required: |-

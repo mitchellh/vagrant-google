@@ -34,17 +34,17 @@ module VagrantPlugins
           return nil if machine.id.nil?
 
           # Find the machine
-          server = gce.servers.get(machine.id)
+          server = gce.servers.get(machine.name, machine.zone)
           if server.nil?
             # The machine can't be found
             @logger.info("Machine couldn't be found, assuming it got destroyed.")
-            machine.id = nil
+            machine.name = nil
             return nil
           end
 
-          # Read the DNS info
+          # Read SSH network info
           return {
-            :host => server.dns_name || server.private_ip_address,
+            :host => server.networkInterfaces[0].networkIP
             :port => 22
           }
         end

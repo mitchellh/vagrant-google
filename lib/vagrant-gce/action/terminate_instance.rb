@@ -24,12 +24,12 @@ module VagrantPlugins
         end
 
         def call(env)
-          server = env[:gce_compute].servers.get(env[:machine].id)
+          server = env[:gce_compute].servers.get(env[:machine].namei, env[:machine].zone)
 
           # Destroy the server and remove the tracking ID
           env[:ui].info(I18n.t("vagrant_gce.terminating"))
           server.destroy
-          env[:machine].id = nil
+          env[:machine].name = nil
 
           @app.call(env)
         end

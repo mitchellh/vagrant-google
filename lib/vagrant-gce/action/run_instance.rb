@@ -33,81 +33,58 @@ module VagrantPlugins
           # Initialize metrics if they haven't been
           env[:metrics] ||= {}
 
-          # Get the region we're going to booting up in
-          region = env[:machine].provider_config.region
+          # Get the zone we're going to booting up in
+          zone = env[:machine].provider_config.zone
 
           # Get the configs
-          region_config      = env[:machine].provider_config.get_region_config(region)
-          image              = region_config.image
-          zone               = region_config.zone
-          machine_type       = region_config.machine_type
-          keypair            = region_config.keypair_name
-          private_ip_address = region_config.private_ip_address
-          security_groups    = region_config.security_groups
-          subnet_id          = region_config.subnet_id
-          tags               = region_config.tags
-          metadata           = region_config.metadata 
+          zone_config        = env[:machine].provider_config.get_zone_config(zone)
+          image              = zone_config.image
+          name               = zone_config.name
+          zone               = zone_config.zone
+          machine_type       = zone_config.machine_type
+          keypair            = zone_config.keypair_name
+          network            = zone_config.network
+          metadata           = zone_config.metadata 
 
           # If there is no keypair then warn the user
           if !keypair
             env[:ui].warn(I18n.t("vagrant_gce.launch_no_keypair"))
           end
 
-          # If there is a subnet ID then warn the user
-          if subnet_id
-            env[:ui].warn(I18n.t("vagrant_gce.launch_vpc_warning"))
-          end
-
           # Launch!
           env[:ui].info(I18n.t("vagrant_gce.launching_instance"))
+          env[:ui].info(" -- Name: #{name}")
           env[:ui].info(" -- Type: #{machine_type}")
           env[:ui].info(" -- Image: #{image}")
-          env[:ui].info(" -- Region: #{region}")
           env[:ui].info(" -- Zone: #{zone}") if zone
           env[:ui].info(" -- Keypair: #{keypair}") if keypair
-          env[:ui].info(" -- Subnet ID: #{subnet_id}") if subnet_id
-          env[:ui].info(" -- Private IP: #{private_ip_address}") if private_ip_address
+          env[:ui].info(" -- Network: #{network}") if network
           env[:ui].info(" -- User Data: yes") if metadata 
-          env[:ui].info(" -- Security Groups: #{security_groups.inspect}") if !security_groups.empty?
-          env[:ui].info(" -- User Data: #{metadata }") if metadata 
 
           begin
             options = {
+              :name               => name,
               :zone               => zone,
-              :flavor_id          => machine_type,
-              :image_id           => image,
-              :key_name           => keypair,
-              :private_ip_address => private_ip_address,
-              :subnet_id          => subnet_id,
-              :tags               => tags,
+              :machine_type       => machine_type,
+              :image              => image,
+              :keypair            => keypair,
+              :network            => network,
               :metadata           => metadata 
             }
 
-            if !security_groups.empty?
-              security_group_key = options[:subnet_id].nil? ? :groups : :security_group_ids
-              options[security_group_key] = security_groups
-            end
-
             server = env[:gce_compute].servers.create(options)
           rescue Fog::Compute::GCE::NotFound => e
-            # Invalid subnet doesn't have its own error so we catch and
-            # check the error message here.
-            if e.message =~ /subnet ID/
-              raise Errors::FogError,
-                :message => "Subnet ID not found: #{subnet_id}"
-            end
-
             raise
           rescue Fog::Compute::GCE::Error => e
             raise Errors::FogError, :message => e.message
           end
 
-          # Immediately save the ID since it is created at this point.
-          env[:machine].id = server.id
+          # Immediately save the name since it is created at this point.
+          env[:machine].name = server.name
 
           # Wait for the instance to be ready first
           env[:metrics]["instance_ready_time"] = Util::Timer.time do
-            tries = region_config.instance_ready_timeout / 2
+            tries = zone_config.instance_ready_timeout / 2
 
             env[:ui].info(I18n.t("vagrant_gce.waiting_for_ready"))
             begin
@@ -124,7 +101,7 @@ module VagrantPlugins
 
               # Notify the user
               raise Errors::InstanceReadyTimeout,
-                timeout: region_config.instance_ready_timeout
+                timeout: zone_config.instance_ready_timeout
             end
           end
 

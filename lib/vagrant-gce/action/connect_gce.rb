@@ -27,23 +27,24 @@ module VagrantPlugins
         end
 
         def call(env)
-          # Get the region we're going to booting up in
-          region = env[:machine].provider_config.region
+          # Get the zone we're going to booting up in
+          zone = env[:machine].provider_config.zone
 
           # Get the configs
-          region_config     = env[:machine].provider_config.get_region_config(region)
+          zone_config     = env[:machine].provider_config.get_zone_config(zone)
 
           # Build the fog config
           fog_config = {
-            :provider              => :gce,
-            :region                => region
+            :provider            => :gce,
+            :zone                => zone
           }
-          fog_config[:google_client_email] = region_config.google_client_email
-          fog_config[:google_key_location] = region_config.google_key_location
-          fog_config[:google_project_id] = region_config.project_id
+          fog_config[:google_client_email] = zone_config.google_client_email
+          fog_config[:google_key_location] = zone_config.google_key_location
+          fog_config[:google_project_id] = zone_config.project_id
 
-          fog_config[:endpoint] = region_config.endpoint if region_config.endpoint
-          fog_config[:version]  = region_config.version if region_config.version
+          fog_config[:image] = zone_config.image if zone_config.image
+          fog_config[:machine_type] = zone_config.machine_type if zone_config.machine_type
+          fog_config[:network] = zone_config.network if zone_config.network
 
           @logger.info("Connecting to GCE...")
           env[:gce_compute] = Fog::Compute.new(fog_config)

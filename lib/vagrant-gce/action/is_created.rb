@@ -22,7 +22,7 @@ module VagrantPlugins
         end
 
         def call(env)
-          env[:result] = env[:machine].state.id != :not_created
+          env[:result] = env[:machine].state.name != :not_created
           @app.call(env)
         end
       end

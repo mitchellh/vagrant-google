@@ -31,14 +31,14 @@ module VagrantPlugins
         end
 
         def read_state(gce, machine)
-          return :not_created if machine.id.nil?
+          return :not_created if machine.name.nil?
 
           # Find the machine
-          server = gce.servers.get(machine.id)
+          server = gce.servers.get(machine.name, machine.zone)
           if server.nil? || [:"shutting-down", :terminated].include?(server.state.to_sym)
             # The machine can't be found
             @logger.info("Machine not found or terminated, assuming it got destroyed.")
-            machine.id = nil
+            machine.name = nil
             return :not_created
           end
 
