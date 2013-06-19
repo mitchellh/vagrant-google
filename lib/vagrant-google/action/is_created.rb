@@ -12,17 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 module VagrantPlugins
-  module GCE
-    module Util
-      class Timer
-        # A basic utility method that times the execution of the given
-        # block and returns it.
-        def self.time
-          start_time = Time.now.to_f
-          yield
-          end_time = Time.now.to_f
+  module Google
+    module Action
+      # This can be used with "Call" built-in to check if the machine
+      # is created and branch in the middleware.
+      class IsCreated
+        def initialize(app, env)
+          @app = app
+        end
 
-          end_time - start_time
+        def call(env)
+          env[:result] = env[:machine].state.name != :not_created
+          @app.call(env)
         end
       end
     end

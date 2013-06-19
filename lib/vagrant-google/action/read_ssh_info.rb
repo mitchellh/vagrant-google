@@ -14,27 +14,27 @@
 require "log4r"
 
 module VagrantPlugins
-  module GCE
+  module Google
     module Action
       # This action reads the SSH info for the machine and puts it into the
       # `:machine_ssh_info` key in the environment.
       class ReadSSHInfo
         def initialize(app, env)
           @app    = app
-          @logger = Log4r::Logger.new("vagrant_gce::action::read_ssh_info")
+          @logger = Log4r::Logger.new("vagrant_google::action::read_ssh_info")
         end
 
         def call(env)
-          env[:machine_ssh_info] = read_ssh_info(env[:gce_compute], env[:machine])
+          env[:machine_ssh_info] = read_ssh_info(env[:google_compute], env[:machine])
 
           @app.call(env)
         end
 
-        def read_ssh_info(gce, machine)
+        def read_ssh_info(google, machine)
           return nil if machine.name.nil?
 
           # Find the machine
-          server = gce.servers.get(machine.name, machine.zone)
+          server = google.servers.get(machine.name, machine.zone)
           if server.nil?
             # The machine can't be found
             @logger.info("Machine couldn't be found, assuming it got destroyed.")

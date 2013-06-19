@@ -11,18 +11,25 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-module VagrantPlugins
-  module GCE
-    module Action
-      class MessageNotCreated
-        def initialize(app, env)
-          @app = app
-        end
+require "vagrant"
 
-        def call(env)
-          env[:ui].info(I18n.t("vagrant_gce.not_created"))
-          @app.call(env)
-        end
+module VagrantPlugins
+  module Google
+    module Errors
+      class VagrantGoogleError < Vagrant::Errors::VagrantError
+        error_namespace("vagrant_google.errors")
+      end
+
+      class FogError < VagrantGoogleError
+        error_key(:fog_error)
+      end
+
+      class InstanceReadyTimeout < VagrantGoogleError
+        error_key(:instance_ready_timeout)
+      end
+
+      class RsyncError < VagrantGoogleError
+        error_key(:rsync_error)
       end
     end
   end

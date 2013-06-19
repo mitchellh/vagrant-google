@@ -12,15 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 module VagrantPlugins
-  module GCE
+  module Google
     module Action
-      class MessageWillNotDestroy
+      class MessageAlreadyCreated
         def initialize(app, env)
           @app = app
         end
 
         def call(env)
-          env[:ui].info(I18n.t("vagrant_gce.will_not_destroy", name: env[:machine].name))
+          env[:ui].info(I18n.t("vagrant_google.already_created"))
           @app.call(env)
         end
       end

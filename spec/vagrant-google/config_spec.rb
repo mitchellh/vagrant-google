@@ -11,12 +11,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-require "vagrant-gce/config"
+require "vagrant-google/config"
 
-describe VagrantPlugins::GCE::Config do
+describe VagrantPlugins::Google::Config do
   let(:instance) { described_class.new }
 
-  # Ensure tests are not affected by GCE credential environment variables
+  # Ensure tests are not affected by Google credential environment variables
   before :each do
     ENV.stub(:[] => nil)
   end
@@ -54,7 +54,7 @@ describe VagrantPlugins::GCE::Config do
   end
 
   describe "getting credentials from environment" do
-    context "without GCE credential environment variables" do
+    context "without Google credential environment variables" do
       subject do
         instance.tap do |o|
           o.finalize!
@@ -65,7 +65,7 @@ describe VagrantPlugins::GCE::Config do
       its("google_key_location") { should be_nil }
     end
 
-    context "with GCE credential environment variables" do
+    context "with Google credential environment variables" do
       before :each do
         ENV.stub(:[]).with("GOOGLE_CLIENT_EMAIL").and_return("client_id_email")
         ENV.stub(:[]).with("GOOGLE_KEY_LOCATION").and_return("/path/to/key")

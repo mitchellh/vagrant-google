@@ -1,5 +1,5 @@
 en:
-  vagrant_gce:
+  vagrant_google:
     already_created: |-
       The machine is already created.
     launching_instance: |-
@@ -25,7 +25,7 @@ en:
     waiting_for_ssh: |-
       Waiting for SSH to become available...
     warn_networks: |-
-      Warning! The GCE provider doesn't support any of the Vagrant
+      Warning! The Google provider doesn't support any of the Vagrant
       high-level network configurations (`config.vm.network`). They
       will be silently ignored.
     will_not_destroy: |-
@@ -38,7 +38,7 @@ en:
       machine_required: |-
         An MACHINE_TYPE must be configured via "machine"
       private_key_missing: |-
-        The specified private key for GCE could not be found
+        The specified private key for Google could not be found
       zone_required: |-
         A zone must be specified via "zone"
       name_required: |-
@@ -50,15 +50,15 @@ en:
 
     errors:
       fog_error: |-
-        There was an error talking to GCE. The error message is shown
+        There was an error talking to Google. The error message is shown
         below:
 
         %{message}
       instance_ready_timeout: |-
-        The instance never became "ready" in GCE. The timeout currently
+        The instance never became "ready" in Google. The timeout currently
         set waiting for the instance to become ready is %{timeout} seconds.
         Please verify that the machine properly boots. If you need more time
-        set the `instance_ready_timeout` configuration on the GCE provider.
+        set the `instance_ready_timeout` configuration on the Google provider.
       rsync_error: |-
         There was an error when attemping to rsync a share folder.
         Please inspect the error message below for more info.
@@ -71,10 +71,10 @@ en:
       short_not_created: |-
         not created
       long_not_created: |-
-        The GCE instance is not created. Run `vagrant up` to create it.
+        The Google instance is not created. Run `vagrant up` to create it.
 
       short_running: |-
         running
       long_running: |-
-        The GCE instance is running. To stop this machine, you can run
+        The Google instance is running. To stop this machine, you can run
         `vagrant halt`. To destroy the machine, you can run `vagrant destroy`.

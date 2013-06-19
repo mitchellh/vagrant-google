@@ -15,15 +15,15 @@ require "fog"
 require "log4r"
 
 module VagrantPlugins
-  module GCE
+  module Google
     module Action
-      # This action connects to GCE, verifies credentials work, and
-      # puts the GCE connection object into the `:gce_compute` key
+      # This action connects to Google, verifies credentials work, and
+      # puts the Google connection object into the `:google_compute` key
       # in the environment.
-      class ConnectGCE
+      class ConnectGoogle
         def initialize(app, env)
           @app    = app
-          @logger = Log4r::Logger.new("vagrant_gce::action::connect_gce")
+          @logger = Log4r::Logger.new("vagrant_google::action::connect_google")
         end
 
         def call(env)
@@ -41,14 +41,14 @@ module VagrantPlugins
           }
           fog_config[:google_client_email] = provider_config.google_client_email
           fog_config[:google_key_location] = provider_config.google_key_location
-          fog_config[:google_project] = provider_config.google_project
+          fog_config[:google_project_id] = provider_config.google_project_id
 
           fog_config[:image] = zone_config.image if zone_config.image
           fog_config[:machine_type] = zone_config.machine_type if zone_config.machine_type
           fog_config[:network] = zone_config.network if zone_config.network
 
-          @logger.info("Connecting to GCE...")
-          env[:gce_compute] = Fog::Compute.new(fog_config)
+          @logger.info("Connecting to Google...")
+          env[:google_compute] = Fog::Compute.new(fog_config)
 
           @app.call(env)
         end

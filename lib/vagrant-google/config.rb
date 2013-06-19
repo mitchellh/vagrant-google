@@ -14,7 +14,7 @@
 require "vagrant"
 
 module VagrantPlugins
-  module GCE
+  module Google
     class Config < Vagrant.plugin("2", :config)
       # The Service Account Client ID Email address
       #
@@ -29,7 +29,7 @@ module VagrantPlugins
       # The Google Cloud Project ID (not name or number)
       #
       # @return [String]
-      attr_accessor :google_project
+      attr_accessor :google_project_id
 
       # The image name of the instance to use.
       #
@@ -81,7 +81,7 @@ module VagrantPlugins
       def initialize(zone_specific=false)
         @google_client_email = UNSET_VALUE
         @google_key_location = UNSET_VALUE
-        @google_project      = UNSET_VALUE
+        @google_project_id   = UNSET_VALUE
         @image               = UNSET_VALUE
         @instance_ready_timeout = UNSET_VALUE
         @keypair_name        = UNSET_VALUE
@@ -103,7 +103,7 @@ module VagrantPlugins
       # configuration object. This allows the user to override things like
       # image and keypair name for zones. Example:
       #
-      #     gce.zone_config "us-central1-a" do |zone|
+      #     google.zone_config "us-central1-a" do |zone|
       #       zone.image = "centos-6"
       #       zone.keypair_name = "company-east"
       #     end
@@ -111,7 +111,7 @@ module VagrantPlugins
       # @param [String] zone The zone name to configure.
       # @param [Hash] attributes Direct attributes to set on the configuration
       #   as a shortcut instead of specifying a full block.
-      # @yield [config] Yields a new GCE configuration.
+      # @yield [config] Yields a new Google configuration.
       def zone_config(zone, attributes=nil, &block)
         # Append the block to the list of zone configs for that zone.
         # We'll evaluate these upon finalization.
@@ -160,11 +160,11 @@ module VagrantPlugins
       end
 
       def finalize!
-        # Try to get access keys from standard GCE environment variables; they
+        # Try to get access keys from standard Google environment variables; they
         # will default to nil if the environment variables are not present.
         @google_client_email = ENV['GOOGLE_CLIENT_EMAIL'] if @google_client_email == UNSET_VALUE
         @google_key_location = ENV['GOOGLE_KEY_LOCATION'] if @google_key_location == UNSET_VALUE
-        @google_project      = ENV['GOOGLE_PROJECT_ID'] if @google_project_id == UNSET_VALUE
+        @google_project_id   = ENV['GOOGLE_PROJECT_ID'] if @google_project_id == UNSET_VALUE
 
         # Image must be nil, since we can't default that
         @image = "debian-7" if @image == UNSET_VALUE
@@ -215,23 +215,23 @@ module VagrantPlugins
       def validate(machine)
         errors = _detected_errors
 
-        errors << I18n.t("vagrant_gce.config.zone_required") if @zone.nil?
+        errors << I18n.t("vagrant_google.config.zone_required") if @zone.nil?
 
         if @zone
           config = get_zone_config(@zone)
 
-          errors << I18n.t("vagrant_gce.config.google_project_required") if \
-            config.google_project.nil?
-          errors << I18n.t("vagrant_gce.config.google_client_email_required") if \
+          errors << I18n.t("vagrant_google.config.google_project_id_required") if \
+            config.google_project_id.nil?
+          errors << I18n.t("vagrant_google.config.google_client_email_required") if \
             config.google_client_email.nil?
-          errors << I18n.t("vagrant_gce.config.google_key_location_required") if \
+          errors << I18n.t("vagrant_google.config.google_key_location_required") if \
             config.google_key_location.nil?
         end
 
-        errors << I18n.t("vagrant_gce.config.image_required") if config.image.nil?
-        errors << I18n.t("vagrant_gce.config.name_required") if @name.nil?
+        errors << I18n.t("vagrant_google.config.image_required") if config.image.nil?
+        errors << I18n.t("vagrant_google.config.name_required") if @name.nil?
 
-        { "GCE Provider" => errors }
+        { "Google Provider" => errors }
       end
 
       # This gets the configuration for a specific zone. It shouldn't

@@ -8,7 +8,7 @@ Vagrant, allowing Vagrant to control and provision instances in GCE.
 
 ## Development
 
-To work on the `vagrant-gce` plugin, clone this repository out, and use
+To work on the `vagrant-google` plugin, clone this repository out, and use
 [Bundler](http://gembundler.com) to get the dependencies:
 
 ```
@@ -27,14 +27,14 @@ creating a `Vagrantfile` in the top level of this directory (it is gitignored)
 that uses it, and uses bundler to execute Vagrant:
 
 ```
-$ bundle exec vagrant up --provider=gce
+$ bundle exec vagrant up --provider=google
 ```
 
 ## Changelog
- * See [CHANGELOG.md](https://github.com/GoogleCloudPlatform/vagrant-gce/blob/master/CHANGELOG.md)
+ * See [CHANGELOG.md](https://github.com/GoogleCloudPlatform/vagrant-google/blob/master/CHANGELOG.md)
 
 ## Contributing
- * See [CONTRIB.md](https://github.com/GoogleCloudPlatform/vagrant-gce/blob/master/CONTRIB.md)
+ * See [CONTRIB.md](https://github.com/GoogleCloudPlatform/vagrant-google/blob/master/CONTRIB.md)
 
 ## Licensing
- * See [LICENSE](https://github.com/GoogleCloudPlatform/vagrant-gce/blob/master/LICENSE)
+ * See [LICENSE](https://github.com/GoogleCloudPlatform/vagrant-google/blob/master/LICENSE)
