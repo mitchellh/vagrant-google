@@ -15,10 +15,10 @@ require "log4r"
 
 require 'vagrant/util/retryable'
 
-require 'vagrant-gce/util/timer'
+require 'vagrant-google/util/timer'
 
 module VagrantPlugins
-  module GCE
+  module Google
     module Action
       # This runs the configured instance.
       class RunInstance
@@ -26,7 +26,7 @@ module VagrantPlugins
 
         def initialize(app, env)
           @app    = app
-          @logger = Log4r::Logger.new("vagrant_gce::action::run_instance")
+          @logger = Log4r::Logger.new("vagrant_google::action::run_instance")
         end
 
         def call(env)
@@ -48,11 +48,11 @@ module VagrantPlugins
 
           # If there is no keypair then warn the user
           if !keypair
-            env[:ui].warn(I18n.t("vagrant_gce.launch_no_keypair"))
+            env[:ui].warn(I18n.t("vagrant_google.launch_no_keypair"))
           end
 
           # Launch!
-          env[:ui].info(I18n.t("vagrant_gce.launching_instance"))
+          env[:ui].info(I18n.t("vagrant_google.launching_instance"))
           env[:ui].info(" -- Name: #{name}")
           env[:ui].info(" -- Type: #{machine_type}")
           env[:ui].info(" -- Image: #{image}")
@@ -72,10 +72,10 @@ module VagrantPlugins
               :metadata           => metadata 
             }
 
-            server = env[:gce_compute].servers.create(options)
-          rescue Fog::Compute::GCE::NotFound => e
+            server = env[:google_compute].servers.create(options)
+          rescue Fog::Compute::Google::NotFound => e
             raise
-          rescue Fog::Compute::GCE::Error => e
+          rescue Fog::Compute::Google::Error => e
             raise Errors::FogError, :message => e.message
           end
 
@@ -86,7 +86,7 @@ module VagrantPlugins
           env[:metrics]["instance_ready_time"] = Util::Timer.time do
             tries = zone_config.instance_ready_timeout / 2
 
-            env[:ui].info(I18n.t("vagrant_gce.waiting_for_ready"))
+            env[:ui].info(I18n.t("vagrant_google.waiting_for_ready"))
             begin
               retryable(:on => Fog::Errors::TimeoutError, :tries => tries) do
                 # If we're interrupted don't worry about waiting
@@ -110,7 +110,7 @@ module VagrantPlugins
           if !env[:interrupted]
             env[:metrics]["instance_ssh_time"] = Util::Timer.time do
               # Wait for SSH to be ready.
-              env[:ui].info(I18n.t("vagrant_gce.waiting_for_ssh"))
+              env[:ui].info(I18n.t("vagrant_google.waiting_for_ssh"))
               while true
                 # If we're interrupted then just back out
                 break if env[:interrupted]
@@ -122,7 +122,7 @@ module VagrantPlugins
             @logger.info("Time for SSH ready: #{env[:metrics]["instance_ssh_time"]}")
 
             # Ready and booted!
-            env[:ui].info(I18n.t("vagrant_gce.ready"))
+            env[:ui].info(I18n.t("vagrant_google.ready"))
           end
 
           # Terminate the instance if we were interrupted

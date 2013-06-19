@@ -2,9 +2,9 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.provider :gce do |gce|
-    gce.image = "debian-7"
-    gce.machine_type = "n1-standard-1"
-    gce.zone = "us-central1-a"
+  config.vm.provider :google do |google|
+    google.image = "debian-7"
+    google.machine_type = "n1-standard-1"
+    google.zone = "us-central1-a"
   end
 end

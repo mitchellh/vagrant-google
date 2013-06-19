@@ -16,7 +16,7 @@ require "pathname"
 require "vagrant/action/builder"
 
 module VagrantPlugins
-  module GCE
+  module Google
     module Action
       # Include the built-in modules so we can use them as top-level things.
       include Vagrant::Action::Builtin
@@ -27,7 +27,7 @@ module VagrantPlugins
           b.use Call, DestroyConfirm do |env, b2|
             if env[:result]
               b2.use ConfigValidate
-              b2.use ConnectGCE
+              b2.use ConnectGoogle
               b2.use TerminateInstance
             else
               b2.use MessageWillNotDestroy
@@ -58,7 +58,7 @@ module VagrantPlugins
       def self.action_read_ssh_info
         Vagrant::Action::Builder.new.tap do |b|
           b.use ConfigValidate
-          b.use ConnectGCE
+          b.use ConnectGoogle
           b.use ReadSSHInfo
         end
       end
@@ -69,7 +69,7 @@ module VagrantPlugins
       def self.action_read_state
         Vagrant::Action::Builder.new.tap do |b|
           b.use ConfigValidate
-          b.use ConnectGCE
+          b.use ConnectGoogle
           b.use ReadState
         end
       end
@@ -108,7 +108,7 @@ module VagrantPlugins
         Vagrant::Action::Builder.new.tap do |b|
           b.use HandleBoxUrl
           b.use ConfigValidate
-          b.use ConnectGCE
+          b.use ConnectGoogle
           b.use Call, IsCreated do |env, b2|
             if env[:result]
               b2.use MessageAlreadyCreated
@@ -125,7 +125,7 @@ module VagrantPlugins
 
       # The autoload farm
       action_root = Pathname.new(File.expand_path("../action", __FILE__))
-      autoload :ConnectGCE, action_root.join("connect_gce")
+      autoload :ConnectGoogle, action_root.join("connect_google")
       autoload :IsCreated, action_root.join("is_created")
       autoload :MessageAlreadyCreated, action_root.join("message_already_created")
       autoload :MessageNotCreated, action_root.join("message_not_created")

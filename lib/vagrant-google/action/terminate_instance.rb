@@ -11,16 +11,26 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+require "log4r"
+
 module VagrantPlugins
-  module GCE
+  module Google
     module Action
-      class MessageAlreadyCreated
+      # This terminates the running instance.
+      class TerminateInstance
         def initialize(app, env)
-          @app = app
+          @app    = app
+          @logger = Log4r::Logger.new("vagrant_google::action::terminate_instance")
         end
 
         def call(env)
-          env[:ui].info(I18n.t("vagrant_gce.already_created"))
+          server = env[:google_compute].servers.get(env[:machine].namei, env[:machine].zone)
+
+          # Destroy the server and remove the tracking ID
+          env[:ui].info(I18n.t("vagrant_google.terminating"))
+          server.destroy
+          env[:machine].name = nil
+
           @app.call(env)
         end
       end

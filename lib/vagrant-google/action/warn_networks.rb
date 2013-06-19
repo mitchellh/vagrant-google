@@ -11,22 +11,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-require "vagrant-gce/util/timer"
-
 module VagrantPlugins
-  module GCE
+  module Google
     module Action
-      # This is the same as the builtin provision except it times the
-      # provisioner runs.
-      class TimedProvision < Vagrant::Action::Builtin::Provision
-        def run_provisioner(env, name, p)
-          timer = Util::Timer.time do
-            super
+      class WarnNetworks
+        def initialize(app, env)
+          @app = app
+        end
+
+        def call(env)
+          if env[:machine].config.vm.networks.length > 0
+            env[:ui].warn(I18n.t("vagrant_google.warn_networks"))
           end
 
-          env[:metrics] ||= {}
-          env[:metrics]["provisioner_times"] ||= []
-          env[:metrics]["provisioner_times"] << [name, timer]
+          @app.call(env)
         end
       end
     end

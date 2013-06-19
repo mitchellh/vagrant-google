@@ -11,27 +11,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-require "log4r"
-
 module VagrantPlugins
-  module GCE
-    module Action
-      # This terminates the running instance.
-      class TerminateInstance
-        def initialize(app, env)
-          @app    = app
-          @logger = Log4r::Logger.new("vagrant_gce::action::terminate_instance")
-        end
+  module Google
+    module Util
+      class Timer
+        # A basic utility method that times the execution of the given
+        # block and returns it.
+        def self.time
+          start_time = Time.now.to_f
+          yield
+          end_time = Time.now.to_f
 
-        def call(env)
-          server = env[:gce_compute].servers.get(env[:machine].namei, env[:machine].zone)
-
-          # Destroy the server and remove the tracking ID
-          env[:ui].info(I18n.t("vagrant_gce.terminating"))
-          server.destroy
-          env[:machine].name = nil
-
-          @app.call(env)
+          end_time - start_time
         end
       end
     end

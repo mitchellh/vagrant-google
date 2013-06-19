@@ -14,30 +14,30 @@
 begin
   require "vagrant"
 rescue LoadError
-  raise "The Vagrant GCE plugin must be run within Vagrant."
+  raise "The Vagrant Google plugin must be run within Vagrant."
 end
 
 # This is a sanity check to make sure no one is attempting to install
 # this into an early Vagrant version.
 if Vagrant::VERSION < "1.2.0"
-  raise "The Vagrant GCE plugin is only compatible with Vagrant 1.2+"
+  raise "The Vagrant Google plugin is only compatible with Vagrant 1.2+"
 end
 
 module VagrantPlugins
-  module GCE
+  module Google
     class Plugin < Vagrant.plugin("2")
-      name "GCE"
+      name "Google"
       description <<-DESC
       This plugin installs a provider that allows Vagrant to manage
       Google Compute Engine instances.
       DESC
 
-      config(:gce, :provider) do
+      config(:google, :provider) do
         require_relative "config"
         Config
       end
 
-      provider(:gce, parallel: true) do
+      provider(:google, parallel: true) do
         # Setup logging and i18n
         setup_logging
         setup_i18n
@@ -49,7 +49,7 @@ module VagrantPlugins
 
       # This initializes the internationalization strings.
       def self.setup_i18n
-        I18n.load_path << File.expand_path("locales/en.yml", GCE.source_root)
+        I18n.load_path << File.expand_path("locales/en.yml", Google.source_root)
         I18n.reload!
       end
 
@@ -75,7 +75,7 @@ module VagrantPlugins
         # Set the logging level on all "vagrant" namespaced
         # logs as long as we have a valid level.
         if level
-          logger = Log4r::Logger.new("vagrant_gce")
+          logger = Log4r::Logger.new("vagrant_google")
           logger.outputters = Log4r::Outputter.stderr
           logger.level = level
           logger = nil

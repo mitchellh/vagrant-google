@@ -12,17 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 module VagrantPlugins
-  module GCE
+  module Google
     module Action
-      # This can be used with "Call" built-in to check if the machine
-      # is created and branch in the middleware.
-      class IsCreated
+      class MessageWillNotDestroy
         def initialize(app, env)
           @app = app
         end
 
         def call(env)
-          env[:result] = env[:machine].state.name != :not_created
+          env[:ui].info(I18n.t("vagrant_google.will_not_destroy", name: env[:machine].name))
           @app.call(env)
         end
       end
