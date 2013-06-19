@@ -27,20 +27,21 @@ module VagrantPlugins
         end
 
         def call(env)
+          provider_config = env[:machine].provider_config
           # Get the zone we're going to booting up in
-          zone = env[:machine].provider_config.zone
+          zone = provider_config.zone
 
           # Get the configs
-          zone_config     = env[:machine].provider_config.get_zone_config(zone)
+          zone_config     = provider_config.get_zone_config(zone)
 
           # Build the fog config
           fog_config = {
-            :provider            => :gce,
+            :provider            => :google,
             :zone                => zone
           }
-          fog_config[:google_client_email] = zone_config.google_client_email
-          fog_config[:google_key_location] = zone_config.google_key_location
-          fog_config[:google_project_id] = zone_config.project_id
+          fog_config[:google_client_email] = provider_config.google_client_email
+          fog_config[:google_key_location] = provider_config.google_key_location
+          fog_config[:google_project] = provider_config.google_project
 
           fog_config[:image] = zone_config.image if zone_config.image
           fog_config[:machine_type] = zone_config.machine_type if zone_config.machine_type
