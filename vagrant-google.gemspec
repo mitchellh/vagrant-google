@@ -22,18 +22,22 @@ Gem::Specification.new do |s|
   s.authors       = "Eric Johnson"
   s.email         = "erjohnso@google.com"
   s.homepage      = "http://www.vagrantup.com"
-  s.summary       = "Enables Vagrant to manage Google Compute Engine instnaces."
-  s.description   = "Enables Vagrant to manage Google Compute Engine instnaces."
+  s.summary       = "Vagrant provider plugin for Google Compute Engine."
+  s.description   = "Enables Vagrant to manage Google Compute Engine instances."
 
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project         = "vagrant-google"
 
   s.add_runtime_dependency "fog", "~> 1.12.1"
+  s.add_runtime_dependency "pry", "~> 0.9.12.2"
+  s.add_runtime_dependency "rb-readline", "~> 0.5.0"
 
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec-core", "~> 2.12.2"
   s.add_development_dependency "rspec-expectations", "~> 2.12.1"
   s.add_development_dependency "rspec-mocks", "~> 2.12.1"
+  s.add_development_dependency "pry", "~> 0.9.12.2"
+  s.add_development_dependency "rb-readline", "~> 0.5.0"
 
   # The following block of code determines the files that should be included
   # in the gem. It does this by reading all the files in the directory where

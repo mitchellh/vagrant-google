@@ -13,6 +13,7 @@
 # limitations under the License.
 require "fog"
 require "log4r"
+require 'pry'
 
 module VagrantPlugins
   module Google
@@ -41,16 +42,18 @@ module VagrantPlugins
           }
           fog_config[:google_client_email] = provider_config.google_client_email
           fog_config[:google_key_location] = provider_config.google_key_location
-          fog_config[:google_project_id] = provider_config.google_project_id
+          fog_config[:google_project] = provider_config.google_project_id
 
           fog_config[:image] = zone_config.image if zone_config.image
           fog_config[:machine_type] = zone_config.machine_type if zone_config.machine_type
           fog_config[:network] = zone_config.network if zone_config.network
 
           @logger.info("Connecting to Google...")
+	  binding.pry
           env[:google_compute] = Fog::Compute.new(fog_config)
 
           @app.call(env)
+          @logger.info("...Connected!")
         end
       end
     end
