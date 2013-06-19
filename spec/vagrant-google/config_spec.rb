@@ -122,11 +122,11 @@ describe VagrantPlugins::Google::Config do
     end
 
     context "with a specific config set" do
-      let(:zone) { "hashi-zone" }
+      let(:zone_name) { "hashi-zone" }
 
       subject do
         # Set the values on a specific zone
-        instance.zone_config zone do |config|
+        instance.zone_config zone_name do |config|
           set_test_values(config)
         end
 
@@ -134,14 +134,14 @@ describe VagrantPlugins::Google::Config do
         instance.finalize!
 
         # Get the zone
-        instance.get_zone_config(zone)
+        instance.get_zone_config(zone_name)
       end
 
       its("name")              { should == config_name }
       its("image")             { should == config_image }
       its("machine_type")      { should == config_machine_type }
       its("network")           { should == config_network }
-      its("zone")              { should == config_zone }
+      its("zone")              { should == zone_name }
     end
 
     describe "inheritance of parent config" do
@@ -175,20 +175,21 @@ describe VagrantPlugins::Google::Config do
       its("image") { should == "child" }
     end
 
-    describe "merging" do
-      let(:first)  { described_class.new }
-      let(:second) { described_class.new }
-
-      it "should merge the tags" do
-        first.tags["one"] = "one"
-        second.tags["two"] = "two"
-
-        third = first.merge(second)
-        third.tags.should == {
-          "one" => "one",
-          "two" => "two"
-        }
-      end
-    end
+#    ## fog+gce doesn't currently support tags
+#    describe "merging" do
+#      let(:first)  { described_class.new }
+#      let(:second) { described_class.new }
+#
+#      it "should merge the tags" do
+#        first.tags["one"] = "one"
+#        second.tags["two"] = "two"
+#
+#        third = first.merge(second)
+#        third.tags.should == {
+#          "one" => "one",
+#          "two" => "two"
+#        }
+#      end
+#    end
   end
 end
