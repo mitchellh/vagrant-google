@@ -14,6 +14,7 @@
 require "fog"
 require "log4r"
 require 'pry'
+require 'pry-nav'
 
 module VagrantPlugins
   module Google
@@ -29,27 +30,16 @@ module VagrantPlugins
 
         def call(env)
           provider_config = env[:machine].provider_config
-          # Get the zone we're going to booting up in
-          zone = provider_config.zone
-
-          # Get the configs
-          zone_config     = provider_config.get_zone_config(zone)
 
           # Build the fog config
           fog_config = {
             :provider            => :google,
-            :zone                => zone
+            :google_project      => provider_config.google_project_id,
+            :google_client_email => provider_config.google_client_email,
+            :google_key_location => provider_config.google_key_location
           }
-          fog_config[:google_client_email] = provider_config.google_client_email
-          fog_config[:google_key_location] = provider_config.google_key_location
-          fog_config[:google_project] = provider_config.google_project_id
-
-          fog_config[:image] = zone_config.image if zone_config.image
-          fog_config[:machine_type] = zone_config.machine_type if zone_config.machine_type
-          fog_config[:network] = zone_config.network if zone_config.network
 
           @logger.info("Connecting to Google...")
-	  binding.pry
           env[:google_compute] = Fog::Compute.new(fog_config)
 
           @app.call(env)
