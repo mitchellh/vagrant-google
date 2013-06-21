@@ -29,7 +29,7 @@ describe VagrantPlugins::Google::Config do
     end
 
     its("name")              { should == "new" }
-    its("image")             { should == "debian-7" }
+    its("image")             { should == "debian-7-v20130522" }
     its("zone")              { should == "us-central1-a" }
     its("network")           { should == "default" }
     its("machine_type")      { should == "n1-standard-1" }

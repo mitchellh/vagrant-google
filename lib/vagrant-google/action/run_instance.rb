@@ -16,7 +16,8 @@ require "log4r"
 require 'vagrant/util/retryable'
 
 require 'vagrant-google/util/timer'
-
+require 'pry'
+require 'pry-nav'
 module VagrantPlugins
   module Google
     module Action
@@ -40,7 +41,6 @@ module VagrantPlugins
           zone_config        = env[:machine].provider_config.get_zone_config(zone)
           image              = zone_config.image
           name               = zone_config.name
-          zone               = zone_config.zone
           machine_type       = zone_config.machine_type
           keypair            = zone_config.keypair_name
           network            = zone_config.network
@@ -60,19 +60,19 @@ module VagrantPlugins
           env[:ui].info(" -- Keypair: #{keypair}") if keypair
           env[:ui].info(" -- Network: #{network}") if network
           env[:ui].info(" -- User Data: yes") if metadata 
-
+          @logger.info("#{zone}:#{name}, #{machine_type}, #{image}")
           begin
-            options = {
+            defaults = {
               :name               => name,
-              :zone               => zone,
+              :zone_name          => zone,
               :machine_type       => machine_type,
-              :image              => image,
-              :keypair            => keypair,
-              :network            => network,
-              :metadata           => metadata 
+              :image_name         => image,
+              :private_key_path   => File.expand_path("~/.ssh/id_rsa"),
+              :public_key_path    => File.expand_path("~/.ssh/id_rsa.pub"),
             }
 
-            server = env[:google_compute].servers.create(options)
+            binding.pry
+            server = env[:google_compute].servers.create(defaults)
           rescue Fog::Compute::Google::NotFound => e
             raise
           rescue Fog::Compute::Google::Error => e
@@ -80,7 +80,7 @@ module VagrantPlugins
           end
 
           # Immediately save the name since it is created at this point.
-          env[:machine].name = server.name
+          env[:machine].id = server.name
 
           # Wait for the instance to be ready first
           env[:metrics]["instance_ready_time"] = Util::Timer.time do
