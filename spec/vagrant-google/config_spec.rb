@@ -33,7 +33,7 @@ describe VagrantPlugins::Google::Config do
     its("zone")              { should == "us-central1-a" }
     its("network")           { should == "default" }
     its("machine_type")      { should == "n1-standard-1" }
-    its("instance_ready_timeout") { should == 30 }
+    its("instance_ready_timeout") { should == 10 }
     its("metadata")          { should == {} }
   end
 

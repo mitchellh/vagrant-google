@@ -38,6 +38,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec-core", "~> 2.12.2"
   s.add_development_dependency "rspec-expectations", "~> 2.12.1"
   s.add_development_dependency "rspec-mocks", "~> 2.12.1"
+  s.add_development_dependency "pry", "~> 0.9.12.2"
   s.add_development_dependency "pry-nav", "~> 0.2.3"
   s.add_development_dependency "rb-readline", "~> 0.5.0"
 

@@ -8,6 +8,7 @@
 pkg/*
 tags
 Gemfile.lock
+/vagrant-google/*
 
 # Vagrant
 .vagrant
