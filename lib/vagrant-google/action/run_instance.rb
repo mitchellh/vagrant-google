@@ -12,12 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 require "log4r"
-
 require 'vagrant/util/retryable'
-
 require 'vagrant-google/util/timer'
 require 'pry'
 require 'pry-nav'
+
 module VagrantPlugins
   module Google
     module Action
@@ -52,6 +51,7 @@ module VagrantPlugins
           end
 
           # Launch!
+          has_metadata = metadata.empty? ? "No" : "Yes"
           env[:ui].info(I18n.t("vagrant_google.launching_instance"))
           env[:ui].info(" -- Name: #{name}")
           env[:ui].info(" -- Type: #{machine_type}")
@@ -59,8 +59,7 @@ module VagrantPlugins
           env[:ui].info(" -- Zone: #{zone}") if zone
           env[:ui].info(" -- Keypair: #{keypair}") if keypair
           env[:ui].info(" -- Network: #{network}") if network
-          env[:ui].info(" -- User Data: yes") if metadata 
-          @logger.info("#{zone}:#{name}, #{machine_type}, #{image}")
+          env[:ui].info(" -- User Data: #{has_metadata}")
           begin
             defaults = {
               :name               => name,
@@ -71,8 +70,8 @@ module VagrantPlugins
               :public_key_path    => File.expand_path("~/.ssh/id_rsa.pub"),
             }
 
-            binding.pry
             server = env[:google_compute].servers.create(defaults)
+            @logger.info("Machine '#{zone}:#{name}' created.")
           rescue Fog::Compute::Google::NotFound => e
             raise
           rescue Fog::Compute::Google::Error => e
@@ -92,8 +91,9 @@ module VagrantPlugins
                 # If we're interrupted don't worry about waiting
                 next if env[:interrupted]
 
+                binding.pry
                 # Wait for the server to be ready
-                server.wait_for(2) { ready? }
+                server.wait_for(2) { server.ready? }
               end
             rescue Fog::Errors::TimeoutError
               # Delete the instance

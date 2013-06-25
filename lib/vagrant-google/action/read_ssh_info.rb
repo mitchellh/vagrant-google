@@ -31,20 +31,21 @@ module VagrantPlugins
         end
 
         def read_ssh_info(google, machine)
-          return nil if machine.name.nil?
+          return nil if machine.id.nil?
 
           # Find the machine
-          server = google.servers.get(machine.name, machine.zone)
+          zone = machine.provider_config.zone
+          server = google.servers.get(machine.id, zone)
           if server.nil?
             # The machine can't be found
-            @logger.info("Machine couldn't be found, assuming it got destroyed.")
-            machine.name = nil
+            @logger.info("Machine '#{zone}:#{machine.id}'couldn't be found, assuming it got destroyed.")
+            machine.id = nil
             return nil
           end
 
           # Read SSH network info
           return {
-            :host => server.networkInterfaces[0].networkIP
+            :host => server.network_interfaces[0]['networkIP'],
             :port => 22
           }
         end

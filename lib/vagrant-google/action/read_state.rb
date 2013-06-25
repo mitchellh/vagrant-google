@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 require "log4r"
-require 'pry'
-require 'pry-nav'
 
 module VagrantPlugins
   module Google
@@ -36,12 +34,11 @@ module VagrantPlugins
           return :not_created if machine.name.nil?
 
           # Find the machine
-          binding.pry
           zone = machine.provider_config.zone
           server = google.servers.get(machine.name, zone)
           if server.nil? || [:"shutting-down", :terminated].include?(server.state.to_sym)
             # The machine can't be found
-            @logger.info("Machine not found or terminated, assuming it got destroyed.")
+            @logger.info("Machine '#{zone}:#{machine.name}' not found or terminated, assuming it got destroyed.")
             machine.id = nil
             return :not_created
           end

@@ -13,8 +13,6 @@
 # limitations under the License.
 require "fog"
 require "log4r"
-require 'pry'
-require 'pry-nav'
 
 module VagrantPlugins
   module Google

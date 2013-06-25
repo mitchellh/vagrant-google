@@ -13,7 +13,6 @@
 # limitations under the License.
 
 require "pathname"
-
 require "vagrant-google/plugin"
 
 module VagrantPlugins
