@@ -55,8 +55,8 @@ module VagrantPlugins
       end
 
       def to_s
-        name = @machine.name.nil? ? "new" : @machine.name
-        "Google (#{name})"
+        id = @machine.id.nil? ? "new" : @machine.id
+        "Google (#{id})"
       end
     end
   end
