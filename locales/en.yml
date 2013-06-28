@@ -73,8 +73,34 @@ en:
       long_not_created: |-
         The Google instance is not created. Run `vagrant up` to create it.
 
-      short_running: |-
+      short_PROVISIONING: |-
+        provsioning
+      long_PROVISIONING: |-
+        Resources are being reserved for this instance.  This instance is
+        not yet running.
+
+      short_STAGING: |-
+        staging
+      long_STAGING: |-
+        Resources have been acquired and the instance is being prepared for
+        launch and should be in the RUNNING state soon.
+
+      short_RUNNING: |-
         running
-      long_running: |-
+      long_RUNNING: |-
         The Google instance is running. To stop this machine, you can run
         `vagrant halt`. To destroy the machine, you can run `vagrant destroy`.
+
+      short_STOPPED: |-
+        stopped
+      long_STOPPED: |-
+        The Google instance is not currently running, either due to a failure
+        , or the instance is being shut down.  This is a temporary status;
+        the instance will move to either PROVISIONING or TERMINATED.
+
+      short_TERMINATED: |-
+        terminated
+      long_TERMINATED: |-
+        The Google instance failed for some reason or was shutdown.  This is
+        a permanent status, and the only way to repair the instance is to
+        delete it with `vagrant destroy`.

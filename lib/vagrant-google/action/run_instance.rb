@@ -80,6 +80,13 @@ module VagrantPlugins
           # Immediately save the name since it is created at this point.
           env[:machine].id = server.name
 
+          # TODO(erjohnso): servers.get() populates instance variables
+          # such as 'public_ip_adress' where the above servers.create()
+          # only seems to return a partial object (e.g. missing critical
+          # instance variables such as 'public_ip_address'
+          sleep 2 # w/o this delay, we seem to get env[:interrupted] set
+          server = env[:google_compute].servers.get(name, zone)
+
           # Wait for the instance to be ready first
           env[:metrics]["instance_ready_time"] = Util::Timer.time do
             tries = zone_config.instance_ready_timeout / 2
@@ -88,9 +95,9 @@ module VagrantPlugins
             begin
               retryable(:on => Fog::Errors::TimeoutError, :tries => tries) do
                 # If we're interrupted don't worry about waiting
+                sleep 2
                 next if env[:interrupted]
                 break if env[:machine].communicate.ready?
-                sleep 2
               end
             end
 

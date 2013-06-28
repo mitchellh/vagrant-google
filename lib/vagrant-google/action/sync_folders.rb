@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 require "log4r"
-
 require "vagrant/util/subprocess"
-
 require "vagrant/util/scoped_hash_override"
 
 module VagrantPlugins
