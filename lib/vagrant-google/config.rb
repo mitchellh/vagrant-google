@@ -170,7 +170,7 @@ module VagrantPlugins
         @image = "debian-7-v20130522" if @image == UNSET_VALUE
 
         # Set the default timeout for waiting for an instance to be ready
-        @instance_ready_timeout = 10 if @instance_ready_timeout == UNSET_VALUE
+        @instance_ready_timeout = 20 if @instance_ready_timeout == UNSET_VALUE
 
         # Default instance type is an n1-standard-1
         @machine_type = "n1-standard-1" if @machine_type == UNSET_VALUE

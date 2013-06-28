@@ -32,7 +32,6 @@ module VagrantPlugins
 
         def read_ssh_info(google, machine)
           return nil if machine.id.nil?
-
           # Find the machine
           zone = machine.provider_config.zone
           server = google.servers.get(machine.id, zone)
@@ -45,7 +44,7 @@ module VagrantPlugins
 
           # Read SSH network info
           return {
-            :host => server.network_interfaces[0]['networkIP'],
+            :host => server.public_ip_address,
             :port => 22
           }
         end
