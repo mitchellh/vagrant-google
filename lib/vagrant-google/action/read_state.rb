@@ -31,14 +31,21 @@ module VagrantPlugins
         end
 
         def read_state(google, machine)
-          return :not_created if machine.name.nil?
+          return :not_created if machine.id.nil?
 
           # Find the machine
           zone = machine.provider_config.zone
-          server = google.servers.get(machine.name, zone)
+          # TODO(erjohnso): not sure why this is necessary, 'server' should be nil
+          begin
+            server = google.servers.get(machine.id, zone)
+          rescue Exception => e
+            @logger.info("TODO: this shouldn't be happening. Call should return nil")
+            @logger.info(e.message)
+            server = nil
+          end
           if server.nil? || [:"shutting-down", :terminated].include?(server.state.to_sym)
             # The machine can't be found
-            @logger.info("Machine '#{zone}:#{machine.name}' not found or terminated, assuming it got destroyed.")
+            @logger.info("Machine '#{zone}:#{machine.id}' not found or terminated, assuming it got destroyed.")
             machine.id = nil
             return :not_created
           end

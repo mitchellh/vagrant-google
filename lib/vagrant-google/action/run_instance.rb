@@ -14,8 +14,6 @@
 require "log4r"
 require 'vagrant/util/retryable'
 require 'vagrant-google/util/timer'
-require 'pry'
-require 'pry-nav'
 
 module VagrantPlugins
   module Google
@@ -68,6 +66,7 @@ module VagrantPlugins
               :image_name         => image,
               :private_key_path   => File.expand_path("~/.ssh/id_rsa"),
               :public_key_path    => File.expand_path("~/.ssh/id_rsa.pub"),
+#              :username           => $(whoami),
             }
 
             server = env[:google_compute].servers.create(defaults)
@@ -90,30 +89,6 @@ module VagrantPlugins
               retryable(:on => Fog::Errors::TimeoutError, :tries => tries) do
                 # If we're interrupted don't worry about waiting
                 next if env[:interrupted]
-
-                binding.pry
-                # Wait for the server to be ready
-                server.wait_for(2) { server.ready? }
-              end
-            rescue Fog::Errors::TimeoutError
-              # Delete the instance
-              terminate(env)
-
-              # Notify the user
-              raise Errors::InstanceReadyTimeout,
-                timeout: zone_config.instance_ready_timeout
-            end
-          end
-
-          @logger.info("Time to instance ready: #{env[:metrics]["instance_ready_time"]}")
-
-          if !env[:interrupted]
-            env[:metrics]["instance_ssh_time"] = Util::Timer.time do
-              # Wait for SSH to be ready.
-              env[:ui].info(I18n.t("vagrant_google.waiting_for_ssh"))
-              while true
-                # If we're interrupted then just back out
-                break if env[:interrupted]
                 break if env[:machine].communicate.ready?
                 sleep 2
               end

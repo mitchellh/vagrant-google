@@ -24,7 +24,7 @@ module VagrantPlugins
         end
 
         def call(env)
-          server = env[:google_compute].servers.get(env[:machine].name, env[:machine].provider_config.zone)
+          server = env[:google_compute].servers.get(env[:machine].id, env[:machine].provider_config.zone)
 
           # Destroy the server and remove the tracking ID
           env[:ui].info(I18n.t("vagrant_google.terminating"))
