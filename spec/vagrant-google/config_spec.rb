@@ -29,7 +29,7 @@ describe VagrantPlugins::Google::Config do
     end
 
     its("name")              { should == "new" }
-    its("image")             { should == "debian-7-v20130522" }
+    its("image")             { should == "debian-7-wheezy-v20130617" }
     its("zone")              { should == "us-central1-a" }
     its("network")           { should == "default" }
     its("machine_type")      { should == "n1-standard-1" }
@@ -175,21 +175,20 @@ describe VagrantPlugins::Google::Config do
       its("image") { should == "child" }
     end
 
-#    ## fog+gce doesn't currently support tags
-#    describe "merging" do
-#      let(:first)  { described_class.new }
-#      let(:second) { described_class.new }
-#
-#      it "should merge the tags" do
-#        first.tags["one"] = "one"
-#        second.tags["two"] = "two"
-#
-#        third = first.merge(second)
-#        third.tags.should == {
-#          "one" => "one",
-#          "two" => "two"
-#        }
-#      end
-#    end
+    describe "merging" do
+      let(:first) { described_class.new }
+      let(:second) { described_class.new }
+
+      it "should merge the metadata" do
+        first.metadata["one"] = "foo"
+        second.metadata["two"] = "bar"
+
+        third = first.merge(second)
+        third.metadata.should == {
+          "one" => "foo",
+          "two" => "bar"
+        }
+      end
+    end
   end
 end
