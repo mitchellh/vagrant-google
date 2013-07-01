@@ -39,25 +39,17 @@ module VagrantPlugins
           image              = zone_config.image
           name               = zone_config.name
           machine_type       = zone_config.machine_type
-          keypair            = zone_config.keypair_name
           network            = zone_config.network
           metadata           = zone_config.metadata 
 
-          # If there is no keypair then warn the user
-          if !keypair
-            env[:ui].warn(I18n.t("vagrant_google.launch_no_keypair"))
-          end
-
           # Launch!
-          has_metadata = metadata.empty? ? "No" : "Yes"
           env[:ui].info(I18n.t("vagrant_google.launching_instance"))
           env[:ui].info(" -- Name: #{name}")
           env[:ui].info(" -- Type: #{machine_type}")
           env[:ui].info(" -- Image: #{image}")
           env[:ui].info(" -- Zone: #{zone}") if zone
-          env[:ui].info(" -- Keypair: #{keypair}") if keypair
           env[:ui].info(" -- Network: #{network}") if network
-          env[:ui].info(" -- User Data: #{has_metadata}")
+          env[:ui].info(" -- Metadata: '#{metadata}'")
           begin
             defaults = {
               :name               => name,
@@ -69,6 +61,14 @@ module VagrantPlugins
 #              :username           => $(whoami),
             }
 
+            # TODO(erjohnso)
+            # In theory, I can call servers.bootstrap(defaults) and
+            # the call won't return until SSH is ready, but this did
+            # not work in practice and the NotFound error was immediately
+            # raised.
+            # I even tried putting in a server.wait_for { sshable? }
+            # after servers.bootstrap and the same error was immediately
+            # thrown...
             server = env[:google_compute].servers.create(defaults)
             @logger.info("Machine '#{zone}:#{name}' created.")
           rescue Fog::Compute::Google::NotFound => e
@@ -84,14 +84,14 @@ module VagrantPlugins
           # such as 'public_ip_adress' where the above servers.create()
           # only seems to return a partial object (e.g. missing critical
           # instance variables such as 'public_ip_address'
-          sleep 2 # w/o this delay, we seem to get env[:interrupted] set
+          env[:ui].info(I18n.t("vagrant_google.waiting_for_ready"))
+          sleep 4 # w/o this delay, we seem to get env[:interrupted] set
           server = env[:google_compute].servers.get(name, zone)
 
           # Wait for the instance to be ready first
           env[:metrics]["instance_ready_time"] = Util::Timer.time do
             tries = zone_config.instance_ready_timeout / 2
 
-            env[:ui].info(I18n.t("vagrant_google.waiting_for_ready"))
             begin
               retryable(:on => Fog::Errors::TimeoutError, :tries => tries) do
                 # If we're interrupted don't worry about waiting

@@ -41,11 +41,6 @@ module VagrantPlugins
       # @return [Fixnum]
       attr_accessor :instance_ready_timeout
 
-      # The name of the keypair to use.
-      #
-      # @return [String]
-      attr_accessor :keypair_name
-
       # The type of machine to launch, such as "n1-standard-1"
       #
       # @return [String]
@@ -84,7 +79,6 @@ module VagrantPlugins
         @google_project_id   = UNSET_VALUE
         @image               = UNSET_VALUE
         @instance_ready_timeout = UNSET_VALUE
-        @keypair_name        = UNSET_VALUE
         @machine_type        = UNSET_VALUE
         @metadata            = {}
         @name                = UNSET_VALUE
@@ -101,11 +95,11 @@ module VagrantPlugins
 
       # Allows zone-specific overrides of any of the settings on this
       # configuration object. This allows the user to override things like
-      # image and keypair name for zones. Example:
+      # image and machine type name for zones. Example:
       #
       #     google.zone_config "us-central1-a" do |zone|
-      #       zone.image = "centos-6"
-      #       zone.keypair_name = "company-east"
+      #       zone.image = "debian-6-squeeze-v20130617"
+      #       zone.machine_type = "n1-standard2"
       #     end
       #
       # @param [String] zone The zone name to configure.
@@ -153,9 +147,9 @@ module VagrantPlugins
           # Set it
           result.instance_variable_set(:@__zone_config, new_zone_config)
 
-          # Merge in the tags
-          result.tags.merge!(self.tags)
-          result.tags.merge!(other.tags)
+          # Merge in the metadata
+          result.metadata.merge!(self.metadata)
+          result.metadata.merge!(other.metadata)
         end
       end
 
@@ -167,16 +161,13 @@ module VagrantPlugins
         @google_project_id   = ENV['GOOGLE_PROJECT_ID'] if @google_project_id == UNSET_VALUE
 
         # Image must be nil, since we can't default that
-        @image = "debian-7-v20130522" if @image == UNSET_VALUE
+        @image = "debian-7-wheezy-v20130617" if @image == UNSET_VALUE
 
         # Set the default timeout for waiting for an instance to be ready
         @instance_ready_timeout = 20 if @instance_ready_timeout == UNSET_VALUE
 
         # Default instance type is an n1-standard-1
         @machine_type = "n1-standard-1" if @machine_type == UNSET_VALUE
-
-        # Keypair defaults to nil
-        @keypair_name = nil if @keypair_name == UNSET_VALUE
 
         # Instance name defaults to "new"
         @name = "new" if @name == UNSET_VALUE
