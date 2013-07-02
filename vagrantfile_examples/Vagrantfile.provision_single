@@ -1,0 +1,34 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Usage:
+#   $ vagrant up --provider=google
+#   $ vagrant destroy
+
+# Customize these global variables
+$GOOGLE_PROJECT_ID = "YOUR_GOOGLE_CLOUD_PROJECT_ID"
+$GOOGLE_CLIENT_EMAIL = "YOUR_SERVICE_ACCOUNT_EMAIL_ADDRESS"
+$GOOGLE_KEY_LOCATION = "/PATH/TO/YOUR/PRIVATE_KEY.p12"
+$LOCAL_USER = ENV["USER"]
+$LOCAL_SSH_KEY = "~/.ssh/id_rsa"
+
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "gce"
+
+  config.vm.provider :google do |google, override|
+    google.google_project_id = $GOOGLE_PROJECT_ID
+    google.google_client_email = $GOOGLE_CLIENT_EMAIL
+    google.google_key_location = $GOOGLE_KEY_LOCATION
+
+    # Override provider defaults
+    google.name = "testing-vagrant"
+    google.image = "debian-7-wheezy-v20130617"
+    google.machine_type = "n1-standard-1"
+    google.zone = "us-central2-a"
+    google.metadata = {'custom' => 'metadata', 'testing' => 'foobarbaz'}
+
+    override.ssh.username = $LOCAL_USER
+    override.ssh.private_key_path = $LOCAL_SSH_KEY
+  end
+end

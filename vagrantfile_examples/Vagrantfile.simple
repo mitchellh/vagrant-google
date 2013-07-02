@@ -1,0 +1,16 @@
+# -*- mde: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "gce"
+
+  config.vm.provider :google do |google, override|
+    google.google_project_id = "YOUR_GOOGLE_CLOUD_PROJECT_ID"
+    google.google_client_email = "YOUR_SERVICE_ACCOUNT_EMAIL_ADDRESS"
+    google.google_key_location = "/PATH/TO/YOUR/PRIVATE_KEY.p12"
+
+    override.ssh.username = ENV["USER"]
+    override.ssh.private_key_path = "~/.ssh/id_rsa"
+  end
+
+end
