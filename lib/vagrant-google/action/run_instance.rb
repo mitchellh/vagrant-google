@@ -14,6 +14,8 @@
 require "log4r"
 require 'vagrant/util/retryable'
 require 'vagrant-google/util/timer'
+require 'pry'
+require 'pry-nav'
 
 module VagrantPlugins
   module Google
@@ -57,10 +59,9 @@ module VagrantPlugins
               :machine_type       => machine_type,
               :image_name         => image,
               :metadata           => metadata,
-              :private_key_path   => File.expand_path("~/.ssh/id_rsa"),
-              :public_key_path    => File.expand_path("~/.ssh/id_rsa.pub"),
             }
 
+            request_start_time = Time.now().to_i
             server = env[:google_compute].servers.create(defaults)
             @logger.info("Machine '#{zone}:#{name}' created.")
           rescue Fog::Compute::Google::NotFound => e
@@ -69,45 +70,15 @@ module VagrantPlugins
             raise Errors::FogError, :message => e.message
           end
 
-          # TODO(erjohnso) -this loop can be blown away after 
-          # fog is updated to wait for the underlying operation
-          # to complete and the instance to be created and in the
-          # provisioning state
-          loop do
-            begin
-              server.reload
-              #server = env[:google_compute].servers.get(`j
-              break
-            rescue Fog::Compute::Google::NotFound => e
-              retry
-            rescue Fog::Errors::Error => e
-              retry
-            end 
-          end
-
-          # Immediately save the name since it is created at this point.
-          env[:machine].id = server.name
-
-          # Wait for the instance to be ready first
-          env[:metrics]["instance_ready_time"] = Util::Timer.time do
-            tries = zone_config.instance_ready_timeout / 2
-
-            begin
-              env[:ui].info(I18n.t("vagrant_google.waiting_for_ready"))
-              server.wait_for { sshable? }
-              retryable(:on => Fog::Errors::TimeoutError, :tries => tries) do
-                # If we're interrupted don't worry about waiting
-                puts "**** sleeping 2 seconds"
-                next if env[:interrupted]
-                break if env[:machine].communicate.ready?
-                sleep 2
-              end
-            end
-
+          binding.pry
+          env[:ui].info(I18n.t("vagrant_google.waiting_for_ready"))
+          begin
+            server.wait_for { ready? }
+            env[:metrics]["instance_ready_time"] = Time.now().to_i - request_start_time
             @logger.info("Time for SSH ready: #{env[:metrics]["instance_ssh_time"]}")
-
-            # Ready and booted!
             env[:ui].info(I18n.t("vagrant_google.ready"))
+          rescue
+            env[:interrupted] = true
           end
 
           # Terminate the instance if we were interrupted
