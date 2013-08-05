@@ -14,8 +14,6 @@
 require "log4r"
 require 'vagrant/util/retryable'
 require 'vagrant-google/util/timer'
-require 'pry'
-require 'pry-nav'
 
 module VagrantPlugins
   module Google
@@ -32,6 +30,8 @@ module VagrantPlugins
         def call(env)
           # Initialize metrics if they haven't been
           env[:metrics] ||= {}
+
+          ssh_info = env[:machine].ssh_info
 
           # Get the zone we're going to booting up in
           zone = env[:machine].provider_config.zone
@@ -60,6 +60,18 @@ module VagrantPlugins
               :image_name         => image,
               :metadata           => metadata,
             }
+            if !ssh_info.nil? and ssh_info[:public_key_path]
+              defaults[:public_key] = ssh_info[:public_key_path]
+              defaults[:public_key_path] = ssh_info[:public_key_path]
+            else
+              defaults[:public_key] = File.expand_path("~/.ssh/id_rsa.pub")
+              defaults[:public_key_path] = File.expand_path("~/.ssh/id_rsa.pub")
+            end
+            if !ssh_info.nil? and ssh_info[:private_key_path]
+              defaults[:private_key_path] = ssh_info[:private_key_path]
+            else
+              defaults[:private_key_path] = File.expand_path("~/.ssh/id_rsa")
+            end
 
             request_start_time = Time.now().to_i
             server = env[:google_compute].servers.create(defaults)
@@ -70,10 +82,14 @@ module VagrantPlugins
             raise Errors::FogError, :message => e.message
           end
 
-          binding.pry
+          # Immediately save the name since the instance has been created
+          env[:machine].id = server.name
+
           env[:ui].info(I18n.t("vagrant_google.waiting_for_ready"))
           begin
-            server.wait_for { ready? }
+            server.wait_for { sshable? }
+            #server.wait_for { ready? }
+            #sleep 10
             env[:metrics]["instance_ready_time"] = Time.now().to_i - request_start_time
             @logger.info("Time for SSH ready: #{env[:metrics]["instance_ssh_time"]}")
             env[:ui].info(I18n.t("vagrant_google.ready"))
