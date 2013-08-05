@@ -28,19 +28,19 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project         = "vagrant-google"
 
-  s.add_runtime_dependency "fog", "~> 1.12.1"
-  s.add_runtime_dependency "google-api-client", "~> 0.6.4"
-  s.add_runtime_dependency "pry", "~> 0.9.12.2"
-  s.add_runtime_dependency "pry-nav", "~> 0.2.3"
-  s.add_runtime_dependency "rb-readline", "~> 0.5.0"
+  s.add_runtime_dependency "fog"
+  s.add_runtime_dependency "google-api-client"
+  s.add_runtime_dependency "pry"
+  s.add_runtime_dependency "pry-nav"
+  s.add_runtime_dependency "rb-readline"
 
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec-core", "~> 2.12.2"
   s.add_development_dependency "rspec-expectations", "~> 2.12.1"
   s.add_development_dependency "rspec-mocks", "~> 2.12.1"
-  s.add_development_dependency "pry", "~> 0.9.12.2"
-  s.add_development_dependency "pry-nav", "~> 0.2.3"
-  s.add_development_dependency "rb-readline", "~> 0.5.0"
+  s.add_development_dependency "pry"
+  s.add_development_dependency "pry-nav"
+  s.add_development_dependency "rb-readline"
 
   # The following block of code determines the files that should be included
   # in the gem. It does this by reading all the files in the directory where

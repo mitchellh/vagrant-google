@@ -36,11 +36,6 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :image
 
-      # The timeout to wait for an instance to become ready.
-      #
-      # @return [Fixnum]
-      attr_accessor :instance_ready_timeout
-
       # The type of machine to launch, such as "n1-standard-1"
       #
       # @return [String]
@@ -78,7 +73,6 @@ module VagrantPlugins
         @google_key_location = UNSET_VALUE
         @google_project_id   = UNSET_VALUE
         @image               = UNSET_VALUE
-        @instance_ready_timeout = UNSET_VALUE
         @machine_type        = UNSET_VALUE
         @metadata            = {}
         @name                = UNSET_VALUE
@@ -162,9 +156,6 @@ module VagrantPlugins
 
         # Image must be nil, since we can't default that
         @image = "debian-7-wheezy-v20130617" if @image == UNSET_VALUE
-
-        # Set the default timeout for waiting for an instance to be ready
-        @instance_ready_timeout = 20 if @instance_ready_timeout == UNSET_VALUE
 
         # Default instance type is an n1-standard-1
         @machine_type = "n1-standard-1" if @machine_type == UNSET_VALUE
