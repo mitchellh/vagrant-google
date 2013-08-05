@@ -30,9 +30,6 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency "fog"
   s.add_runtime_dependency "google-api-client"
-  s.add_runtime_dependency "pry"
-  s.add_runtime_dependency "pry-nav"
-  s.add_runtime_dependency "rb-readline"
 
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec-core", "~> 2.12.2"
