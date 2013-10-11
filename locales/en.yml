@@ -13,6 +13,8 @@ en:
       Instance is not created. Please run `vagrant up` first.
     ready: |-
       Machine is booted and ready for use!
+    ready_ssh: |-
+      Machine is ready for SSH access!
     rsync_folder: |-
       Rsyncing folder: %{hostpath} => %{guestpath}
     terminating: |-
