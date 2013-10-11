@@ -155,7 +155,7 @@ module VagrantPlugins
         @google_project_id   = ENV['GOOGLE_PROJECT_ID'] if @google_project_id == UNSET_VALUE
 
         # Image must be nil, since we can't default that
-        @image = "debian-7-wheezy-v20130617" if @image == UNSET_VALUE
+        @image = "debian-7-wheezy-v20130816" if @image == UNSET_VALUE
 
         # Default instance type is an n1-standard-1
         @machine_type = "n1-standard-1" if @machine_type == UNSET_VALUE

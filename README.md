@@ -81,8 +81,9 @@ Vagrant.configure("2") do |config|
     google.google_client_email = "YOUR_SERVICE_ACCOUNT_EMAIL_ADDRESS"
     google.google_key_location = "/PATH/TO/YOUR/PRIVATE_KEY.p12"
 
-    override.ssh.username = ENV["USER"]
+    override.ssh.username = "USERNAME"
     override.ssh.private_key_path = "~/.ssh/id_rsa"
+    #override.ssh.private_key_path = "~/.ssh/google_compute_engine"
   end
 
 end
@@ -103,7 +104,7 @@ preconfigured defaults.
 
 Every provider in Vagrant must introduce a custom box format. This provider
 introduces `google` boxes. You can view an example box in the
-[example_box/ directory](https://github.com/mitchellh/vagrant-google/tree/master/example_box).
+[example_box/](https://github.com/mitchellh/vagrant-google/tree/master/example_box).
 That directory also contains instructions on how to build a box.
 
 The box format is basically just the required `metadata.json` file along with
