@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project         = "vagrant-google"
 
-  s.add_runtime_dependency "fog"
+  s.add_runtime_dependency "fog", "~> 1.15.0"
   s.add_runtime_dependency "google-api-client"
 
   s.add_development_dependency "rake"
@@ -55,7 +55,6 @@ Gem::Specification.new do |s|
   unignored_files = all_files.reject do |file|
     # Ignore any directories, the gemspec only cares about files
     next true if File.directory?(file)
-
     # Ignore any paths that match anything in the gitignore. We do
     # two tests here:
     #
