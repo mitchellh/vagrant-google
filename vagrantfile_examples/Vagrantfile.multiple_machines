@@ -1,0 +1,94 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+# Copyright 2013 Google Inc. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Usage:
+#  1) Launch both instances and then destroy both
+#     $ vagrant up --provider=google
+#     $ vagrant destroy
+#  2) Launch one instance 'z1a' and then destory the same
+#     $ vagrant up z1a --provider=google
+#     $ vagrant destroy z1a
+
+# Customize these global variables
+$GOOGLE_PROJECT_ID = "YOUR_GOOGLE_CLOUD_PROJECT_ID"
+$GOOGLE_CLIENT_EMAIL = "YOUR_SERVICE_ACCOUNT_EMAIL_ADDRESS"
+$GOOGLE_KEY_LOCATION = "/PATH/TO/YOUR/PRIVATE_KEY.p12"
+$LOCAL_USER = ENV["USER"]
+$LOCAL_SSH_KEY = "~/.ssh/id_rsa"
+
+# Example Debian provistion script
+$PROVISION_DEBIAN = <<SCRIPT
+uname=$(uname -a)
+ver=$(cat /etc/debian_version)
+echo "== BEGIN: vagrant provisioning on '${uname}'"
+echo "== DEBIAN VERSION: ${ver}"
+echo "== UPDATING Debian repositories and packages"
+/usr/bin/apt-get update -y -qq > /dev/null 2>&1
+/usr/bin/apt-get upgrade -y -qq > /dev/null 2>&1
+extip=$(curl -s http://bot.whatismyipaddress.com)
+echo "== EXTERNAL IP: ${extip}"
+echo "== APPENDING /etc/motd"
+d=$(date +%r)
+echo "# ${d}" >> /etc/motd
+echo "== cat /etc/motd"
+cat /etc/motd
+SCRIPT
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "gce"
+  config.vm.provision :shell, :inline => $PROVISION_DEBIAN
+
+  config.vm.define :z1a do |z1a|
+    z1a.vm.provider :google do |google, override|
+      google.google_project_id = $GOOGLE_PROJECT_ID
+      google.google_client_email = $GOOGLE_CLIENT_EMAIL
+      google.google_key_location = $GOOGLE_KEY_LOCATION
+      google.zone = "us-central1-a"
+
+      override.ssh.username = $LOCAL_USER
+      override.ssh.private_key_path = $LOCAL_SSH_KEY
+
+      google.zone_config "us-central1-a" do |z1a_zone|
+        z1a_zone.name = "z1a"
+        z1a_zone.image = "debian-7-wheezy-v20130617"
+        z1a_zone.machine_type = "n1-standard-1"
+        z1a_zone.zone = "us-central-1a"
+        z1a_zone.metadata = {"zone" => "US Central 1a"}
+      end
+    end
+  end
+
+  config.vm.define :z2a do |z2a|
+    z2a.vm.provider :google do |google, override|
+      google.google_project_id = $GOOGLE_PROJECT_ID
+      google.google_client_email = $GOOGLE_CLIENT_EMAIL
+      google.google_key_location = $GOOGLE_KEY_LOCATION
+      google.zone = "us-central2-a"
+
+      override.ssh.username = $LOCAL_USER
+      override.ssh.private_key_path = $LOCAL_SSH_KEY
+
+      google.zone_config "us-central2-a" do |z2a_zone|
+        z2a_zone.name = "z2a"
+        z2a_zone.image = "debian-6-squeeze-v20130617"
+        z2a_zone.machine_type = "n1-standard-2"
+        z2a_zone.zone = "us-central-2a"
+        z2a_zone.metadata = {"zone" => "US Central 2a"}
+      end
+
+    end
+  end
+end
