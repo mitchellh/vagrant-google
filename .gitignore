@@ -1,0 +1,17 @@
+# Editor/OS-specific
+.DS_Store
+.swp
+
+# Bundler/Rubygems
+*.gem
+.bundle
+pkg/*
+tags
+Gemfile.lock
+/vagrant-google/*
+
+# Vagrant
+.vagrant
+Vagrantfile*
+!example_box/Vagrantfile
+!vagrantfile_examples/*

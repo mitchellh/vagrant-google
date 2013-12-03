@@ -1,0 +1,105 @@
+en:
+  vagrant_google:
+    already_created: |-
+      The machine is already created.
+    launching_instance: |-
+      Launching an instance with the following settings...
+    launch_vpc_warning: |-
+      Warning! You're launching this instance into a VPC without an
+      elastic IP. Please verify you're properly connected to a VPN so
+      you can access this machine, otherwise Vagrant will not be able
+      to SSH into it.
+    not_created: |-
+      Instance is not created. Please run `vagrant up` first.
+    ready: |-
+      Machine is booted and ready for use!
+    ready_ssh: |-
+      Machine is ready for SSH access!
+    rsync_folder: |-
+      Rsyncing folder: %{hostpath} => %{guestpath}
+    terminating: |-
+      Terminating the instance...
+    waiting_for_ready: |-
+      Waiting for instance to become "ready"...
+    waiting_for_ssh: |-
+      Waiting for SSH to become available...
+    warn_networks: |-
+      Warning! The Google provider doesn't support any of the Vagrant
+      high-level network configurations (`config.vm.network`). They
+      will be silently ignored.
+    will_not_destroy: |-
+      The instance '%{name}' will not be destroyed, since the confirmation
+      was declined.
+
+    config:
+      google_client_email_required: |-
+        A Google Service Account client email is required via "google_client_email"
+      machine_required: |-
+        An MACHINE_TYPE must be configured via "machine"
+      private_key_missing: |-
+        The specified private key for Google could not be found
+      zone_required: |-
+        A zone must be specified via "zone"
+      name_required: |-
+        An instance name must be specified via "name"
+      google_key_location_required: |-
+        A private key pathname is required via "google_key_location"
+      google_project_id_required: |-
+        A Google Cloud Project ID is required via "google_project_id"
+
+    errors:
+      fog_error: |-
+        There was an error talking to Google. The error message is shown
+        below:
+
+        %{message}
+      instance_ready_timeout: |-
+        The instance never became "ready" in Google. The timeout currently
+        set waiting for the instance to become ready is %{timeout} seconds.
+        Please verify that the machine properly boots. If you need more time
+        set the `instance_ready_timeout` configuration on the Google provider.
+      rsync_error: |-
+        There was an error when attemping to rsync a share folder.
+        Please inspect the error message below for more info.
+
+        Host path: %{hostpath}
+        Guest path: %{guestpath}
+        Error: %{stderr}
+
+    states:
+      short_not_created: |-
+        not created
+      long_not_created: |-
+        The Google instance is not created. Run `vagrant up` to create it.
+
+      short_PROVISIONING: |-
+        provsioning
+      long_PROVISIONING: |-
+        Resources are being reserved for this instance.  This instance is
+        not yet running.
+
+      short_STAGING: |-
+        staging
+      long_STAGING: |-
+        Resources have been acquired and the instance is being prepared for
+        launch and should be in the RUNNING state soon.
+
+      short_RUNNING: |-
+        running
+      long_RUNNING: |-
+        The Google instance is running. To stop this machine, you can run
+        `vagrant halt`. To destroy the machine, you can run `vagrant destroy`.
+
+      short_STOPPED: |-
+        stopped
+      long_STOPPED: |-
+        The Google instance is not currently running, either due to a failure
+        , or the instance is being shut down.  This is a temporary status;
+        the instance will move to either PROVISIONING or TERMINATED.
+
+      short_TERMINATED: |-
+        terminated
+      long_TERMINATED: |-
+        The Google instance failed for some reason or was shutdown.  This is
+        a permanent status, and the only way to repair the instance is to
+        delete it with `vagrant destroy`.
