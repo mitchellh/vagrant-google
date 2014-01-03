@@ -25,10 +25,13 @@ git clone https://github.com/mitchellh/vagrant-google
 cd vagrant-google
 bundle
 rake build
-# change out of the plugin source directory to avoid bundler issues
 cd ~
-vagrant plugin install ~/tmp/vagrant-google/pkg/vagrant-google-0.1.2.gem
+````
 
+# change out of the plugin source directory to avoid bundler issues
+
+```sh
+vagrant plugin install ~/tmp/vagrant-google/pkg/vagrant-google-0.1.2.gem
 ```
 
 After installing, be sure to put a `Vagrant.require_plugin "vagrant-google"` at the top of your Vagrantfile so that Vagrant knows about the plugin.  
