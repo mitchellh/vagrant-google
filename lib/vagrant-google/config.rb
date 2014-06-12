@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 require "vagrant"
+require "securerandom"
 
 module VagrantPlugins
   module Google
@@ -160,8 +161,8 @@ module VagrantPlugins
         # Default instance type is an n1-standard-1
         @machine_type = "n1-standard-1" if @machine_type == UNSET_VALUE
 
-        # Instance name defaults to "new"
-        @name = "new" if @name == UNSET_VALUE
+        # Instance name defaults to a new UUID
+        @name = "i-" + SecureRandom.hex(4) if @name == UNSET_VALUE
 
         # Network defaults to 'default'
         @network = "default" if @network == UNSET_VALUE
