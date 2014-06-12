@@ -17,14 +17,28 @@ Vagrant, allowing Vagrant to control and provision instances in GCE.
 
 ## Usage
 
-Install using standard Vagrant 1.1+ plugin installation methods.  After
-installing, `vagrant up` and specify the `google` provider.  For example,
+Install does not yet work using standard Vagrant 1.1+ plugin installation methods.  
+To install, clone and build the repo, and install from there.  Something similar to the below
+```sh
+mkdir -p ~/tmp && cd ~/tmp
+git clone https://github.com/mitchellh/vagrant-google
+cd vagrant-google
+bundle
+rake build
+cd ~
+````
+
+# change out of the plugin source directory to avoid bundler issues
 
 ```sh
-$ vagrant plugin install vagrant-google
-...
+vagrant plugin install ~/tmp/vagrant-google/pkg/vagrant-google-0.1.2.gem
+```
+
+After installing, be sure to put a `Vagrant.require_plugin "vagrant-google"` at the top of your Vagrantfile so that Vagrant knows about the plugin.  
+`vagrant up` and specify the `google` provider.  For example,
+
+```sh
 $ vagrant up --provider=google
-...
 ```
 
 Of course, prior to this you'll need to obtain a GCE-compatible box file for

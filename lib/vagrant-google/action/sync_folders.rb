@@ -55,11 +55,17 @@ module VagrantPlugins
             env[:machine].communicate.sudo(
               "chown #{ssh_info[:username]} '#{guestpath}'")
 
+            # patch from https://github.com/tmatilai/vagrant-aws/commit/4a043a96076c332220ec4ec19470c4af5597dd51
+            def ssh_key_options(ssh_info)
+              # Ensure that `private_key_path` is an Array (for Vagrant < 1.4)
+              Array(ssh_info[:private_key_path]).map { |path| "-i '#{path}' " }.join
+            end
+
             # Rsync over to the guest path using the SSH info
             command = [
               "rsync", "--verbose", "--archive", "-z",
               "--exclude", ".vagrant/",
-              "-e", "ssh -p #{ssh_info[:port]} -o StrictHostKeyChecking=no -i '#{ssh_info[:private_key_path]}'",
+              "-e", "ssh -p #{ssh_info[:port]} -o StrictHostKeyChecking=no #{ssh_key_options(ssh_info)}",
               hostpath,
               "#{ssh_info[:username]}@#{ssh_info[:host]}:#{guestpath}"]
 
