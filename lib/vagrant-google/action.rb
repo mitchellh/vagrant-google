@@ -113,7 +113,7 @@ module VagrantPlugins
               next
             end
 
-            b2.use TimedProvision
+            b2.use Provision
             b2.use SyncFolders
             b2.use WarnNetworks
             b2.use RunInstance
