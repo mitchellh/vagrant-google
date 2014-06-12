@@ -40,7 +40,7 @@ module VagrantPlugins
           name               = zone_config.name
           machine_type       = zone_config.machine_type
           network            = zone_config.network
-          metadata           = zone_config.metadata 
+          metadata           = zone_config.metadata
 
           # Launch!
           env[:ui].info(I18n.t("vagrant_google.launching_instance"))
@@ -51,6 +51,15 @@ module VagrantPlugins
           env[:ui].info(" -- Network: #{network}") if network
           env[:ui].info(" -- Metadata: '#{metadata}'")
           begin
+            request_start_time = Time.now().to_i
+            disk = env[:google_compute].disks.create(
+                name: name,
+                size_gb: 10,
+                zone_name: zone,
+                source_image: image
+            )
+            disk.wait_for { disk.ready? }
+
             defaults = {
               :name               => name,
               :zone_name          => zone,
@@ -58,9 +67,10 @@ module VagrantPlugins
               :image_name         => image,
               :network            => network,
               :metadata           => metadata,
+              # Second arg to get_as_boot_disk is 'autodelete_disk', defaulting
+              # to true
+              :disks              => [disk.get_as_boot_disk(true, true)],
             }
-
-            request_start_time = Time.now().to_i
             server = env[:google_compute].servers.create(defaults)
             @logger.info("Machine '#{zone}:#{name}' created.")
           rescue Fog::Compute::Google::NotFound => e
