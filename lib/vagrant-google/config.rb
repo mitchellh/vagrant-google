@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 require "vagrant"
-require "securerandom"
 
 module VagrantPlugins
   module Google
@@ -57,6 +56,11 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :network
 
+      # The timeout value waiting for instance ready
+      #
+      # @return [Int]
+      attr_accessor :instance_ready_timeout
+
       # The tags for the machine.
       # TODO(erjohnso): not supported in fog
       #
@@ -78,6 +82,7 @@ module VagrantPlugins
         @metadata            = {}
         @name                = UNSET_VALUE
         @network             = UNSET_VALUE
+        @instance_ready_timeout = UNSET_VALUE
         @zone                = UNSET_VALUE
 
         # Internal state (prefix with __ so they aren't automatically
@@ -93,8 +98,8 @@ module VagrantPlugins
       # image and machine type name for zones. Example:
       #
       #     google.zone_config "us-central1-a" do |zone|
-      #       zone.image = "debian-6-squeeze-v20130617"
-      #       zone.machine_type = "n1-standard2"
+      #       zone.image = "debian-7-wheezy-v20140619"
+      #       zone.machine_type = "n1-standard-4"
       #     end
       #
       # @param [String] zone The zone name to configure.
@@ -156,19 +161,23 @@ module VagrantPlugins
         @google_project_id   = ENV['GOOGLE_PROJECT_ID'] if @google_project_id == UNSET_VALUE
 
         # Image must be nil, since we can't default that
-        @image = "debian-7-wheezy-v20130816" if @image == UNSET_VALUE
+        @image = "debian-7-wheezy-v20140619" if @image == UNSET_VALUE
 
         # Default instance type is an n1-standard-1
         @machine_type = "n1-standard-1" if @machine_type == UNSET_VALUE
 
-        # Instance name defaults to a new UUID
-        @name = "i-" + SecureRandom.hex(4) if @name == UNSET_VALUE
+        # Instance name defaults to a new datetime value (hour granularity)
+        t = Time.now
+        @name = "i-#{t.year}#{t.month.to_s.rjust(2,'0')}#{t.day.to_s.rjust(2,'0')}#{t.hour.to_s.rjust(2,'0')}" if @name == UNSET_VALUE
 
         # Network defaults to 'default'
         @network = "default" if @network == UNSET_VALUE
 
         # Default zone is us-central1-a.
         @zone = "us-central1-a" if @zone == UNSET_VALUE
+
+        # Default instance_ready_timeout
+        @instance_ready_timeout = 20 if @instance_ready_timeout == UNSET_VALUE
 
         # Compile our zone specific configurations only within
         # NON-zone-SPECIFIC configurations.
