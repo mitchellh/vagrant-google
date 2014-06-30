@@ -64,7 +64,7 @@ module VagrantPlugins
               :name               => name,
               :zone_name          => zone,
               :machine_type       => machine_type,
-              :image_name         => image,
+              :image              => image,
               :network            => network,
               :metadata           => metadata,
               # Second arg to get_as_boot_disk is 'autodelete_disk', defaulting
