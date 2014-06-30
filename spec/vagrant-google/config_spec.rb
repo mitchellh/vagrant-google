@@ -27,9 +27,10 @@ describe VagrantPlugins::Google::Config do
         o.finalize!
       end
     end
+    t = Time.now
 
-    its("name")              { should == "new" }
-    its("image")             { should == "debian-7-wheezy-v20130617" }
+    its("name")              { should == "i-#{t.year}#{t.month.to_s.rjust(2,'0')}#{t.day.to_s.rjust(2,'0')}#{t.hour.to_s.rjust(2,'0')}" }
+    its("image")             { should == "debian-7-wheezy-v20140619" }
     its("zone")              { should == "us-central1-a" }
     its("network")           { should == "default" }
     its("machine_type")      { should == "n1-standard-1" }
