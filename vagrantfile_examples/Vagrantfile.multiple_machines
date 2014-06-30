@@ -26,7 +26,7 @@
 $GOOGLE_PROJECT_ID = "YOUR_GOOGLE_CLOUD_PROJECT_ID"
 $GOOGLE_CLIENT_EMAIL = "YOUR_SERVICE_ACCOUNT_EMAIL_ADDRESS"
 $GOOGLE_KEY_LOCATION = "/PATH/TO/YOUR/PRIVATE_KEY.p12"
-$LOCAL_USER = ENV["USER"]
+$LOCAL_USER = "mitchellh"
 $LOCAL_SSH_KEY = "~/.ssh/id_rsa"
 
 # Example Debian provistion script
@@ -63,30 +63,30 @@ Vagrant.configure("2") do |config|
 
       google.zone_config "us-central1-a" do |z1a_zone|
         z1a_zone.name = "z1a"
-        z1a_zone.image = "debian-7-wheezy-v20130617"
+        z1a_zone.image = "debian-7-wheezy-v20140619"
         z1a_zone.machine_type = "n1-standard-1"
-        z1a_zone.zone = "us-central-1a"
+        z1a_zone.zone = "us-central1-a"
         z1a_zone.metadata = {"zone" => "US Central 1a"}
       end
     end
   end
 
-  config.vm.define :z2a do |z2a|
-    z2a.vm.provider :google do |google, override|
+  config.vm.define :z1b do |z1b|
+    z1b.vm.provider :google do |google, override|
       google.google_project_id = $GOOGLE_PROJECT_ID
       google.google_client_email = $GOOGLE_CLIENT_EMAIL
       google.google_key_location = $GOOGLE_KEY_LOCATION
-      google.zone = "us-central2-a"
+      google.zone = "us-central1-b"
 
       override.ssh.username = $LOCAL_USER
       override.ssh.private_key_path = $LOCAL_SSH_KEY
 
-      google.zone_config "us-central2-a" do |z2a_zone|
-        z2a_zone.name = "z2a"
-        z2a_zone.image = "debian-6-squeeze-v20130617"
-        z2a_zone.machine_type = "n1-standard-2"
-        z2a_zone.zone = "us-central-2a"
-        z2a_zone.metadata = {"zone" => "US Central 2a"}
+      google.zone_config "us-central1-b" do |z1b_zone|
+        z1b_zone.name = "z1b"
+        z1b_zone.image = "debian-7-wheezy-v20140619"
+        z1b_zone.machine_type = "n1-standard-2"
+        z1b_zone.zone = "us-central1-b"
+        z1b_zone.metadata = {"zone" => "US Central 1b"}
       end
 
     end

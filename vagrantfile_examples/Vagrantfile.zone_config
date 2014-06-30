@@ -22,18 +22,18 @@ Vagrant.configure("2") do |config|
     google.google_client_email = "YOUR_SERVICE_ACCOUNT_EMAIL_ADDRESS"
     google.google_key_location = "/PATH/TO/YOUR/PRIVATE_KEY.p12"
 
-    override.ssh.username = ENV["USER"]
+    override.ssh.username = "mitchellh"
     override.ssh.private_key_path = "~/.ssh/id_rsa"
 
     # Make sure to set this to trigger the zone_config
-    google.zone = "us-central2-a"
+    google.zone = "us-central1-a"
 
-    google.zone_config "us-central2-a" do |zone2a|
-        zone2a.name = "testing-vagrant"
-        zone2a.image = "debian-6-squeeze-v20130617"
-        zone2a.machine_type = "n1-standard-4"
-        zone2a.zone = "us-central2-a"
-        zone2a.metadata = {'custom' => 'metadata', 'testing' => 'foobarbaz'}
+    google.zone_config "us-central1-a" do |zone1a|
+        zone1a.name = "testing-vagrant"
+        zone1a.image = "debian-7-wheezy-v20140619"
+        zone1a.machine_type = "n1-standard-4"
+        zone1a.zone = "us-central1-a"
+        zone1a.metadata = {'custom' => 'metadata', 'testing' => 'foobarbaz'}
     end
   end
 end
