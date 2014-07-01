@@ -17,28 +17,14 @@ Vagrant, allowing Vagrant to control and provision instances in GCE.
 
 ## Usage
 
-Install does not yet work using standard Vagrant 1.1+ plugin installation methods.  
-To install, clone and build the repo, and install from there.  Something similar to the below
-```sh
-mkdir -p ~/tmp && cd ~/tmp
-git clone https://github.com/mitchellh/vagrant-google
-cd vagrant-google
-bundle
-rake build
-cd ~
-````
-
-# change out of the plugin source directory to avoid bundler issues
+Install using standard Vagrant 1.1+ plugin installation methods.  After
+installing, `vagrant up` and specify the `google` provider.  For example,
 
 ```sh
-vagrant plugin install ~/tmp/vagrant-google/pkg/vagrant-google-0.1.2.gem
-```
-
-After installing, be sure to put a `Vagrant.require_plugin "vagrant-google"` at the top of your Vagrantfile so that Vagrant knows about the plugin.  
-`vagrant up` and specify the `google` provider.  For example,
-
-```sh
+$ vagrant plugin install vagrant-google
+...
 $ vagrant up --provider=google
+...
 ```
 
 Of course, prior to this you'll need to obtain a GCE-compatible box file for
@@ -55,21 +41,21 @@ Service Account for API Access.
    `Try it now` button.
 1. Create a new project and remember to record the `Project ID` you
    specify.
-1. Next, visit the [API Console](https://code.google.com/apis/console/),
-   select `Services` and enable the `Google Compute Engine` service for
-   your project.  If prompted, review and agree to the terms of service.
-1. While still in the API Console, go to `API Access` and click on the
-   `Create another client ID...` button.  In the pop-up dialog, select
-   the `Service Account` radio button and the click the `Create client ID`
+1. Next, visit the [Developers Console](https://console.developers.google.com)
+   make sure to enable the `Google Compute Engine` service for your project
+   If prompted, review and agree to the terms of service.
+1. While still in the Developers Console, go to `API & AUTH`, `Credentials`
+   section and click the `Create new Client ID` button.  In the pop-up dialog,
+   select the `Service Account` radio button and the click the `Create Client ID`
    button.
 1. When prompted, select the `Download private key` button and make sure
    to save this file in a secure and reliable location.  This key file
    will be used to authorize all Vagrant commands available in this plugin.
 1. Still on the same page, find the newly created `Service Account` text
-   block on the API Access page.  Record the `Email address` associated
-   with the new Service Account you just created.  You will need this
-   email address and the location of the private key file to properly
-   configure this Vagrant plugin.
+   block on the API Access page.  Record the `Email address` (it should end
+   with `@developer.gserviceaccount.com`) associated with the new Service
+   Account you just created.  You will need this email address and the
+   location of the private key file to properly configure this Vagrant plugin.
 
 ## Quick Start
 
@@ -177,7 +163,7 @@ Vagrant.configure("2") do |config|
 
     google.zone_config "us-central2-a" do |zone2a|
         zone2a.name = "testing-vagrant"
-        zone2a.image = "debian-7-wheezy-v20140619"
+        zone2a.image = "debian-6-squeeze-v20130617"
         zone2a.machine_type = "n1-standard-4"
         zone2a.zone = "us-central2-a"
         zone2a.metadata = {'custom' => 'metadata', 'testing' => 'foobarbaz'}
@@ -211,8 +197,6 @@ puppet) to work!
 
 ## Known Issues
 
-* Can't boot from persistent disk - The underlying fog library does not
-  currently support booting from a persistent disk.
 * No Tags - Tag support does not yet exist in the underlying fog library.
 
 ## Development
