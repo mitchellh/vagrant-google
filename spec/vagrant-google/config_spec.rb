@@ -34,6 +34,7 @@ describe VagrantPlugins::Google::Config do
     its("zone")              { should == "us-central1-a" }
     its("network")           { should == "default" }
     its("machine_type")      { should == "n1-standard-1" }
+    its("disk_size")         { should == 10 }
     its("instance_ready_timeout") { should == 20 }
     its("metadata")          { should == {} }
   end
@@ -43,8 +44,8 @@ describe VagrantPlugins::Google::Config do
     # simple boilerplate test, so I cut corners here. It just sets
     # each of these attributes to "foo" in isolation, and reads the value
     # and asserts the proper result comes back out.
-    [:name, :image, :zone, :instance_ready_timeout, :machine_type, :network,
-      :metadata].each do |attribute|
+    [:name, :image, :zone, :instance_ready_timeout, :machine_type, :disk_size,
+      :network, :metadata].each do |attribute|
 
       it "should not default #{attribute} if overridden" do
         instance.send("#{attribute}=".to_sym, "foo")
@@ -86,6 +87,7 @@ describe VagrantPlugins::Google::Config do
   describe "zone config" do
     let(:config_image)           { "foo" }
     let(:config_machine_type)    { "foo" }
+    let(:config_disk_size)       { 99 }
     let(:config_name)            { "foo" }
     let(:config_zone)            { "foo" }
     let(:config_network)         { "foo" }
@@ -95,6 +97,7 @@ describe VagrantPlugins::Google::Config do
       instance.network           = config_network
       instance.image             = config_image
       instance.machine_type      = config_machine_type
+      instance.disk_size         = config_disk_size
       instance.zone              = config_zone
     end
 
@@ -118,6 +121,7 @@ describe VagrantPlugins::Google::Config do
       its("name")              { should == config_name }
       its("image")             { should == config_image }
       its("machine_type")      { should == config_machine_type }
+      its("disk_size")         { should == config_disk_size }
       its("network")           { should == config_network }
       its("zone")              { should == config_zone }
     end
@@ -141,6 +145,7 @@ describe VagrantPlugins::Google::Config do
       its("name")              { should == config_name }
       its("image")             { should == config_image }
       its("machine_type")      { should == config_machine_type }
+      its("disk_size")         { should == config_disk_size }
       its("network")           { should == config_network }
       its("zone")              { should == zone_name }
     end

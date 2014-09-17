@@ -39,22 +39,24 @@ module VagrantPlugins
           image              = zone_config.image
           name               = zone_config.name
           machine_type       = zone_config.machine_type
+          disk_size          = zone_config.disk_size
           network            = zone_config.network
           metadata           = zone_config.metadata
 
           # Launch!
           env[:ui].info(I18n.t("vagrant_google.launching_instance"))
-          env[:ui].info(" -- Name: #{name}")
-          env[:ui].info(" -- Type: #{machine_type}")
-          env[:ui].info(" -- Image: #{image}")
-          env[:ui].info(" -- Zone: #{zone}") if zone
-          env[:ui].info(" -- Network: #{network}") if network
-          env[:ui].info(" -- Metadata: '#{metadata}'")
+          env[:ui].info(" -- Name:      #{name}")
+          env[:ui].info(" -- Type:      #{machine_type}")
+          env[:ui].info(" -- Disk size: #{disk_size} GB")
+          env[:ui].info(" -- Image:     #{image}")
+          env[:ui].info(" -- Zone:      #{zone}") if zone
+          env[:ui].info(" -- Network:   #{network}") if network
+          env[:ui].info(" -- Metadata:  '#{metadata}'")
           begin
             request_start_time = Time.now().to_i
             disk = env[:google_compute].disks.create(
                 name: name,
-                size_gb: 10,
+                size_gb: disk_size,
                 zone_name: zone,
                 source_image: image
             )
@@ -64,6 +66,7 @@ module VagrantPlugins
               :name               => name,
               :zone_name          => zone,
               :machine_type       => machine_type,
+              :disk_size          => disk_size,
               :image              => image,
               :network            => network,
               :metadata           => metadata,
