@@ -36,6 +36,7 @@ describe VagrantPlugins::Google::Config do
     its("machine_type")      { should == "n1-standard-1" }
     its("instance_ready_timeout") { should == 20 }
     its("metadata")          { should == {} }
+    its("tags")              { should == [] }
   end
 
   describe "overriding defaults" do

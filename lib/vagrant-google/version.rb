@@ -13,6 +13,6 @@
 # limitations under the License.
 module VagrantPlugins
   module Google
-    VERSION = "0.1.3"
+    VERSION = "0.1.4"
   end
 end
