@@ -1,3 +1,7 @@
+# 0.1.4 (September 2014)
+
+* Add option for disk size
+
 # 0.1.3 (July 2014)
 
 * Updated all image references
