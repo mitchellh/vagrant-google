@@ -1,6 +1,8 @@
-# 0.1.4 (September 2014)
+# 0.1.4 (October 2014)
 
-* Add option for disk size
+* Add option for disk size [franzs]
+* Add tags [ptone]
+* Updated default for latest Debian image
 
 # 0.1.3 (July 2014)
 

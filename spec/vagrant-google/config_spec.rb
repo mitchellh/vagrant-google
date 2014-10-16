@@ -30,8 +30,8 @@ describe VagrantPlugins::Google::Config do
     t = Time.now
 
     its("name")              { should == "i-#{t.year}#{t.month.to_s.rjust(2,'0')}#{t.day.to_s.rjust(2,'0')}#{t.hour.to_s.rjust(2,'0')}" }
-    its("image")             { should == "debian-7-wheezy-v20140619" }
-    its("zone")              { should == "us-central1-a" }
+    its("image")             { should == "debian-7-wheezy-v20140926" }
+    its("zone")              { should == "us-central1-f" }
     its("network")           { should == "default" }
     its("machine_type")      { should == "n1-standard-1" }
     its("disk_size")         { should == 10 }
@@ -103,7 +103,7 @@ describe VagrantPlugins::Google::Config do
     end
 
     it "should raise an exception if not finalized" do
-      expect { instance.get_zone_config("us-central1-a") }.
+      expect { instance.get_zone_config("us-central1-f") }.
         to raise_error
     end
 
@@ -116,7 +116,7 @@ describe VagrantPlugins::Google::Config do
         instance.finalize!
 
         # Get a lower level zone
-        instance.get_zone_config("us-central1-a")
+        instance.get_zone_config("us-central1-f")
       end
 
       its("name")              { should == config_name }
@@ -174,9 +174,9 @@ describe VagrantPlugins::Google::Config do
     describe "shortcut configuration" do
       subject do
         # Use the shortcut configuration to set some values
-        instance.zone_config "us-central1-a", :image => "child"
+        instance.zone_config "us-central1-f", :image => "child"
         instance.finalize!
-        instance.get_zone_config("us-central1-a")
+        instance.get_zone_config("us-central1-f")
       end
 
       its("image") { should == "child" }

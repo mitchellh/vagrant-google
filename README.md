@@ -28,7 +28,8 @@ $ vagrant up --provider=google
 ```
 
 Of course, prior to this you'll need to obtain a GCE-compatible box file for
-Vagrant.
+Vagrant. You may also need to ensure you have a ruby-dev and other utilities
+such as GNU make installed prior to installing the plugin.
 
 ## Google Cloud Platform Setup
 
@@ -91,7 +92,7 @@ end
 
 And then run `vagrant up --provider=google`.
 
-This will start an Debian 7 (Wheezy) instance in the us-central1-a zone,
+This will start an Debian 7 (Wheezy) instance in the us-central1-f zone,
 with an n1-standard-1 machine, and the "default" network within your project.
 And assuming your SSH information was filled in properly within your
 Vagrantfile, SSH and provisioning will work as well.
@@ -161,14 +162,15 @@ Vagrant.configure("2") do |config|
     google.google_key_location = "/tmp/private-key.p12"
 
     # Make sure to set this to trigger the zone_config
-    google.zone = "us-central2-a"
+    google.zone = "us-central1-f"
 
-    google.zone_config "us-central2-a" do |zone2a|
-        zone2a.name = "testing-vagrant"
-        zone2a.image = "debian-7-wheezy-v20140619"
-        zone2a.machine_type = "n1-standard-4"
-        zone2a.zone = "us-central2-a"
-        zone2a.metadata = {'custom' => 'metadata', 'testing' => 'foobarbaz'}
+    google.zone_config "us-central1-f" do |zone1f|
+        zone1f.name = "testing-vagrant"
+        zone1f.image = "debian-7-wheezy-v20140926"
+        zone1f.machine_type = "n1-standard-4"
+        zone1f.zone = "us-central1-f"
+        zone1f.metadata = {'custom' => 'metadata', 'testing' => 'foobarbaz'}
+        zone1f.tags = ['web', 'app1']
     end
   end
 end
@@ -199,7 +201,7 @@ puppet) to work!
 
 ## Known Issues
 
-* No Tags - Tag support does not yet exist in the underlying fog library.
+* https://github.com/mitchellh/vagrant-google/issues/17
 
 ## Development
 
