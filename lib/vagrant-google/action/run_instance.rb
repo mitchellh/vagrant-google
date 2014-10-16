@@ -42,6 +42,7 @@ module VagrantPlugins
           disk_size          = zone_config.disk_size
           network            = zone_config.network
           metadata           = zone_config.metadata
+          tags               = zone_config.tags
 
           # Launch!
           env[:ui].info(I18n.t("vagrant_google.launching_instance"))
@@ -52,6 +53,7 @@ module VagrantPlugins
           env[:ui].info(" -- Zone:      #{zone}") if zone
           env[:ui].info(" -- Network:   #{network}") if network
           env[:ui].info(" -- Metadata:  '#{metadata}'")
+          env[:ui].info(" -- Tags:      '#{tags}'")
           begin
             request_start_time = Time.now().to_i
             disk = env[:google_compute].disks.create(
@@ -70,6 +72,7 @@ module VagrantPlugins
               :image              => image,
               :network            => network,
               :metadata           => metadata,
+              :tags               => tags,
               # Second arg to get_as_boot_disk is 'autodelete_disk', defaulting
               # to true
               :disks              => [disk.get_as_boot_disk(true, true)],

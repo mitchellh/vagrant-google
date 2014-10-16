@@ -128,6 +128,7 @@ This provider exposes quite a few provider-specific configuration options:
 * `name` - The name of your instance.  The default is "new".
 * `network` - The name of the network to use for the instance.  Default is
  "default".
+* `tags` - An array of tags to apply to this instance.
 * `zone` - The zone name where the instance will be created.
 
 These can be set like typical provider-specific configuration:

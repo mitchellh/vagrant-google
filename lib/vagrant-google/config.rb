@@ -61,6 +61,11 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :network
 
+      # Tags to apply to the instance
+      #
+      # @return [Array]
+      attr_accessor :tags
+
       # The timeout value waiting for instance ready
       #
       # @return [Int]
@@ -88,6 +93,7 @@ module VagrantPlugins
         @metadata            = {}
         @name                = UNSET_VALUE
         @network             = UNSET_VALUE
+        @tags                = []
         @instance_ready_timeout = UNSET_VALUE
         @zone                = UNSET_VALUE
 
