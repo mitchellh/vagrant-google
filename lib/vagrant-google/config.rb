@@ -41,6 +41,11 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :machine_type
 
+      # The size of disk in GB
+      #
+      # @return [Int]
+      attr_accessor :disk_size
+
       # The user metadata string
       #
       # @return [Hash<String, String>]
@@ -84,6 +89,7 @@ module VagrantPlugins
         @google_project_id   = UNSET_VALUE
         @image               = UNSET_VALUE
         @machine_type        = UNSET_VALUE
+        @disk_size           = UNSET_VALUE
         @metadata            = {}
         @name                = UNSET_VALUE
         @network             = UNSET_VALUE
@@ -171,6 +177,9 @@ module VagrantPlugins
 
         # Default instance type is an n1-standard-1
         @machine_type = "n1-standard-1" if @machine_type == UNSET_VALUE
+
+        # Default disk size is 10 GB
+        @disk_size = 10 if @disk_size == UNSET_VALUE
 
         # Instance name defaults to a new datetime value (hour granularity)
         t = Time.now
