@@ -78,7 +78,7 @@ module VagrantPlugins
       #attr_accessor :tags
 
       # The zone to launch the instance into. If nil, it will
-      # use the default us-central1-a.
+      # use the default us-central1-f.
       #
       # @return [String]
       attr_accessor :zone
@@ -109,8 +109,8 @@ module VagrantPlugins
       # configuration object. This allows the user to override things like
       # image and machine type name for zones. Example:
       #
-      #     google.zone_config "us-central1-a" do |zone|
-      #       zone.image = "debian-7-wheezy-v20140619"
+      #     google.zone_config "us-central1-f" do |zone|
+      #       zone.image = "debian-7-wheezy-v20140926"
       #       zone.machine_type = "n1-standard-4"
       #     end
       #
@@ -173,7 +173,7 @@ module VagrantPlugins
         @google_project_id   = ENV['GOOGLE_PROJECT_ID'] if @google_project_id == UNSET_VALUE
 
         # Image must be nil, since we can't default that
-        @image = "debian-7-wheezy-v20140619" if @image == UNSET_VALUE
+        @image = "debian-7-wheezy-v20140926" if @image == UNSET_VALUE
 
         # Default instance type is an n1-standard-1
         @machine_type = "n1-standard-1" if @machine_type == UNSET_VALUE
@@ -188,8 +188,8 @@ module VagrantPlugins
         # Network defaults to 'default'
         @network = "default" if @network == UNSET_VALUE
 
-        # Default zone is us-central1-a.
-        @zone = "us-central1-a" if @zone == UNSET_VALUE
+        # Default zone is us-central1-f.
+        @zone = "us-central1-f" if @zone == UNSET_VALUE
 
         # Default instance_ready_timeout
         @instance_ready_timeout = 20 if @instance_ready_timeout == UNSET_VALUE
