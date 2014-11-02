@@ -61,10 +61,13 @@ module VagrantPlugins
               Array(ssh_info[:private_key_path]).map { |path| "-i '#{path}' " }.join
             end
 
+            #collect rsync excludes specified :rsync__excludes=>['path1',...] in synced_folder options
+            excludes = ['.vagrant/', *Array(data[:rsync__excludes])]
+
             # Rsync over to the guest path using the SSH info
             command = [
               "rsync", "--verbose", "--archive", "-z",
-              "--exclude", ".vagrant/",
+              *excludes.map{|e|['--exclude', e]}.flatten,
               "-e", "ssh -p #{ssh_info[:port]} -o StrictHostKeyChecking=no #{ssh_key_options(ssh_info)}",
               hostpath,
               "#{ssh_info[:username]}@#{ssh_info[:host]}:#{guestpath}"]
