@@ -40,6 +40,7 @@ module VagrantPlugins
           name               = zone_config.name
           machine_type       = zone_config.machine_type
           disk_size          = zone_config.disk_size
+          disk_name          = zone_config.disk_name
           network            = zone_config.network
           metadata           = zone_config.metadata
           tags               = zone_config.tags
@@ -52,6 +53,7 @@ module VagrantPlugins
           env[:ui].info(" -- Name:            #{name}")
           env[:ui].info(" -- Type:            #{machine_type}")
           env[:ui].info(" -- Disk size:       #{disk_size} GB")
+          env[:ui].info(" -- Disk name:       #{disk_name}")
           env[:ui].info(" -- Image:           #{image}")
           env[:ui].info(" -- Zone:            #{zone}") if zone
           env[:ui].info(" -- Network:         #{network}") if network
@@ -62,13 +64,29 @@ module VagrantPlugins
           env[:ui].info(" -- Autodelete Disk: #{autodelete_disk}")
           begin
             request_start_time = Time.now().to_i
-            disk = env[:google_compute].disks.create(
-                name: name,
-                size_gb: disk_size,
-                zone_name: zone,
-                source_image: image
-            )
-            disk.wait_for { disk.ready? }
+            # TODO: check if external IP is available
+            if disk_name.nil?
+              # no disk_name... disk_name defaults to instance name
+              disk = env[:google_compute].disks.create(
+                  name: name,
+                  size_gb: disk_size,
+                  zone_name: zone,
+                  source_image: image
+              )
+              disk.wait_for { disk.ready? }
+            else
+              disk = env[:google_compute].disks.get(disk_name, zone)
+              if disk.nil?
+                # disk not found... create it with name
+                disk = env[:google_compute].disks.create(
+                    name: disk_name,
+                    size_gb: disk_size,
+                    zone_name: zone,
+                    source_image: image
+                )
+                disk.wait_for { disk.ready? }
+              end
+            end
 
             defaults = {
               :name               => name,
