@@ -46,7 +46,7 @@ describe VagrantPlugins::Google::Config do
     # each of these attributes to "foo" in isolation, and reads the value
     # and asserts the proper result comes back out.
     [:name, :image, :zone, :instance_ready_timeout, :machine_type, :disk_size,
-      :network, :metadata].each do |attribute|
+      :network, :metadata, :can_ip_forward, :external_ip, :autodelete_disk].each do |attribute|
 
       it "should not default #{attribute} if overridden" do
         instance.send("#{attribute}=".to_sym, "foo")
@@ -92,6 +92,8 @@ describe VagrantPlugins::Google::Config do
     let(:config_name)            { "foo" }
     let(:config_zone)            { "foo" }
     let(:config_network)         { "foo" }
+    let(:can_ip_forward)         { true }
+    let(:external_ip)            { "foo" }
 
     def set_test_values(instance)
       instance.name              = config_name
@@ -100,6 +102,8 @@ describe VagrantPlugins::Google::Config do
       instance.machine_type      = config_machine_type
       instance.disk_size         = config_disk_size
       instance.zone              = config_zone
+      instance.can_ip_forward    = can_ip_forward
+      instance.external_ip       = external_ip
     end
 
     it "should raise an exception if not finalized" do
@@ -125,6 +129,8 @@ describe VagrantPlugins::Google::Config do
       its("disk_size")         { should == config_disk_size }
       its("network")           { should == config_network }
       its("zone")              { should == config_zone }
+      its("can_ip_forward")    { should == can_ip_forward }
+      its("external_ip")       { should == external_ip }
     end
 
     context "with a specific config set" do
@@ -149,6 +155,8 @@ describe VagrantPlugins::Google::Config do
       its("disk_size")         { should == config_disk_size }
       its("network")           { should == config_network }
       its("zone")              { should == zone_name }
+      its("can_ip_forward")    { should == can_ip_forward }
+      its("external_ip")       { should == external_ip }
     end
 
     describe "inheritance of parent config" do

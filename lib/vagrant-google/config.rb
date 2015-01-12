@@ -66,6 +66,21 @@ module VagrantPlugins
       # @return [Array]
       attr_accessor :tags
 
+      # wether to enable ip forwarding
+      #
+      # @return Boolean
+      attr_accessor :can_ip_forward
+
+      # The external IP Address to use
+      #
+      # @return String
+      attr_accessor :external_ip
+
+      # wether to autodelete disk on instance delete
+      #
+      # @return Boolean
+      attr_accessor :autodelete_disk
+
       # The timeout value waiting for instance ready
       #
       # @return [Int]
@@ -94,6 +109,9 @@ module VagrantPlugins
         @name                = UNSET_VALUE
         @network             = UNSET_VALUE
         @tags                = []
+        @can_ip_forward      = UNSET_VALUE
+        @external_ip         = UNSET_VALUE
+        @autodelete_disk     = UNSET_VALUE
         @instance_ready_timeout = UNSET_VALUE
         @zone                = UNSET_VALUE
 
@@ -190,6 +208,15 @@ module VagrantPlugins
 
         # Default zone is us-central1-f.
         @zone = "us-central1-f" if @zone == UNSET_VALUE
+        
+        # autodelete_disk defaults to true
+        @autodelete_disk = true if @autodelete_disk == UNSET_VALUE
+
+        # can_ip_forward defaults to nil
+        @can_ip_forward = nil if @can_ip_forward == UNSET_VALUE
+
+        # external_ip defaults to nil
+        @external_ip = nil if @external_ip == UNSET_VALUE
 
         # Default instance_ready_timeout
         @instance_ready_timeout = 20 if @instance_ready_timeout == UNSET_VALUE
