@@ -131,6 +131,8 @@ This provider exposes quite a few provider-specific configuration options:
  "default".
 * `tags` - An array of tags to apply to this instance.
 * `zone` - The zone name where the instance will be created.
+* `can_ip_forward` - Boolean wether to enable IP Forwarding.
+* `external_ip` - The external IP address to use.
 
 These can be set like typical provider-specific configuration:
 
