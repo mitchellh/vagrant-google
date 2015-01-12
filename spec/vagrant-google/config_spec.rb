@@ -20,7 +20,7 @@ describe VagrantPlugins::Google::Config do
   before :each do
     ENV.stub(:[] => nil)
   end
-
+  
   describe "defaults" do
     subject do
       instance.tap do |o|
@@ -35,6 +35,7 @@ describe VagrantPlugins::Google::Config do
     its("network")           { should == "default" }
     its("machine_type")      { should == "n1-standard-1" }
     its("disk_size")         { should == 10 }
+    its("disk_name")         { should be_nil }
     its("instance_ready_timeout") { should == 20 }
     its("metadata")          { should == {} }
     its("tags")              { should == [] }
@@ -45,7 +46,7 @@ describe VagrantPlugins::Google::Config do
     # simple boilerplate test, so I cut corners here. It just sets
     # each of these attributes to "foo" in isolation, and reads the value
     # and asserts the proper result comes back out.
-    [:name, :image, :zone, :instance_ready_timeout, :machine_type, :disk_size,
+    [:name, :image, :zone, :instance_ready_timeout, :machine_type, :disk_size, :disk_name,
       :network, :metadata, :can_ip_forward, :external_ip, :autodelete_disk].each do |attribute|
 
       it "should not default #{attribute} if overridden" do
@@ -89,6 +90,7 @@ describe VagrantPlugins::Google::Config do
     let(:config_image)           { "foo" }
     let(:config_machine_type)    { "foo" }
     let(:config_disk_size)       { 99 }
+    let(:config_disk_name)       { "foo" }
     let(:config_name)            { "foo" }
     let(:config_zone)            { "foo" }
     let(:config_network)         { "foo" }
@@ -101,6 +103,7 @@ describe VagrantPlugins::Google::Config do
       instance.image             = config_image
       instance.machine_type      = config_machine_type
       instance.disk_size         = config_disk_size
+      instance.disk_name         = config_disk_name
       instance.zone              = config_zone
       instance.can_ip_forward    = can_ip_forward
       instance.external_ip       = external_ip
@@ -127,6 +130,7 @@ describe VagrantPlugins::Google::Config do
       its("image")             { should == config_image }
       its("machine_type")      { should == config_machine_type }
       its("disk_size")         { should == config_disk_size }
+      its("disk_name")         { should == config_disk_name }
       its("network")           { should == config_network }
       its("zone")              { should == config_zone }
       its("can_ip_forward")    { should == can_ip_forward }
@@ -153,6 +157,7 @@ describe VagrantPlugins::Google::Config do
       its("image")             { should == config_image }
       its("machine_type")      { should == config_machine_type }
       its("disk_size")         { should == config_disk_size }
+      its("disk_name")         { should == config_disk_name }
       its("network")           { should == config_network }
       its("zone")              { should == zone_name }
       its("can_ip_forward")    { should == can_ip_forward }

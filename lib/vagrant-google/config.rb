@@ -46,6 +46,11 @@ module VagrantPlugins
       # @return [Int]
       attr_accessor :disk_size
 
+      # The name of the disk to be used, it it exists, it will be reused, otherwise created.
+      #
+      # @return [String]
+      attr_accessor :disk_name
+
       # The user metadata string
       #
       # @return [Hash<String, String>]
@@ -105,6 +110,7 @@ module VagrantPlugins
         @image               = UNSET_VALUE
         @machine_type        = UNSET_VALUE
         @disk_size           = UNSET_VALUE
+        @disk_name           = UNSET_VALUE
         @metadata            = {}
         @name                = UNSET_VALUE
         @network             = UNSET_VALUE
@@ -198,6 +204,9 @@ module VagrantPlugins
 
         # Default disk size is 10 GB
         @disk_size = 10 if @disk_size == UNSET_VALUE
+
+        # Default disk name is nil
+        @disk_name = nil if @disk_name == UNSET_VALUE
 
         # Instance name defaults to a new datetime value (hour granularity)
         t = Time.now
