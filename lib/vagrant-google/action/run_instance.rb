@@ -65,6 +65,15 @@ module VagrantPlugins
           begin
             request_start_time = Time.now().to_i
             # TODO: check if external IP is available
+            if !external_ip.nil?
+              address = env[:google_compute].addresses.get_by_ip_address(external_ip)
+              if !address.nil?
+                if address.in_use?
+                  env[:ui].error("Specified external_ip is already in use, cannot be used!")
+                  raise Errors::VagrantGoogleError, "Specified external_ip is already in use, cannot be used!"
+                end
+              end
+            end
             if disk_name.nil?
               # no disk_name... disk_name defaults to instance name
               disk = env[:google_compute].disks.create(
