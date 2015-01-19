@@ -42,6 +42,7 @@ describe VagrantPlugins::Google::Config do
     its("instance_ready_timeout") { should == 20 }
     its("metadata")          { should == {} }
     its("tags")              { should == [] }
+    its("service_accounts")  { should == nil }
   end
 
   describe "overriding defaults" do

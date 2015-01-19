@@ -48,6 +48,7 @@ module VagrantPlugins
           can_ip_forward     = zone_config.can_ip_forward
           external_ip        = zone_config.external_ip
           autodelete_disk    = zone_config.autodelete_disk
+          service_accounts   = zone_config.service_accounts
 
           # Launch!
           env[:ui].info(I18n.t("vagrant_google.launching_instance"))
@@ -64,6 +65,7 @@ module VagrantPlugins
           env[:ui].info(" -- IP Forward:      #{can_ip_forward}")
           env[:ui].info(" -- External IP:     #{external_ip}")
           env[:ui].info(" -- Autodelete Disk: #{autodelete_disk}")
+          env[:ui].info(" -- Scopes:    #{service_accounts}")
           begin
             request_start_time = Time.now().to_i
             #Warn on ssh-key overrides
@@ -129,6 +131,7 @@ module VagrantPlugins
               :can_ip_forward     => can_ip_forward,
               :external_ip        => external_ip,
               :disks              => [disk.get_as_boot_disk(true, autodelete_disk)],
+              :service_accounts   => service_accounts,
             }
             server = env[:google_compute].servers.create(defaults)
             @logger.info("Machine '#{zone}:#{name}' created.")
