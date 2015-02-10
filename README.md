@@ -199,10 +199,6 @@ machine over SSH.
 This is good enough for all built-in Vagrant provisioners (shell, chef, and
 puppet) to work!
 
-## Known Issues
-
-* https://github.com/mitchellh/vagrant-google/issues/17
-
 ## Development
 
 To work on the `vagrant-google` plugin, clone this repository out, and use
