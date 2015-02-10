@@ -30,7 +30,7 @@ Vagrant.configure("2") do |config|
 
     google.zone_config "us-central1-a" do |zone1a|
         zone1a.name = "testing-vagrant"
-        zone1a.image = "debian-7-wheezy-v20140619"
+        zone1a.image = "debian-7-wheezy-v20150127"
         zone1a.machine_type = "n1-standard-4"
         zone1a.zone = "us-central1-a"
         zone1a.metadata = {'custom' => 'metadata', 'testing' => 'foobarbaz'}
