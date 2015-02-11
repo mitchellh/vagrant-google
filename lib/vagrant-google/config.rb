@@ -46,6 +46,11 @@ module VagrantPlugins
       # @return [Int]
       attr_accessor :disk_size
 
+      # The name of the disk to be used, it it exists, it will be reused, otherwise created.
+      #
+      # @return [String]
+      attr_accessor :disk_name
+
       # The user metadata string
       #
       # @return [Hash<String, String>]
@@ -65,6 +70,21 @@ module VagrantPlugins
       #
       # @return [Array]
       attr_accessor :tags
+
+      # wether to enable ip forwarding
+      #
+      # @return Boolean
+      attr_accessor :can_ip_forward
+
+      # The external IP Address to use
+      #
+      # @return String
+      attr_accessor :external_ip
+
+      # wether to autodelete disk on instance delete
+      #
+      # @return Boolean
+      attr_accessor :autodelete_disk
 
       # The timeout value waiting for instance ready
       #
@@ -90,10 +110,14 @@ module VagrantPlugins
         @image               = UNSET_VALUE
         @machine_type        = UNSET_VALUE
         @disk_size           = UNSET_VALUE
+        @disk_name           = UNSET_VALUE
         @metadata            = {}
         @name                = UNSET_VALUE
         @network             = UNSET_VALUE
         @tags                = []
+        @can_ip_forward      = UNSET_VALUE
+        @external_ip         = UNSET_VALUE
+        @autodelete_disk     = UNSET_VALUE
         @instance_ready_timeout = UNSET_VALUE
         @zone                = UNSET_VALUE
 
@@ -181,6 +205,9 @@ module VagrantPlugins
         # Default disk size is 10 GB
         @disk_size = 10 if @disk_size == UNSET_VALUE
 
+        # Default disk name is nil
+        @disk_name = nil if @disk_name == UNSET_VALUE
+
         # Instance name defaults to a new datetime value (hour granularity)
         t = Time.now
         @name = "i-#{t.year}#{t.month.to_s.rjust(2,'0')}#{t.day.to_s.rjust(2,'0')}#{t.hour.to_s.rjust(2,'0')}" if @name == UNSET_VALUE
@@ -190,6 +217,15 @@ module VagrantPlugins
 
         # Default zone is us-central1-f.
         @zone = "us-central1-f" if @zone == UNSET_VALUE
+        
+        # autodelete_disk defaults to true
+        @autodelete_disk = true if @autodelete_disk == UNSET_VALUE
+
+        # can_ip_forward defaults to nil
+        @can_ip_forward = nil if @can_ip_forward == UNSET_VALUE
+
+        # external_ip defaults to nil
+        @external_ip = nil if @external_ip == UNSET_VALUE
 
         # Default instance_ready_timeout
         @instance_ready_timeout = 20 if @instance_ready_timeout == UNSET_VALUE
