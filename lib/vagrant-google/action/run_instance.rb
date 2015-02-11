@@ -40,29 +40,62 @@ module VagrantPlugins
           name               = zone_config.name
           machine_type       = zone_config.machine_type
           disk_size          = zone_config.disk_size
+          disk_name          = zone_config.disk_name
           network            = zone_config.network
           metadata           = zone_config.metadata
           tags               = zone_config.tags
+          can_ip_forward     = zone_config.can_ip_forward
+          external_ip        = zone_config.external_ip
+          autodelete_disk    = zone_config.autodelete_disk
 
           # Launch!
           env[:ui].info(I18n.t("vagrant_google.launching_instance"))
-          env[:ui].info(" -- Name:      #{name}")
-          env[:ui].info(" -- Type:      #{machine_type}")
-          env[:ui].info(" -- Disk size: #{disk_size} GB")
-          env[:ui].info(" -- Image:     #{image}")
-          env[:ui].info(" -- Zone:      #{zone}") if zone
-          env[:ui].info(" -- Network:   #{network}") if network
-          env[:ui].info(" -- Metadata:  '#{metadata}'")
-          env[:ui].info(" -- Tags:      '#{tags}'")
+          env[:ui].info(" -- Name:            #{name}")
+          env[:ui].info(" -- Type:            #{machine_type}")
+          env[:ui].info(" -- Disk size:       #{disk_size} GB")
+          env[:ui].info(" -- Disk name:       #{disk_name}")
+          env[:ui].info(" -- Image:           #{image}")
+          env[:ui].info(" -- Zone:            #{zone}") if zone
+          env[:ui].info(" -- Network:         #{network}") if network
+          env[:ui].info(" -- Metadata:        '#{metadata}'")
+          env[:ui].info(" -- Tags:            '#{tags}'")
+          env[:ui].info(" -- IP Forward:      #{can_ip_forward}")
+          env[:ui].info(" -- External IP:     #{external_ip}")
+          env[:ui].info(" -- Autodelete Disk: #{autodelete_disk}")
           begin
             request_start_time = Time.now().to_i
-            disk = env[:google_compute].disks.create(
-                name: name,
-                size_gb: disk_size,
-                zone_name: zone,
-                source_image: image
-            )
-            disk.wait_for { disk.ready? }
+            # TODO: check if external IP is available
+            if !external_ip.nil?
+              address = env[:google_compute].addresses.get_by_ip_address(external_ip)
+              if !address.nil?
+                if address.in_use?
+                  env[:ui].error("Specified external_ip is already in use, cannot be used!")
+                  raise Errors::VagrantGoogleError, "Specified external_ip is already in use, cannot be used!"
+                end
+              end
+            end
+            if disk_name.nil?
+              # no disk_name... disk_name defaults to instance name
+              disk = env[:google_compute].disks.create(
+                  name: name,
+                  size_gb: disk_size,
+                  zone_name: zone,
+                  source_image: image
+              )
+              disk.wait_for { disk.ready? }
+            else
+              disk = env[:google_compute].disks.get(disk_name, zone)
+              if disk.nil?
+                # disk not found... create it with name
+                disk = env[:google_compute].disks.create(
+                    name: disk_name,
+                    size_gb: disk_size,
+                    zone_name: zone,
+                    source_image: image
+                )
+                disk.wait_for { disk.ready? }
+              end
+            end
 
             defaults = {
               :name               => name,
@@ -73,9 +106,9 @@ module VagrantPlugins
               :network            => network,
               :metadata           => metadata,
               :tags               => tags,
-              # Second arg to get_as_boot_disk is 'autodelete_disk', defaulting
-              # to true
-              :disks              => [disk.get_as_boot_disk(true, true)],
+              :can_ip_forward     => can_ip_forward,
+              :external_ip        => external_ip,
+              :disks              => [disk.get_as_boot_disk(true, autodelete_disk)],
             }
             server = env[:google_compute].servers.create(defaults)
             @logger.info("Machine '#{zone}:#{name}' created.")

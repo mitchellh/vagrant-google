@@ -125,12 +125,15 @@ This provider exposes quite a few provider-specific configuration options:
   to become "ready" in GCE. Defaults to 20 seconds.
 * `machine_type` - The machine type to use.  The default is "n1-standard-1".
 * `disk_size` - The disk size in GB.  The default is 10.
+* `disk_name` - The disk name to use.  If the disk exists, it will be reused, otherwise created.
 * `metadata` - Custom key/value pairs of metadata to add to the instance.
 * `name` - The name of your instance.  The default is "i-yyyyMMddHH". Example 2014/10/01 10:00:00 is "i-2014100101".
 * `network` - The name of the network to use for the instance.  Default is
  "default".
 * `tags` - An array of tags to apply to this instance.
 * `zone` - The zone name where the instance will be created.
+* `can_ip_forward` - Boolean wether to enable IP Forwarding.
+* `external_ip` - The external IP address to use.
 
 These can be set like typical provider-specific configuration:
 
