@@ -40,8 +40,7 @@ Service Account for API Access.
 1. Log in with your Google Account and go to
    [Google Cloud Platform](https://cloud.google.com) and click on the
    `Try it now` button.
-1. Create a new project and remember to record the `Project ID` you
-   specify.
+1. Create a new project and remember to record the `Project ID`
 1. Next, visit the [Developers Console](https://console.developers.google.com)
    make sure to enable the `Google Compute Engine` service for your project
    If prompted, review and agree to the terms of service.
@@ -49,9 +48,9 @@ Service Account for API Access.
    section and click the `Create new Client ID` button.  In the pop-up dialog,
    select the `Service Account` radio button and the click the `Create Client ID`
    button.
-1. When prompted, select the `Download private key` button and make sure
-   to save this file in a secure and reliable location.  This key file
-   will be used to authorize all Vagrant commands available in this plugin.
+1. Make sure to download the *P12 private key* and save this file in a secure
+   and reliable location.  This key file will be used to authorize all API
+   requests to Google Compute Engine.
 1. Still on the same page, find the newly created `Service Account` text
    block on the API Access page.  Record the `Email address` (it should end
    with `@developer.gserviceaccount.com`) associated with the new Service
@@ -94,12 +93,34 @@ And then run `vagrant up --provider=google`.
 
 This will start an Debian 7 (Wheezy) instance in the us-central1-f zone,
 with an n1-standard-1 machine, and the "default" network within your project.
-And assuming your SSH information was filled in properly within your
-Vagrantfile, SSH and provisioning will work as well.
+And assuming your SSH information (see below) was filled in properly within
+your Vagrantfile, SSH and provisioning will work as well.
 
 Note that normally a lot of this boilerplate is encoded within the box file,
 but the box file used for the quick start, the "google" box, has no
 preconfigured defaults.
+
+## SSH Support
+
+In order for SSH to work properly to the GCE VM, you will first need to add
+your public key to the GCE metadata service for the desired VM user account.
+When a VM first boots, a Google-provided daemon is responsible for talking to
+the internal GCE metadata service and creates local user accounts and their
+respective `~/.ssh/authorized_keys` entries.  Most new GCE users will use the
+Cloud SDK (https://cloud.google.com/sdk/)'s `gcloud compute` when getting
+started with GCE. This utility has built in support for creating SSH key
+pairs, and uploading the public key to the GCE metadata service.  By default,
+`glcoud compute` creates a key pair named `~/.ssh/google_compute_engine[.pub]`.
+
+Note that you can use the more standard `~/.ssh/id_rsa[.pub]` files, but you
+will need to manually add your public key to the GCE metadata service so your
+VMs will pick up the the key. Note that they public key is typically
+prefixed with the username, so that the daemon on the VM adds the public key
+to the correct user account.  See the blow links for more help with SSH and
+GCE VMs.
+
+  * https://cloud.google.com/compute/docs/instances#sshing
+  * https://cloud.google.com/compute/docs/console#sshkeys
 
 ## Box Format
 
