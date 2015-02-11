@@ -107,10 +107,11 @@ your public key to the GCE metadata service for the desired VM user account.
 When a VM first boots, a Google-provided daemon is responsible for talking to
 the internal GCE metadata service and creates local user accounts and their
 respective `~/.ssh/authorized_keys` entries.  Most new GCE users will use the
-Cloud SDK (https://cloud.google.com/sdk/)'s `gcloud compute` when getting
-started with GCE. This utility has built in support for creating SSH key
-pairs, and uploading the public key to the GCE metadata service.  By default,
-`glcoud compute` creates a key pair named `~/.ssh/google_compute_engine[.pub]`.
+[Cloud SDK](https://cloud.google.com/sdk/) `gcloud compute` utility when first
+getting started with GCE. This utility has built in support for creating SSH
+key pairs, and uploading the public key to the GCE metadata service.  By
+default, `glcoud compute` creates a key pair named
+`~/.ssh/google_compute_engine[.pub]`.
 
 Note that you can use the more standard `~/.ssh/id_rsa[.pub]` files, but you
 will need to manually add your public key to the GCE metadata service so your
