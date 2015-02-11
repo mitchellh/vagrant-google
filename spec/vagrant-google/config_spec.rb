@@ -30,7 +30,7 @@ describe VagrantPlugins::Google::Config do
     t = Time.now
 
     its("name")              { should == "i-#{t.year}#{t.month.to_s.rjust(2,'0')}#{t.day.to_s.rjust(2,'0')}#{t.hour.to_s.rjust(2,'0')}" }
-    its("image")             { should == "debian-7-wheezy-v20140926" }
+    its("image")             { should == "debian-7-wheezy-v20150127" }
     its("zone")              { should == "us-central1-f" }
     its("network")           { should == "default" }
     its("machine_type")      { should == "n1-standard-1" }
