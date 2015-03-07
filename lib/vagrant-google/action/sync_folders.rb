@@ -46,6 +46,11 @@ module VagrantPlugins
             # avoid creating an additional directory with rsync
             hostpath = "#{hostpath}/" if hostpath !~ /\/$/
 
+            # on windows rsync.exe requires cygdrive-style paths
+            if Vagrant::Util::Platform.windows?
+              hostpath = hostpath.gsub(/^(\w):/) { "/cygdrive/#{$1}" }
+            end
+
             env[:ui].info(I18n.t("vagrant_google.rsync_folder",
                                 :hostpath => hostpath,
                                 :guestpath => guestpath))
@@ -71,6 +76,12 @@ module VagrantPlugins
               "-e", "ssh -p #{ssh_info[:port]} -o StrictHostKeyChecking=no #{ssh_key_options(ssh_info)}",
               hostpath,
               "#{ssh_info[:username]}@#{ssh_info[:host]}:#{guestpath}"]
+
+            # we need to fix permissions when using rsync.exe on windows, see
+            # http://stackoverflow.com/questions/5798807/rsync-permission-denied-created-directories-have-no-permissions
+            if Vagrant::Util::Platform.windows?
+              command.insert(1, "--chmod", "ugo=rwX")
+            end
 
             r = Vagrant::Util::Subprocess.execute(*command)
             if r.exit_code != 0
