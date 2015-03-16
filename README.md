@@ -155,7 +155,6 @@ This provider exposes quite a few provider-specific configuration options:
 * `tags` - An array of tags to apply to this instance.
 * `zone` - The zone name where the instance will be created.
 * `can_ip_forward` - Boolean wether to enable IP Forwarding.
-* `external_ip` - The external IP address to use.
 
 These can be set like typical provider-specific configuration:
 
@@ -196,6 +195,7 @@ Vagrant.configure("2") do |config|
         zone1f.zone = "us-central1-f"
         zone1f.metadata = {'custom' => 'metadata', 'testing' => 'foobarbaz'}
         zone1f.tags = ['web', 'app1']
+        zone1f.external_ip = "123.123.123.123"
     end
   end
 end
