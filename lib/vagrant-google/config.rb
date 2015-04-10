@@ -51,6 +51,11 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :disk_name
 
+      # The type of the disk to be used, such as "pd-standard"
+      #
+      # @return [String]
+      attr_accessor :disk_type
+
       # The user metadata string
       #
       # @return [Hash<String, String>]
@@ -111,6 +116,7 @@ module VagrantPlugins
         @machine_type        = UNSET_VALUE
         @disk_size           = UNSET_VALUE
         @disk_name           = UNSET_VALUE
+        @disk_type           = UNSET_VALUE
         @metadata            = {}
         @name                = UNSET_VALUE
         @network             = UNSET_VALUE
@@ -207,6 +213,9 @@ module VagrantPlugins
 
         # Default disk name is nil
         @disk_name = nil if @disk_name == UNSET_VALUE
+
+        # Default disk type is pd-standard
+        @disk_type = "pd-standard" if @disk_type == UNSET_VALUE
 
         # Instance name defaults to a new datetime value (hour granularity)
         t = Time.now
