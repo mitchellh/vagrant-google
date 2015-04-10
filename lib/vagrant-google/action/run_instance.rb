@@ -41,6 +41,7 @@ module VagrantPlugins
           machine_type       = zone_config.machine_type
           disk_size          = zone_config.disk_size
           disk_name          = zone_config.disk_name
+          disk_type          = zone_config.disk_type
           network            = zone_config.network
           metadata           = zone_config.metadata
           tags               = zone_config.tags
@@ -74,11 +75,23 @@ module VagrantPlugins
                 end
               end
             end
+            #Check if disk type is available in the zone
+            if !disk_type.nil?
+              disk_type_obj = env[:google_compute].list_disk_types(zone).body['items'].select { |dt| dt['name'] == disk_type } || []
+              if !disk_type_obj.empty?
+                disk_type = disk_type_obj[0]["selfLink"]
+              else
+                env[:ui].error("Specified disk type: #{disk_type} is not available in the region selected!")
+                raise Errors::VagrantGoogleError, "Specified disk type is not available and cannot be used!"
+              end
+            end
+
             if disk_name.nil?
               # no disk_name... disk_name defaults to instance name
               disk = env[:google_compute].disks.create(
                   name: name,
                   size_gb: disk_size,
+                  type: disk_type,
                   zone_name: zone,
                   source_image: image
               )
@@ -90,6 +103,7 @@ module VagrantPlugins
                 disk = env[:google_compute].disks.create(
                     name: disk_name,
                     size_gb: disk_size,
+                    type: disk_type,
                     zone_name: zone,
                     source_image: image
                 )
@@ -102,6 +116,7 @@ module VagrantPlugins
               :zone_name          => zone,
               :machine_type       => machine_type,
               :disk_size          => disk_size,
+              :disk_type          => disk_type,
               :image              => image,
               :network            => network,
               :metadata           => metadata,
