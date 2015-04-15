@@ -1,11 +1,11 @@
 # Copyright 2013 Google Inc. All Rights Reserved.
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project         = "vagrant-google"
 
-  s.add_runtime_dependency "fog", "1.22"
+  s.add_runtime_dependency "fog", "1.29"
   s.add_runtime_dependency "google-api-client"
   #s.add_runtime_dependency "pry"
   #s.add_runtime_dependency "pry-nav"
