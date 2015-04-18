@@ -65,13 +65,12 @@ module VagrantPlugins
           env[:ui].info(" -- Autodelete Disk: #{autodelete_disk}")
           begin
             request_start_time = Time.now().to_i
-            # TODO: check if external IP is available
             if !external_ip.nil?
               address = env[:google_compute].addresses.get_by_ip_address(external_ip)
               if !address.nil?
                 if address.in_use?
-                  env[:ui].error("Specified external_ip is already in use, cannot be used!")
-                  raise Errors::VagrantGoogleError, "Specified external_ip is already in use, cannot be used!"
+                  raise Errors::ExternalIpError,
+                    :externalip => external_ip
                 end
               end
             end
@@ -81,8 +80,8 @@ module VagrantPlugins
               if !disk_type_obj.empty?
                 disk_type = disk_type_obj[0]["selfLink"]
               else
-                env[:ui].error("Specified disk type: #{disk_type} is not available in the region selected!")
-                raise Errors::VagrantGoogleError, "Specified disk type is not available and cannot be used!"
+                raise Errors::DiskTypeError,
+                  :disktype => disk_type
               end
             end
 
