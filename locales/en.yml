@@ -68,6 +68,13 @@ en:
         Host path: %{hostpath}
         Guest path: %{guestpath}
         Error: %{stderr}
+      external_ip_error: |-
+        Specified external IP address is invalid or already in use.
+        IP address requested: %{externalip}
+
+      disk_type_error: |-
+        Specified disk type is not available in the region selected.
+        Disk type requested: %{disktype}
 
     states:
       short_not_created: |-

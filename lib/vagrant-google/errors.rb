@@ -20,6 +20,14 @@ module VagrantPlugins
         error_namespace("vagrant_google.errors")
       end
 
+      class ExternalIpError < VagrantGoogleError
+        error_key(:external_ip_error)
+      end
+
+      class DiskTypeError <VagrantGoogleError
+        error_key(:disk_type_error)
+      end
+
       class FogError < VagrantGoogleError
         error_key(:fog_error)
       end
