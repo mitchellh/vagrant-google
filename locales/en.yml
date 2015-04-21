@@ -46,7 +46,13 @@ en:
       name_required: |-
         An instance name must be specified via "name"
       google_key_location_required: |-
-        A private key pathname is required via "google_key_location"
+        A private key pathname is required via:
+         "google_json_key_location" (for JSON keys)
+         or
+         "google_key_location" (for P12 keys)
+      google_duplicate_key_location: |-
+        Both "google_json_key_location" and "google_key_location" are specified.
+        Config must specify only one key location.
       google_project_id_required: |-
         A Google Cloud Project ID is required via "google_project_id"
 

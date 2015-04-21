@@ -79,7 +79,7 @@ Vagrant.configure("2") do |config|
   config.vm.provider :google do |google, override|
     google.google_project_id = "YOUR_GOOGLE_CLOUD_PROJECT_ID"
     google.google_client_email = "YOUR_SERVICE_ACCOUNT_EMAIL_ADDRESS"
-    google.google_key_location = "/PATH/TO/YOUR/PRIVATE_KEY.p12"
+    google.google_json_key_location = "/path/to/your/private-key.json"
 
     override.ssh.username = "USERNAME"
     override.ssh.private_key_path = "~/.ssh/id_rsa"
@@ -139,7 +139,9 @@ configuration for this provider.
 This provider exposes quite a few provider-specific configuration options:
 
 * `google_client_email` - The Client Email address for your Service Account.
-* `google_key_location` - The location to the private key file matching your
+* `google_key_location` - The location of the P12 private key file matching your
+  Service Account.
+* `google_json_key_location` - The location of the JSON private key file matching your
   Service Account.
 * `google_project_id` - The Project ID for your Google Cloud Platform account.
 * `image` - The image name to use when booting your instance.
@@ -164,9 +166,9 @@ Vagrant.configure("2") do |config|
   # ... other stuff
 
   config.vm.provider :google do |google|
-    google.google_project_id = "my_project"
-    google.google_client_email = "hashstring@example.com"
-    google.google_key_location = "/tmp/private-key.p12"
+    google.google_project_id = "YOUR_GOOGLE_CLOUD_PROJECT_ID"
+    google.google_client_email = "YOUR_SERVICE_ACCOUNT_EMAIL_ADDRESS"
+    google.google_json_key_location = "/path/to/your/private-key.json"
   end
 end
 ```
@@ -182,9 +184,9 @@ Vagrant.configure("2") do |config|
   config.vm.box = "gce"
 
   config.vm.provider :google do |google|
-    google.google_project_id = "my_project"
-    google.google_client_email = "hashstring@example.com"
-    google.google_key_location = "/tmp/private-key.p12"
+    google.google_project_id = "YOUR_GOOGLE_CLOUD_PROJECT_ID"
+    google.google_client_email = "YOUR_SERVICE_ACCOUNT_EMAIL_ADDRESS"
+    google.google_json_key_location = "/path/to/your/private-key.json"
 
     # Make sure to set this to trigger the zone_config
     google.zone = "us-central1-f"
