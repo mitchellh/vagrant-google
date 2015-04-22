@@ -88,6 +88,30 @@ describe VagrantPlugins::Google::Config do
       its("google_key_location") { should == "/path/to/key" }
       its("google_json_key_location") { should == "/path/to/json/key" }
     end
+
+    context "With both Google credential environment variables" do
+      before :each do
+        ENV.stub(:[]).with("GOOGLE_CLIENT_EMAIL").and_return("client_id_email")
+        ENV.stub(:[]).with("GOOGLE_KEY_LOCATION").and_return("/path/to/key")
+        ENV.stub(:[]).with("GOOGLE_JSON_KEY_LOCATION").and_return("/path/to/json/key")
+      end
+
+      it "Should return duplicate key location errors" do
+        instance.finalize!
+        expect(instance.validate("foo")["Google Provider"][1]).to include("en.vagrant_google.config.google_duplicate_key_location")
+      end
+    end
+
+    context "With none of the Google credential environment variables set" do
+      before :each do
+        ENV.stub(:[]).with("GOOGLE_CLIENT_EMAIL").and_return("client_id_email")
+      end
+
+      it "Should return no key set errors" do
+        instance.finalize!
+        expect(instance.validate("foo")["Google Provider"][1]).to include("en.vagrant_google.config.google_key_location_required")
+      end
+    end
   end
 
   describe "zone config" do
