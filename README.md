@@ -253,8 +253,5 @@ $ bundle exec vagrant up --provider=google
 ## Changelog
  * See [CHANGELOG.md](https://github.com/mitchellh/vagrant-google/blob/master/CHANGELOG.md)
 
-## Contributing
- * See [CONTRIB.md](https://github.com/mitchellh/vagrant-google/blob/master/CONTRIB.md)
-
 ## Licensing
  * See [LICENSE](https://github.com/mitchellh/vagrant-google/blob/master/LICENSE)
