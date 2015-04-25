@@ -27,8 +27,9 @@ module VagrantPlugins
           server = env[:google_compute].servers.get(env[:machine].id, env[:machine].provider_config.zone)
 
           # Destroy the server and remove the tracking ID
+          # destroy() is called with 'false' to disable asynchronous execution.
           env[:ui].info(I18n.t("vagrant_google.terminating"))
-          server.destroy if not server.nil?
+          server.destroy(false) if not server.nil?
           env[:machine].id = nil
 
           @app.call(env)
