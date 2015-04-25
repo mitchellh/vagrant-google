@@ -11,6 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+require File.expand_path("../../base", __FILE__)
+
 require "vagrant-google/config"
 
 describe VagrantPlugins::Google::Config do
