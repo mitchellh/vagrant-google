@@ -4,11 +4,6 @@ en:
       The machine is already created.
     launching_instance: |-
       Launching an instance with the following settings...
-    launch_vpc_warning: |-
-      Warning! You're launching this instance into a VPC without an
-      elastic IP. Please verify you're properly connected to a VPN so
-      you can access this machine, otherwise Vagrant will not be able
-      to SSH into it.
     not_created: |-
       Instance is not created. Please run `vagrant up` first.
     ready: |-
@@ -33,12 +28,12 @@ en:
     will_not_destroy: |-
       The instance '%{name}' will not be destroyed, since the confirmation
       was declined.
-
+#-------------------------------------------------------------------------------
+# Translations for config validation errors
+#-------------------------------------------------------------------------------
     config:
       google_client_email_required: |-
         A Google Service Account client email is required via "google_client_email"
-      machine_required: |-
-        An MACHINE_TYPE must be configured via "machine"
       private_key_missing: |-
         The specified private key for Google could not be found
       zone_required: |-
@@ -55,7 +50,9 @@ en:
         Config must specify only one key location.
       google_project_id_required: |-
         A Google Cloud Project ID is required via "google_project_id"
-
+#-------------------------------------------------------------------------------
+# Translations for exception classes
+#-------------------------------------------------------------------------------
     errors:
       fog_error: |-
         There was an error talking to Google. The error message is shown
@@ -77,11 +74,12 @@ en:
       external_ip_error: |-
         Specified external IP address is invalid or already in use.
         IP address requested: %{externalip}
-
       disk_type_error: |-
         Specified disk type is not available in the region selected.
         Disk type requested: %{disktype}
-
+#-------------------------------------------------------------------------------
+# Translations for machine states
+#-------------------------------------------------------------------------------
     states:
       short_not_created: |-
         not created
