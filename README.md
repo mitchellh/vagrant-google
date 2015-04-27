@@ -267,8 +267,9 @@ export GOOGLE_JSON_KEY_LOCATION="/full/path/to/your/private-key.json"
 ```
 
 After, you can run acceptance tests by running the `run` task in `acceptance` namespace:
-`bundle exec rake acceptance:run`
-
+```
+bundle exec rake acceptance:run
+```
 
 ## Changelog
  * See [CHANGELOG.md](https://github.com/mitchellh/vagrant-google/blob/master/CHANGELOG.md)
