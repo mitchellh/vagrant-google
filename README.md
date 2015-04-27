@@ -253,7 +253,7 @@ $ bundle exec vagrant up --provider=google
 ## Acceptance testing
 
 **Work-in-progress:** Acceptance tests are based on vagrant-spec library which
-is currently under active development and should not yet be relied upon.
+is currently under active development so they may occasionally break.
 
 Before you start acceptance tests, you'll need to add [vagrant public key](https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant.pub) to GCE metadata.
 
