@@ -11,7 +11,6 @@ namespace :acceptance do
     puts "NOTE: For acceptance tests to be functional, vagrant private key needs to be added to GCE metadata."
 
     if !ENV["GOOGLE_JSON_KEY_LOCATION"] && !ENV["GOOGLE_KEY_LOCATION"]
-      puts `export | grep GOOGLE`
       abort ("Environment variables GOOGLE_JSON_KEY_LOCATION or GOOGLE_KEY_LOCATION are not set. Aborting.")
     end
 
