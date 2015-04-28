@@ -5,6 +5,6 @@ Vagrant::Spec::Acceptance.configure do |c|
   c.skeleton_paths << File.expand_path("../test/acceptance/skeletons", __FILE__)
 
   c.provider "google",
-    box: "https://github.com/mitchellh/vagrant-google/raw/master/google.box",
+    box: "https://github.com/mitchellh/vagrant-google/raw/master/google-test.box",
     contexts: ["provider-context/google"]
 end
