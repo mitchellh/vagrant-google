@@ -53,6 +53,7 @@ module VagrantPlugins
           env[:ui].info(I18n.t("vagrant_google.launching_instance"))
           env[:ui].info(" -- Name:            #{name}")
           env[:ui].info(" -- Type:            #{machine_type}")
+          env[:ui].info(" -- Disk type:       #{disk_type}")
           env[:ui].info(" -- Disk size:       #{disk_size} GB")
           env[:ui].info(" -- Disk name:       #{disk_name}")
           env[:ui].info(" -- Image:           #{image}")
