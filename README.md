@@ -250,6 +250,29 @@ that uses it, and uses bundler to execute Vagrant:
 $ bundle exec vagrant up --provider=google
 ```
 
+## Acceptance testing
+
+**Work-in-progress:** Acceptance tests are based on vagrant-spec library which
+is currently under active development so they may occasionally break.
+
+Before you start acceptance tests, you'll need to set the authentication variables accordingly.
+
+Next, export your GCP authentication data:
+
+```
+export GOOGLE_CLIENT_EMAIL="your-google_service_account_email@developer.gserviceaccount.com"
+export GOOGLE_PROJECT_ID="your-google-cloud-project-id"
+export GOOGLE_JSON_KEY_LOCATION="/full/path/to/your/private-key.json"
+
+export GOOGLE_SSH_USER="testuser"
+export GOOGLE_SSH_KEY_LOCATION="/home/testuser/.ssh/id_rsa"
+```
+
+After, you can run acceptance tests by running the `run` task in `acceptance` namespace:
+```
+bundle exec rake acceptance:run
+```
+
 ## Changelog
  * See [CHANGELOG.md](https://github.com/mitchellh/vagrant-google/blob/master/CHANGELOG.md)
 
