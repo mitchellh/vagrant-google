@@ -19,8 +19,8 @@ Gem::Specification.new do |s|
   s.name          = "vagrant-google"
   s.version       = VagrantPlugins::Google::VERSION
   s.platform      = Gem::Platform::RUBY
-  s.authors       = "Eric Johnson"
-  s.email         = "erjohnso@google.com"
+  s.authors       = ["Eric Johnson", "Artem Yakimenko"]
+  s.email         = "vagrant-google@google.com"
   s.homepage      = "http://www.vagrantup.com"
   s.summary       = "Vagrant provider plugin for Google Compute Engine."
   s.description   = "Enables Vagrant to manage Google Compute Engine instances."
