@@ -1,3 +1,12 @@
+# 0.1.5 (May 2015)
+
+* Added support for JSON private keys [temikus]
+* Added disk_type parameter support [temikus]
+* Added acceptance tests [temikus]
+* Added can_ip_forward, external_ip, autodelete_disk and disk_name parameters support [phueper]
+* Added support for user specified rsync excludes [patkar]
+* Miscellaneous bugfixes [mbrukman, beauzeaux, iceydee, mklbtz, temikus]
+
 # 0.1.4 (October 2014)
 
 * Add option for disk size [franzs]
