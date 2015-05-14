@@ -145,6 +145,23 @@ module VagrantPlugins
         end
       end
 
+      def self.action_reload
+        Vagrant::Action::Builder.new.tap do |b|
+          b.use ConfigValidate
+          b.use ConnectGoogle
+          b.use Call, IsCreated do |env1, b1|
+            if !env1[:result]
+              b1.use MessageNotCreated
+              next
+            end
+
+            # TODO: Think about implementing through server.reboot
+            b1.use action_halt
+            b1.use action_up
+          end
+        end
+      end
+
       # The autoload farm
       action_root = Pathname.new(File.expand_path("../action", __FILE__))
       autoload :ConnectGoogle, action_root.join("connect_google")
