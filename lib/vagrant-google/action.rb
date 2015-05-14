@@ -19,6 +19,21 @@ module VagrantPlugins
       # Include the built-in modules so we can use them as top-level things.
       include Vagrant::Action::Builtin
 
+      # This action is called to halt the remote machine.
+      def self.action_halt
+        Vagrant::Action::Builder.new.tap do |b|
+              b.use ConfigValidate
+              b.use Call, IsCreated do |env, b2|
+                if !env[:result]
+                  b2.use MessageNotCreated
+                  next
+                end
+                b2.use ConnectGoogle
+                b2.use StopInstance
+          end
+        end
+      end
+
       # This action is called to terminate the remote machine.
       def self.action_destroy
         Vagrant::Action::Builder.new.tap do |b|
@@ -107,16 +122,25 @@ module VagrantPlugins
           b.use HandleBox
           b.use ConfigValidate
           b.use ConnectGoogle
-          b.use Call, IsCreated do |env, b2|
-            if env[:result]
-              b2.use MessageAlreadyCreated
-              next
+          b.use Call, IsCreated do |env1, b1|
+            if env1[:result]
+              b1.use Call, IsTerminated do |env2, b2|
+                if env2[:result]
+                  b2.use Provision
+                  b2.use SyncedFolders
+                  b2.use WarnNetworks
+                  b2.use StartInstance
+                else
+                  # TODO: Impement better messages for different states
+                  b2.use MessageAlreadyCreated
+                end
+              end
+            else
+              b1.use Provision
+              b1.use SyncFolders
+              b1.use WarnNetworks
+              b1.use RunInstance
             end
-
-            b2.use Provision
-            b2.use SyncFolders
-            b2.use WarnNetworks
-            b2.use RunInstance
           end
         end
       end
@@ -125,16 +149,19 @@ module VagrantPlugins
       action_root = Pathname.new(File.expand_path("../action", __FILE__))
       autoload :ConnectGoogle, action_root.join("connect_google")
       autoload :IsCreated, action_root.join("is_created")
+      autoload :IsTerminated, action_root.join("is_terminated")
       autoload :MessageAlreadyCreated, action_root.join("message_already_created")
       autoload :MessageNotCreated, action_root.join("message_not_created")
       autoload :MessageWillNotDestroy, action_root.join("message_will_not_destroy")
       autoload :ReadSSHInfo, action_root.join("read_ssh_info")
       autoload :ReadState, action_root.join("read_state")
       autoload :RunInstance, action_root.join("run_instance")
+      autoload :StartInstance, action_root.join("start_instance")
+      autoload :StopInstance, action_root.join("stop_instance")
       autoload :SyncFolders, action_root.join("sync_folders")
+      autoload :TerminateInstance, action_root.join("terminate_instance")
       autoload :TimedProvision, action_root.join("timed_provision")
       autoload :WarnNetworks, action_root.join("warn_networks")
-      autoload :TerminateInstance, action_root.join("terminate_instance")
     end
   end
 end

@@ -2,6 +2,8 @@ en:
   vagrant_google:
     already_created: |-
       The machine is already created.
+    already_status: |-
+      The machine is already in %{status} status.
     launching_instance: |-
       Launching an instance with the following settings...
     not_created: |-
@@ -15,10 +17,16 @@ en:
       Make sure rsync is installed and the binary can be found in the PATH.
     rsync_folder: |-
       Rsyncing folder: %{hostpath} => %{guestpath}
+    starting: |-
+      Starting the instance...
+    stopping: |-
+      Stopping the instance...
     terminating: |-
       Terminating the instance...
     waiting_for_ready: |-
       Waiting for instance to become "ready"...
+    waiting_for_stop: |-
+      Waiting for instance to become terminated...
     waiting_for_ssh: |-
       Waiting for SSH to become available...
     warn_networks: |-
@@ -98,6 +106,12 @@ en:
         Resources have been acquired and the instance is being prepared for
         launch and should be in the RUNNING state soon.
 
+      short_STOPPING: |-
+        stopping
+      long_STOPPING: |-
+        The GCE instance is stopping. Wait until is completely stopped to
+        run `vagrant up` and start it.
+
       short_RUNNING: |-
         running
       long_RUNNING: |-
@@ -114,6 +128,5 @@ en:
       short_TERMINATED: |-
         terminated
       long_TERMINATED: |-
-        The Google instance failed for some reason or was shutdown.  This is
-        a permanent status, and the only way to repair the instance is to
-        delete it with `vagrant destroy`.
+        The Google instance was halted or failed for some reason. You can
+        attempt to restart the instance by running `vagrant up`.
