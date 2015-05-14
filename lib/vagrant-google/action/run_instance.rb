@@ -66,6 +66,7 @@ module VagrantPlugins
           env[:ui].info(" -- Autodelete Disk: #{autodelete_disk}")
           begin
             request_start_time = Time.now().to_i
+            #Check if specified external ip is available
             if !external_ip.nil?
               address = env[:google_compute].addresses.get_by_ip_address(external_ip)
               if !address.nil?
