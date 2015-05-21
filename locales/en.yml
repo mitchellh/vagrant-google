@@ -33,6 +33,14 @@ en:
       Warning! The Google provider doesn't support any of the Vagrant
       high-level network configurations (`config.vm.network`). They
       will be silently ignored.
+    warn_ssh_vagrant_user: |-
+      Warning! SSH credentials are not set (`ssh.username`, `ssh.private_key`).
+      Unless Vagrant's default insecure private key is added to GCE metadata,
+      "vagrant up" will timeout while trying to estabilish an ssh connection
+      to the instance.
+      NOTE! Adding Vagrant private key to GCE metadata is heavily discouraged,
+      since it potentially allows anyone to connect to your instances, 
+      including those not managed by Vagrant.  
     will_not_destroy: |-
       The instance '%{name}' will not be destroyed, since the confirmation
       was declined.

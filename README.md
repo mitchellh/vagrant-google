@@ -117,8 +117,25 @@ Note that you can use the more standard `~/.ssh/id_rsa[.pub]` files, but you
 will need to manually add your public key to the GCE metadata service so your
 VMs will pick up the the key. Note that they public key is typically
 prefixed with the username, so that the daemon on the VM adds the public key
-to the correct user account.  See the blow links for more help with SSH and
-GCE VMs.
+to the correct user account.
+
+Additionally, you will probably need to add the key and username to override
+settings in your Vagrantfile like so:
+
+```ruby
+config.vm.provider :google do |google, override|
+    
+    #...google provider settings are skipped...
+    
+    override.ssh.username = "testuser"
+    override.ssh.private_key_path = "~/.ssh/id_rsa"
+    
+    #...google provider settings are skipped...
+
+end
+```
+
+See the links below for more help with SSH and GCE VMs.
 
   * https://cloud.google.com/compute/docs/instances#sshing
   * https://cloud.google.com/compute/docs/console#sshkeys
