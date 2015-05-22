@@ -66,6 +66,10 @@ module VagrantPlugins
           env[:ui].info(" -- Autodelete Disk: #{autodelete_disk}")
           begin
             request_start_time = Time.now().to_i
+            #Warn on ssh-key overrides
+            if env[:machine].config.ssh.username.nil?
+               env[:ui].warn(I18n.t("vagrant_google.warn_ssh_vagrant_user"))
+            end
             #Check if specified external ip is available
             if !external_ip.nil?
               address = env[:google_compute].addresses.get_by_ip_address(external_ip)
