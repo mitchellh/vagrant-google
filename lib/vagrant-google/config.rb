@@ -113,6 +113,11 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :zone
 
+      # The list of access controls for service accounts.
+      #
+      # @return [Array]
+      attr_accessor :service_accounts
+
       def initialize(zone_specific=false)
         @google_client_email = UNSET_VALUE
         @google_key_location = UNSET_VALUE
@@ -132,6 +137,7 @@ module VagrantPlugins
         @autodelete_disk     = UNSET_VALUE
         @instance_ready_timeout = UNSET_VALUE
         @zone                = UNSET_VALUE
+        @service_accounts    = UNSET_VALUE
 
         # Internal state (prefix with __ so they aren't automatically
         # merged)
@@ -245,6 +251,9 @@ module VagrantPlugins
 
         # Default instance_ready_timeout
         @instance_ready_timeout = 20 if @instance_ready_timeout == UNSET_VALUE
+
+        # Default service_accounts
+        @service_accounts = nil if @service_accounts == UNSET_VALUE
 
         # Compile our zone specific configurations only within
         # NON-zone-SPECIFIC configurations.
