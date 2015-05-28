@@ -308,7 +308,7 @@ $ bundle exec rake acceptance:run
 - Since those are live instances, **you will be billed** for running them.
 
 ## Changelog
- * See [CHANGELOG.md](https://github.com/mitchellh/vagrant-google/blob/master/CHANGELOG.md)
+See [CHANGELOG.md](CHANGELOG.md)
 
-## Licensing
- * See [LICENSE](https://github.com/mitchellh/vagrant-google/blob/master/LICENSE)
+## License
+Apache 2.0; see [LICENSE](LICENSE) for details.
