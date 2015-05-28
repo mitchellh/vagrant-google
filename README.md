@@ -4,7 +4,7 @@ This is a [Vagrant](http://www.vagrantup.com) 1.2+ plugin that adds an
 [Google Compute Engine](http://cloud.google.com/compute/) (GCE) provider to
 Vagrant, allowing Vagrant to control and provision instances in GCE.
 
-**NOTE:** This plugin requires Vagrant 1.2+,
+**NOTE:** This plugin requires Vagrant 1.2+.
 
 ## Features
 
@@ -91,8 +91,8 @@ end
 
 And then run `vagrant up --provider=google`.
 
-This will start an Debian 7 (Wheezy) instance in the us-central1-f zone,
-with an n1-standard-1 machine, and the "default" network within your project.
+This will start a Debian 7 (Wheezy) instance in the `us-central1-f` zone,
+with an `n1-standard-1` machine, and the `"default"` network within your project.
 And assuming your SSH information (see below) was filled in properly within
 your Vagrantfile, SSH and provisioning will work as well.
 
@@ -110,7 +110,7 @@ respective `~/.ssh/authorized_keys` entries.  Most new GCE users will use the
 [Cloud SDK](https://cloud.google.com/sdk/) `gcloud compute` utility when first
 getting started with GCE. This utility has built in support for creating SSH
 key pairs, and uploading the public key to the GCE metadata service.  By
-default, `glcoud compute` creates a key pair named
+default, `gcloud compute` creates a key pair named
 `~/.ssh/google_compute_engine[.pub]`.
 
 Note that you can use the more standard `~/.ssh/id_rsa[.pub]` files, but you
@@ -143,8 +143,8 @@ See the links below for more help with SSH and GCE VMs.
 ## Box Format
 
 Every provider in Vagrant must introduce a custom box format. This provider
-introduces `google` boxes. You can view an example box in the
-[example_box/](https://github.com/mitchellh/vagrant-google/tree/master/example_box).
+introduces `google` boxes. You can view an example box in
+[example_boxes/](https://github.com/mitchellh/vagrant-google/tree/master/example_boxes).
 That directory also contains instructions on how to build a box.
 
 The box format is basically just the required `metadata.json` file along with
@@ -173,7 +173,7 @@ This provider exposes quite a few provider-specific configuration options:
  "default".
 * `tags` - An array of tags to apply to this instance.
 * `zone` - The zone name where the instance will be created.
-* `can_ip_forward` - Boolean wether to enable IP Forwarding.
+* `can_ip_forward` - Boolean whether to enable IP Forwarding.
 * `external_ip` - The external IP address to use.
 
 These can be set like typical provider-specific configuration:
@@ -222,10 +222,10 @@ end
 
 The zone-specific configurations will override the top-level configurations
 when that zone is used. They otherwise inherit the top-level configurations,
-as you would probably expect.
+as you would expect.
 
-There are a few example Vagrantfile's located in the
-[vagrantfile_examples/ directory](https://github.com/mitchellh/vagrant-google/tree/master/vagrantfile_examples/)
+There are a few example Vagrantfiles located in the
+[vagrantfile_examples/ directory](https://github.com/mitchellh/vagrant-google/tree/master/vagrantfile_examples/).
 
 ## Networks
 
@@ -240,21 +240,21 @@ There is minimal support for synced folders. Upon `vagrant up`,
 `rsync` (if available) to uni-directionally sync the folder to the remote
 machine over SSH.
 
-This is good enough for all built-in Vagrant provisioners (shell, chef, and
-puppet) to work!
+This is good enough for all built-in Vagrant provisioners (`shell`, `chef`, and
+`puppet`) to work!
 
 ## Development
 
 To work on the `vagrant-google` plugin, clone this repository out, and use
 [Bundler](http://gembundler.com) to get the dependencies:
 
-```
+```sh
 $ bundle
 ```
 
 Once you have the dependencies, verify the unit tests pass with `rake`:
 
-```
+```sh
 $ bundle exec rake
 ```
 
@@ -263,7 +263,7 @@ the plugin without installing it into your Vagrant environment by just
 creating a `Vagrantfile` in the top level of this directory (it is gitignored)
 that uses it, and uses bundler to execute Vagrant:
 
-```
+```sh
 $ bundle exec vagrant up --provider=google
 ```
 
@@ -276,7 +276,7 @@ Before you start acceptance tests, you'll need to set the authentication variabl
 
 Next, export your GCP authentication data:
 
-```
+```sh
 export GOOGLE_CLIENT_EMAIL="your-google_service_account_email@developer.gserviceaccount.com"
 export GOOGLE_PROJECT_ID="your-google-cloud-project-id"
 export GOOGLE_JSON_KEY_LOCATION="/full/path/to/your/private-key.json"
@@ -286,8 +286,8 @@ export GOOGLE_SSH_KEY_LOCATION="/home/testuser/.ssh/id_rsa"
 ```
 
 After, you can run acceptance tests by running the `run` task in `acceptance` namespace:
-```
-bundle exec rake acceptance:run
+```sh
+$ bundle exec rake acceptance:run
 ```
 
 ## Changelog
