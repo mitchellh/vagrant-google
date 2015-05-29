@@ -111,6 +111,8 @@ module VagrantPlugins
       #
       # @return [Array]
       attr_accessor :service_accounts
+      alias :scopes :service_accounts
+      alias :scopes= :service_accounts=
 
       def initialize(zone_specific=false)
         @google_client_email = UNSET_VALUE

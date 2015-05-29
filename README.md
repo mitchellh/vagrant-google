@@ -124,12 +124,12 @@ settings in your Vagrantfile like so:
 
 ```ruby
 config.vm.provider :google do |google, override|
-    
+
     #...google provider settings are skipped...
-    
+
     override.ssh.username = "testuser"
     override.ssh.private_key_path = "~/.ssh/id_rsa"
-    
+
     #...google provider settings are skipped...
 
 end
@@ -175,6 +175,10 @@ This provider exposes quite a few provider-specific configuration options:
 * `zone` - The zone name where the instance will be created.
 * `can_ip_forward` - Boolean whether to enable IP Forwarding.
 * `external_ip` - The external IP address to use.
+* `service_accounts` or `scopes` - An array of OAuth2 account scopes for
+  services that the instance will have access to. Those can be both full API
+  scopes and just endpoint aliases (the part after `...auth/`), for example:
+  `['bigquery', 'https://www.googleapis.com/auth/compute']`.
 
 These can be set like typical provider-specific configuration:
 
@@ -214,6 +218,7 @@ Vagrant.configure("2") do |config|
         zone1f.machine_type = "n1-standard-4"
         zone1f.zone = "us-central1-f"
         zone1f.metadata = {'custom' => 'metadata', 'testing' => 'foobarbaz'}
+        zone1f.scopes = ['bigquery', 'monitoring', 'https://www.googleapis.com/auth/compute']
         zone1f.tags = ['web', 'app1']
     end
   end
