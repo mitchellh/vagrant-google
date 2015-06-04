@@ -101,12 +101,6 @@ module VagrantPlugins
       # @return [Int]
       attr_accessor :instance_ready_timeout
 
-      # The tags for the machine.
-      # TODO(erjohnso): not supported in fog
-      #
-      # @return [Hash<String, String>]
-      #attr_accessor :tags
-
       # The zone to launch the instance into. If nil, it will
       # use the default us-central1-f.
       #
@@ -117,6 +111,8 @@ module VagrantPlugins
       #
       # @return [Array]
       attr_accessor :service_accounts
+      alias :scopes :service_accounts
+      alias :scopes= :service_accounts=
 
       def initialize(zone_specific=false)
         @google_client_email = UNSET_VALUE
