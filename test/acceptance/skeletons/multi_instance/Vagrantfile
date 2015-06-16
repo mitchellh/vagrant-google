@@ -1,0 +1,29 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "basic"
+
+  config.vm.define :z1a do |z1a|
+    z1a.vm.provider :google do |google, override|
+      google.zone = "europe-west1-c"
+
+      google.zone_config "europe-west1-c" do |z1a_zone|
+        z1a_zone.name = "vagrant-testing-acceptance-multi-z1a"
+        z1a_zone.image = "debian-7-wheezy-v20150603"
+        z1a_zone.machine_type = "n1-standard-1"
+        z1a_zone.zone = "europe-west1-c"
+      end
+    end
+  end
+
+  config.vm.define :z1b do |z1b|
+    z1b.vm.provider :google do |google, override|
+      google.zone = "europe-west1-d"
+
+      google.zone_config "europe-west1-d" do |z1b_zone|
+        z1b_zone.name = "vagrant-testing-acceptance-multi-z1b"
+        z1b_zone.image = "debian-7-wheezy-v20150603"
+        z1b_zone.machine_type = "n1-standard-2"
+        z1b_zone.zone = "europe-west1-d"
+      end
+    end
+  end
+end

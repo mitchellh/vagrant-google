@@ -1,3 +1,17 @@
+def colorize(text, color_code)
+    puts "\033[#{color_code}m#{text}\033[0m"
+end
+
+{
+:red      => 31,
+:green    => 32,
+:yellow   => 33,
+}.each do |key, color_code|
+  define_method key do |text|
+    colorize(text, color_code)
+  end
+end
+
 namespace :acceptance do
 
   desc "shows components that can be tested separately"
@@ -8,7 +22,7 @@ namespace :acceptance do
   desc "runs acceptance tests using vagrant-spec"
   task :run do
 
-    puts "NOTE: For acceptance tests to be functional, correct ssh key needs to be added to GCE metadata."
+    yellow "NOTE: For acceptance tests to be functional, correct ssh key needs to be added to GCE metadata.\033[0m"
 
     if !ENV["GOOGLE_JSON_KEY_LOCATION"] && !ENV["GOOGLE_KEY_LOCATION"]
       abort ("Environment variables GOOGLE_JSON_KEY_LOCATION or GOOGLE_KEY_LOCATION are not set. Aborting.")
@@ -27,7 +41,10 @@ namespace :acceptance do
     end
 
     components = %w(
+      scopes
+      multi_instance
       provisioner/shell
+      provisioner/chef-solo
     ).map{ |s| "provider/google/#{s}" }
 
     command = "bundle exec vagrant-spec test --components=#{components.join(" ")}"
