@@ -18,9 +18,9 @@
 #  1) Launch both instances and then destroy both
 #     $ vagrant up --provider=google
 #     $ vagrant destroy
-#  2) Launch one instance 'z1a' and then destory the same
-#     $ vagrant up z1a --provider=google
-#     $ vagrant destroy z1a
+#  2) Launch one instance 'z1c' and then destory the same
+#     $ vagrant up z1c --provider=google
+#     $ vagrant destroy z1c
 
 # Customize these global variables
 $GOOGLE_PROJECT_ID = "YOUR_GOOGLE_CLOUD_PROJECT_ID"
@@ -51,44 +51,43 @@ Vagrant.configure("2") do |config|
   config.vm.box = "gce"
   config.vm.provision :shell, :inline => $PROVISION_DEBIAN
 
-  config.vm.define :z1a do |z1a|
-    z1a.vm.provider :google do |google, override|
+  config.vm.define :z1c do |z1c|
+    z1c.vm.provider :google do |google, override|
       google.google_project_id = $GOOGLE_PROJECT_ID
       google.google_client_email = $GOOGLE_CLIENT_EMAIL
       google.google_json_key_location = $GOOGLE_JSON_KEY_LOCATION
-      google.zone = "us-central1-a"
+      google.zone = "us-central1-c"
 
       override.ssh.username = $LOCAL_USER
       override.ssh.private_key_path = $LOCAL_SSH_KEY
 
-      google.zone_config "us-central1-a" do |z1a_zone|
-        z1a_zone.name = "z1a"
-        z1a_zone.image = "debian-7-wheezy-v20150127"
-        z1a_zone.machine_type = "n1-standard-1"
-        z1a_zone.zone = "us-central1-a"
-        z1a_zone.metadata = {"zone" => "US Central 1a"}
+      google.zone_config "us-central1-c" do |z1c_zone|
+        z1c_zone.name = "z1c"
+        z1c_zone.image = "debian-7-wheezy-v20150603"
+        z1c_zone.machine_type = "n1-standard-1"
+        z1c_zone.zone = "us-central1-c"
+        z1c_zone.metadata = {"zone" => "US Central 1c"}
       end
     end
   end
 
-  config.vm.define :z1b do |z1b|
-    z1b.vm.provider :google do |google, override|
+  config.vm.define :z1f do |z1f|
+    z1f.vm.provider :google do |google, override|
       google.google_project_id = $GOOGLE_PROJECT_ID
       google.google_client_email = $GOOGLE_CLIENT_EMAIL
       google.google_json_key_location = $GOOGLE_JSON_KEY_LOCATION
-      google.zone = "us-central1-b"
+      google.zone = "us-central1-f"
 
       override.ssh.username = $LOCAL_USER
       override.ssh.private_key_path = $LOCAL_SSH_KEY
 
-      google.zone_config "us-central1-b" do |z1b_zone|
-        z1b_zone.name = "z1b"
-        z1b_zone.image = "debian-7-wheezy-v20150127"
-        z1b_zone.machine_type = "n1-standard-2"
-        z1b_zone.zone = "us-central1-b"
-        z1b_zone.metadata = {"zone" => "US Central 1b"}
+      google.zone_config "us-central1-f" do |z1f_zone|
+        z1f_zone.name = "z1f"
+        z1f_zone.image = "debian-7-wheezy-v20150603"
+        z1f_zone.machine_type = "n1-standard-2"
+        z1f_zone.zone = "us-central1-f"
+        z1f_zone.metadata = {"zone" => "US Central 1f"}
       end
-
     end
   end
 end
