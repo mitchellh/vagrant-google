@@ -175,6 +175,9 @@ This provider exposes quite a few provider-specific configuration options:
 * `zone` - The zone name where the instance will be created.
 * `can_ip_forward` - Boolean whether to enable IP Forwarding.
 * `external_ip` - The external IP address to use.
+* `preemptible` - Boolean whether to enable preemptibility. Default is false.
+* `auto_restart` - Boolean whether to enable auto_restart. Default is true.  
+* `on_host_maintenance` - What to do on host maintenance. Default is "MIGRATE".  
 * `service_accounts` or `scopes` - An array of OAuth2 account scopes for
   services that the instance will have access to. Those can be both full API
   scopes and just endpoint aliases (the part after `...auth/`), for example:
