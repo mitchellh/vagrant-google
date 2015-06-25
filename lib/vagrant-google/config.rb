@@ -81,7 +81,7 @@ module VagrantPlugins
       # @return [Array]
       attr_accessor :tags
 
-      # wether to enable ip forwarding
+      # whether to enable ip forwarding
       #
       # @return Boolean
       attr_accessor :can_ip_forward
@@ -91,7 +91,7 @@ module VagrantPlugins
       # @return String
       attr_accessor :external_ip
 
-      # wether to autodelete disk on instance delete
+      # whether to autodelete disk on instance delete
       #
       # @return Boolean
       attr_accessor :autodelete_disk
