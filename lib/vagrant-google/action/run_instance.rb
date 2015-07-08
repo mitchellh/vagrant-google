@@ -135,9 +135,13 @@ module VagrantPlugins
             }
             server = env[:google_compute].servers.create(defaults)
             @logger.info("Machine '#{zone}:#{name}' created.")
+
+          #TODO(temikus): Clean up when fog-google homogenizes error handling.
           rescue Fog::Compute::Google::NotFound => e
             raise
           rescue Fog::Compute::Google::Error => e
+            raise Errors::FogError, :message => e.message
+          rescue Fog::Errors::Error => e
             raise Errors::FogError, :message => e.message
           end
 
