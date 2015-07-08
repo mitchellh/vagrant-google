@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project         = "vagrant-google"
 
-  s.add_runtime_dependency "fog-google", "0.0.5"
+  s.add_runtime_dependency "fog-google", "~> 0.0.7"
   s.add_runtime_dependency "google-api-client"
   #s.add_runtime_dependency "pry"
   #s.add_runtime_dependency "pry-byebug"
