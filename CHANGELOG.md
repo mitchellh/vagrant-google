@@ -1,3 +1,14 @@
+# 0.1.6 (Unreleased)
+
+* Added support for service account definitions [tcr]
+* Added support for preemptible instances [jcdang]
+* Implemented auto_restart and on_host_maintenance options [jcdang]
+* Implemented vagrant halt and reload actions [temikus]
+* Switched to fog-google metagem [temikus]
+* Added a linter and custom acceptance tests [temikus]
+* Updated documentation and examples [mbrukman, temikus]
+* Miscellaneous UI/UX updates and bugfixes [temikus]
+
 # 0.1.5 (May 2015)
 
 * Added support for JSON private keys [temikus]
