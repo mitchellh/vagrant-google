@@ -66,6 +66,11 @@ en:
         Config must specify only one key location.
       google_project_id_required: |-
         A Google Cloud Project ID is required via "google_project_id"
+      auto_restart_invalid_on_preemptible: |-
+        "auto_restart" option must be set to "false" for preemptible instances.
+      on_host_maintenance_invalid_on_preemptible: |-
+        "on_host_maintenance" option must be set to "TERMINATE" for preemptible
+        instances.
 #-------------------------------------------------------------------------------
 # Translations for exception classes
 #-------------------------------------------------------------------------------

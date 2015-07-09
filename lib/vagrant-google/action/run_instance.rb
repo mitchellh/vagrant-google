@@ -35,20 +35,23 @@ module VagrantPlugins
           zone = env[:machine].provider_config.zone
 
           # Get the configs
-          zone_config        = env[:machine].provider_config.get_zone_config(zone)
-          image              = zone_config.image
-          name               = zone_config.name
-          machine_type       = zone_config.machine_type
-          disk_size          = zone_config.disk_size
-          disk_name          = zone_config.disk_name
-          disk_type          = zone_config.disk_type
-          network            = zone_config.network
-          metadata           = zone_config.metadata
-          tags               = zone_config.tags
-          can_ip_forward     = zone_config.can_ip_forward
-          external_ip        = zone_config.external_ip
-          autodelete_disk    = zone_config.autodelete_disk
-          service_accounts   = zone_config.service_accounts
+          zone_config         = env[:machine].provider_config.get_zone_config(zone)
+          image               = zone_config.image
+          name                = zone_config.name
+          machine_type        = zone_config.machine_type
+          disk_size           = zone_config.disk_size
+          disk_name           = zone_config.disk_name
+          disk_type           = zone_config.disk_type
+          network             = zone_config.network
+          metadata            = zone_config.metadata
+          tags                = zone_config.tags
+          can_ip_forward      = zone_config.can_ip_forward
+          external_ip         = zone_config.external_ip
+          preemptible         = zone_config.preemptible
+          auto_restart        = zone_config.auto_restart
+          on_host_maintenance = zone_config.on_host_maintenance
+          autodelete_disk     = zone_config.autodelete_disk
+          service_accounts    = zone_config.service_accounts
 
           # Launch!
           env[:ui].info(I18n.t("vagrant_google.launching_instance"))
@@ -64,8 +67,11 @@ module VagrantPlugins
           env[:ui].info(" -- Tags:            '#{tags}'")
           env[:ui].info(" -- IP Forward:      #{can_ip_forward}")
           env[:ui].info(" -- External IP:     #{external_ip}")
+          env[:ui].info(" -- Preemptible:     #{preemptible}")
+          env[:ui].info(" -- Auto Restart:    #{auto_restart}")
+          env[:ui].info(" -- On Maintenance:  #{on_host_maintenance}")
           env[:ui].info(" -- Autodelete Disk: #{autodelete_disk}")
-          env[:ui].info(" -- Scopes:    #{service_accounts}")
+          env[:ui].info(" -- Scopes:          #{service_accounts}")
           begin
             request_start_time = Time.now().to_i
             #Warn on ssh-key overrides
@@ -130,6 +136,9 @@ module VagrantPlugins
               :tags               => tags,
               :can_ip_forward     => can_ip_forward,
               :external_ip        => external_ip,
+              :preemptible        => preemptible,
+              :auto_restart       => auto_restart,
+              :on_host_maintenance=> on_host_maintenance,
               :disks              => [disk.get_as_boot_disk(true, autodelete_disk)],
               :service_accounts   => service_accounts,
             }

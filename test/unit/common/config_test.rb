@@ -31,18 +31,21 @@ describe VagrantPlugins::Google::Config do
     end
     t = Time.now
 
-    its("name")              { should == "i-#{t.year}#{t.month.to_s.rjust(2,'0')}#{t.day.to_s.rjust(2,'0')}#{t.hour.to_s.rjust(2,'0')}" }
-    its("image")             { should == "debian-7-wheezy-v20150127" }
-    its("zone")              { should == "us-central1-f" }
-    its("network")           { should == "default" }
-    its("machine_type")      { should == "n1-standard-1" }
-    its("disk_size")         { should == 10 }
-    its("disk_name")         { should be_nil }
-    its("disk_type")         { should == "pd-standard" }
+    its("name")                   { should == "i-#{t.year}#{t.month.to_s.rjust(2,'0')}#{t.day.to_s.rjust(2,'0')}#{t.hour.to_s.rjust(2,'0')}" }
+    its("image")                  { should == "debian-7-wheezy-v20150127" }
+    its("zone")                   { should == "us-central1-f" }
+    its("network")                { should == "default" }
+    its("machine_type")           { should == "n1-standard-1" }
+    its("disk_size")              { should == 10 }
+    its("disk_name")              { should be_nil }
+    its("disk_type")              { should == "pd-standard" }
     its("instance_ready_timeout") { should == 20 }
-    its("metadata")          { should == {} }
-    its("tags")              { should == [] }
-    its("service_accounts")  { should == nil }
+    its("metadata")               { should == {} }
+    its("tags")                   { should == [] }
+    its("service_accounts")       { should == nil }
+    its("preemptible")            { !should }
+    its("auto_restart")           { should }
+    its("on_host_maintenance")    { should == "MIGRATE" }
   end
 
   describe "overriding defaults" do
@@ -58,6 +61,24 @@ describe VagrantPlugins::Google::Config do
         instance.finalize!
         instance.send(attribute).should == "foo"
       end
+    end
+
+    it "should raise error when preemptible and auto_restart is true" do
+      instance.preemptible = true
+      instance.auto_restart = true
+      expected_error = "en.vagrant_google.config.auto_restart_invalid_on_preemptible"
+      instance.finalize!
+      errors = instance.validate("foo")["Google Provider"]
+      errors.inject(false) { |cum, x| cum or x.include?(expected_error) }.should == true
+    end
+
+    it "should raise error when preemptible and on_host_maintenance is not TERMINATE" do
+      instance.preemptible = true
+      instance.on_host_maintenance = "MIGRATE"
+      expected_error = "en.vagrant_google.config.on_host_maintenance_invalid_on_preemptible"
+      instance.finalize!
+      errors = instance.validate("foo")["Google Provider"]
+      errors.inject(false) { |cum, x| cum or x.include?(expected_error) }.should == true
     end
   end
 
@@ -243,6 +264,34 @@ describe VagrantPlugins::Google::Config do
           "one" => "foo",
           "two" => "bar"
         }
+      end
+    end
+
+    describe "zone_preemptible" do
+      let(:zone) { "hashi-zone" }
+      subject do
+        instance.zone = zone
+        instance.zone_config zone do |config|
+          config.preemptible = true
+          config.auto_restart = true
+          config.on_host_maintenance = "MIGRATE"
+        end
+
+        instance.tap do |o|
+          o.finalize!
+        end
+      end
+
+      it "should fail auto_restart validation" do
+        expected_error = "en.vagrant_google.config.auto_restart_invalid_on_preemptible"
+        errors = subject.validate("foo")["Google Provider"]
+        errors.inject(false) { |cum, x| cum or x.include?(expected_error) }.should == true
+      end
+
+      it "should fail on_host_maintenance validation" do
+        expected_error = "en.vagrant_google.config.on_host_maintenance_invalid_on_preemptible"
+        errors = subject.validate("foo")["Google Provider"]
+        errors.inject(false) { |cum, x| cum or x.include?(expected_error) }.should == true
       end
     end
   end

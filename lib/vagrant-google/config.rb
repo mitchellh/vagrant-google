@@ -81,7 +81,7 @@ module VagrantPlugins
       # @return [Array]
       attr_accessor :tags
 
-      # wether to enable ip forwarding
+      # whether to enable ip forwarding
       #
       # @return Boolean
       attr_accessor :can_ip_forward
@@ -91,10 +91,30 @@ module VagrantPlugins
       # @return String
       attr_accessor :external_ip
 
-      # wether to autodelete disk on instance delete
+      # whether to autodelete disk on instance delete
       #
       # @return Boolean
       attr_accessor :autodelete_disk
+
+      # Availability policy
+      # whether to run instance as preemptible
+      #
+      # @return Boolean
+      attr_accessor :preemptible
+
+      # Availability policy
+      # whether to have instance restart on failures
+      #
+      # @return Boolean
+      attr_accessor :auto_restart
+
+      # Availability policy
+      # specify what to do when infrastructure maintenance events occur
+      # Options: MIGRATE, TERMINATE
+      # The default is MIGRATE.
+      #
+      # @return String
+      attr_accessor :on_host_maintenance
 
       # The timeout value waiting for instance ready
       #
@@ -131,6 +151,9 @@ module VagrantPlugins
         @can_ip_forward      = UNSET_VALUE
         @external_ip         = UNSET_VALUE
         @autodelete_disk     = UNSET_VALUE
+        @preemptible         = UNSET_VALUE
+        @auto_restart        = UNSET_VALUE
+        @on_host_maintenance = UNSET_VALUE
         @instance_ready_timeout = UNSET_VALUE
         @zone                = UNSET_VALUE
         @service_accounts    = UNSET_VALUE
@@ -245,6 +268,15 @@ module VagrantPlugins
         # external_ip defaults to nil
         @external_ip = nil if @external_ip == UNSET_VALUE
 
+        # preemptible defaults to false
+        @preemptible = false if @preemptible == UNSET_VALUE
+
+        # auto_restart defaults to true
+        @auto_restart = true if @auto_restart == UNSET_VALUE
+
+        # on_host_maintenance defaults to MIGRATE
+        @on_host_maintenance = "MIGRATE" if @on_host_maintenance == UNSET_VALUE
+
         # Default instance_ready_timeout
         @instance_ready_timeout = 20 if @instance_ready_timeout == UNSET_VALUE
 
@@ -293,6 +325,12 @@ module VagrantPlugins
           errors << I18n.t("vagrant_google.config.google_key_location_required") if \
             config.google_key_location.nil? and config.google_json_key_location.nil?
 
+          if config.preemptible
+            errors << I18n.t("vagrant_google.config.auto_restart_invalid_on_preemptible") if \
+             config.auto_restart
+            errors << I18n.t("vagrant_google.config.on_host_maintenance_invalid_on_preemptible") unless \
+             config.on_host_maintenance == "TERMINATE"
+          end
         end
 
         errors << I18n.t("vagrant_google.config.image_required") if config.image.nil?
