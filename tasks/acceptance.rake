@@ -41,8 +41,9 @@ namespace :acceptance do
     end
 
     components = %w(
-      scopes
       multi_instance
+      preemptible
+      scopes
       provisioner/shell
       provisioner/chef-solo
     ).map{ |s| "provider/google/#{s}" }
