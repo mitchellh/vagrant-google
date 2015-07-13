@@ -174,7 +174,7 @@ This provider exposes quite a few provider-specific configuration options:
 * `tags` - An array of tags to apply to this instance.
 * `zone` - The zone name where the instance will be created.
 * `can_ip_forward` - Boolean whether to enable IP Forwarding.
-* `external_ip` - The external IP address to use.
+* `external_ip` - The external IP address to use (supports names).
 * `preemptible` - Boolean whether to enable preemptibility. Default is false.
 * `auto_restart` - Boolean whether to enable auto_restart. Default is true.  
 * `on_host_maintenance` - What to do on host maintenance. Default is "MIGRATE".  

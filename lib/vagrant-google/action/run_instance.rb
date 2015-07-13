@@ -74,21 +74,13 @@ module VagrantPlugins
           env[:ui].info(" -- Scopes:          #{service_accounts}")
           begin
             request_start_time = Time.now().to_i
-            #Warn on ssh-key overrides
+            # Warn on ssh-key overrides
             if env[:machine].config.ssh.username.nil?
               env[:ui].warn(I18n.t("vagrant_google.warn_ssh_vagrant_user"))
             end
-            #Check if specified external ip is available
-            if !external_ip.nil?
-              address = env[:google_compute].addresses.get_by_ip_address(external_ip)
-              if !address.nil?
-                if address.in_use?
-                  raise Errors::ExternalIpError,
-                        :externalip => external_ip
-                end
-              end
-            end
-            #Check if disk type is available in the zone
+            # Check if specified external ip is available
+            external_ip = get_external_ip(env, external_ip) if external_ip
+            # Check if disk type is available in the zone
             if !disk_type.nil?
               disk_type_obj = env[:google_compute].list_disk_types(zone).body['items'].select { |dt| dt['name'] == disk_type } || []
               if !disk_type_obj.empty?
@@ -200,6 +192,20 @@ module VagrantPlugins
           destroy_env[:config_validate] = false
           destroy_env[:force_confirm_destroy] = true
           env[:action_runner].run(Action.action_destroy, destroy_env)
+        end
+
+        def get_external_ip(env, external_ip)
+          address = env[:google_compute].addresses.get_by_ip_address_or_name(external_ip)
+          if address.nil?
+            raise Errors::ExternalIpDoesNotExistError,
+                  :externalip => external_ip
+          end
+          if address.in_use?
+            raise Errors::ExternalIpInUseError,
+                  :externalip => external_ip
+          end
+          # Resolve the name to IP address
+          address.address
         end
       end
     end
