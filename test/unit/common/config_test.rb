@@ -29,9 +29,8 @@ describe VagrantPlugins::Google::Config do
         o.finalize!
       end
     end
-    t = Time.now
 
-    its("name")                   { should == "i-#{t.strftime("%Y%m%d%H")}" }
+    its("name")                   { should match "i-[0-9]{10}-[0-9a-f]{4}" }
     its("image")                  { should == "debian-7-wheezy-v20150127" }
     its("zone")                   { should == "us-central1-f" }
     its("network")                { should == "default" }

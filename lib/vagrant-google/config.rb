@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 require "vagrant"
+require "securerandom"
 
 module VagrantPlugins
   module Google
@@ -250,9 +251,10 @@ module VagrantPlugins
         @disk_type = "pd-standard" if @disk_type == UNSET_VALUE
 
         # Instance name defaults to a new datetime value (hour granularity)
-        t = Time.now
-        @name = "i-#{t.year}#{t.month.to_s.rjust(2,'0')}#{t.day.to_s.rjust(2,'0')}#{t.hour.to_s.rjust(2,'0')}" if @name == UNSET_VALUE
-
+        if @name == UNSET_VALUE
+          t = Time.now
+          @name = "i-#{t.strftime("%Y%m%d%H")}-" + SecureRandom.hex(4)
+        end
         # Network defaults to 'default'
         @network = "default" if @network == UNSET_VALUE
 
