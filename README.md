@@ -176,8 +176,8 @@ This provider exposes quite a few provider-specific configuration options:
 * `can_ip_forward` - Boolean whether to enable IP Forwarding.
 * `external_ip` - The external IP address to use.
 * `preemptible` - Boolean whether to enable preemptibility. Default is false.
-* `auto_restart` - Boolean whether to enable auto_restart. Default is true.  
-* `on_host_maintenance` - What to do on host maintenance. Default is "MIGRATE".  
+* `auto_restart` - Boolean whether to enable auto_restart. Default is true.
+* `on_host_maintenance` - What to do on host maintenance. Default is "MIGRATE".
 * `service_accounts` or `scopes` - An array of OAuth2 account scopes for
   services that the instance will have access to. Those can be both full API
   scopes and just endpoint aliases (the part after `...auth/`), for example:
@@ -247,9 +247,7 @@ There is minimal support for synced folders. Upon `vagrant up`,
 `vagrant reload`, and `vagrant provision`, the Google provider will use
 `rsync` (if available) to uni-directionally sync the folder to the remote
 machine over SSH.
-
-This is good enough for all built-in Vagrant provisioners (`shell`, `chef`, and
-`puppet`) to work!
+See [Vagrant Synced folders: rsync](https://docs.vagrantup.com/v2/synced-folders/rsync.html)
 
 ## Development
 
