@@ -3,6 +3,8 @@
 * Added support for service account definitions [tcr]
 * Added support for preemptible instances [jcdang]
 * Implemented auto_restart and on_host_maintenance options [jcdang]
+* Instance name now defaults to time + uuid [temikus]
+* Removed legacy rsync code, switched to Vagrant built-in SyncedFolders [temikus]
 * Implemented vagrant halt and reload actions [temikus]
 * Switched to fog-google metagem [temikus]
 * Added a linter and custom acceptance tests [temikus]
