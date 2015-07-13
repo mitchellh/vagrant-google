@@ -29,7 +29,7 @@ module VagrantPlugins
         def call(env)
           provider_config = env[:machine].provider_config
 
-          #Build fog config
+          # Build fog config
           fog_config = {
             :provider            => :google,
             :google_project      => provider_config.google_project_id,

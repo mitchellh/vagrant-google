@@ -3,6 +3,7 @@
 * Added support for service account definitions [tcr]
 * Added support for preemptible instances [jcdang]
 * Implemented auto_restart and on_host_maintenance options [jcdang]
+* Added support for IP address specification by name [temikus]
 * Implemented vagrant halt and reload actions [temikus]
 * Switched to fog-google metagem [temikus]
 * Added a linter and custom acceptance tests [temikus]

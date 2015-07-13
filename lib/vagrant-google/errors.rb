@@ -28,8 +28,12 @@ module VagrantPlugins
         error_key(:fog_error)
       end
 
-      class ExternalIpError < VagrantGoogleError
+      class ExternalIpInUseError < VagrantGoogleError
         error_key(:external_ip_error)
+      end
+
+      class ExternalIpDoesNotExistError < VagrantGoogleError
+        error_key(:external_ip_does_not_exist_error)
       end
 
       class InstanceReadyTimeout < VagrantGoogleError

@@ -20,7 +20,7 @@ module VagrantPlugins
         end
 
         def call(env)
-          #Default SSH forward always exists so "> 1"
+          # Default SSH forward always exists so "> 1"
           if env[:machine].config.vm.networks.length > 1
             env[:ui].warn(I18n.t("vagrant_google.warn_networks"))
           end
