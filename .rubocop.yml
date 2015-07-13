@@ -1,2 +1,6 @@
 # Importing TODO list to sanely lint new submissions.
 inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+  - './Vagrantfile'

@@ -7,7 +7,7 @@ require "vagrant"
 require "vagrant-google"
 
 # Add the test directory to the load path
-$:.unshift File.expand_path("../../", __FILE__)
+$LOAD_PATH.unshift File.expand_path("../../", __FILE__)
 
 # Do not buffer output
 $stdout.sync = true

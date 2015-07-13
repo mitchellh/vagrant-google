@@ -1,11 +1,11 @@
 def colorize(text, color_code)
-    puts "\033[#{color_code}m#{text}\033[0m"
+  puts "\033[#{color_code}m#{text}\033[0m"
 end
 
 {
-:red      => 31,
-:green    => 32,
-:yellow   => 33,
+  :red      => 31,
+  :green    => 32,
+  :yellow   => 33
 }.each do |key, color_code|
   define_method key do |text|
     colorize(text, color_code)
