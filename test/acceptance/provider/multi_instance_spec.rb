@@ -2,7 +2,7 @@
 shared_examples 'provider/multi_instance' do |provider, options|
   if !options[:box]
     raise ArgumentError,
-      "box option must be specified for provider: #{provider}"
+          "box option must be specified for provider: #{provider}"
   end
 
   include_context 'acceptance'

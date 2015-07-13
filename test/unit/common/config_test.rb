@@ -31,7 +31,7 @@ describe VagrantPlugins::Google::Config do
     end
     t = Time.now
 
-    its("name")                   { should == "i-#{t.year}#{t.month.to_s.rjust(2,'0')}#{t.day.to_s.rjust(2,'0')}#{t.hour.to_s.rjust(2,'0')}" }
+    its("name")                   { should == "i-#{t.strftime("%Y%m%d%H")}" }
     its("image")                  { should == "debian-7-wheezy-v20150127" }
     its("zone")                   { should == "us-central1-f" }
     its("network")                { should == "default" }
@@ -43,7 +43,7 @@ describe VagrantPlugins::Google::Config do
     its("metadata")               { should == {} }
     its("tags")                   { should == [] }
     its("service_accounts")       { should == nil }
-    its("preemptible")            { !should }
+    its("preemptible")            { should be_false }
     its("auto_restart")           { should }
     its("on_host_maintenance")    { should == "MIGRATE" }
   end
@@ -54,7 +54,7 @@ describe VagrantPlugins::Google::Config do
     # each of these attributes to "foo" in isolation, and reads the value
     # and asserts the proper result comes back out.
     [:name, :image, :zone, :instance_ready_timeout, :machine_type, :disk_size, :disk_name, :disk_type,
-      :network, :metadata, :can_ip_forward, :external_ip, :autodelete_disk].each do |attribute|
+     :network, :metadata, :can_ip_forward, :external_ip, :autodelete_disk].each do |attribute|
 
       it "should not default #{attribute} if overridden" do
         instance.send("#{attribute}=".to_sym, "foo")
@@ -69,7 +69,7 @@ describe VagrantPlugins::Google::Config do
       expected_error = "en.vagrant_google.config.auto_restart_invalid_on_preemptible"
       instance.finalize!
       errors = instance.validate("foo")["Google Provider"]
-      errors.inject(false) { |cum, x| cum or x.include?(expected_error) }.should == true
+      errors.inject(false) { |a, e| a or e.include?(expected_error) }.should == true
     end
 
     it "should raise error when preemptible and on_host_maintenance is not TERMINATE" do
@@ -78,7 +78,7 @@ describe VagrantPlugins::Google::Config do
       expected_error = "en.vagrant_google.config.on_host_maintenance_invalid_on_preemptible"
       instance.finalize!
       errors = instance.validate("foo")["Google Provider"]
-      errors.inject(false) { |cum, x| cum or x.include?(expected_error) }.should == true
+      errors.inject(false) { |a, e| a or e.include?(expected_error) }.should == true
     end
   end
 
@@ -285,13 +285,13 @@ describe VagrantPlugins::Google::Config do
       it "should fail auto_restart validation" do
         expected_error = "en.vagrant_google.config.auto_restart_invalid_on_preemptible"
         errors = subject.validate("foo")["Google Provider"]
-        errors.inject(false) { |cum, x| cum or x.include?(expected_error) }.should == true
+        errors.inject(false) { |a, e| a or e.include?(expected_error) }.should == true
       end
 
       it "should fail on_host_maintenance validation" do
         expected_error = "en.vagrant_google.config.on_host_maintenance_invalid_on_preemptible"
         errors = subject.validate("foo")["Google Provider"]
-        errors.inject(false) { |cum, x| cum or x.include?(expected_error) }.should == true
+        errors.inject(false) { |a, e| a or e.include?(expected_error) }.should == true
       end
     end
   end

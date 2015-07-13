@@ -33,7 +33,7 @@ module VagrantPlugins
           fog_config = {
             :provider            => :google,
             :google_project      => provider_config.google_project_id,
-            :google_client_email => provider_config.google_client_email,
+            :google_client_email => provider_config.google_client_email
           }
           if provider_config.google_json_key_location.nil?
             fog_config[:google_key_location] = provider_config.google_key_location

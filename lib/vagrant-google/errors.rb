@@ -20,7 +20,7 @@ module VagrantPlugins
         error_namespace("vagrant_google.errors")
       end
 
-      class DiskTypeError <VagrantGoogleError
+      class DiskTypeError < VagrantGoogleError
         error_key(:disk_type_error)
       end
 

@@ -1,8 +1,11 @@
 # This tests that account scopes can be configured correctly
+# Additionally, this verifies that the 'scopes' method alias is
+# available and gcloud GCE aliases can be used.
+# (see lib/fog/google/models/compute/server.rb in fog-google)
 shared_examples 'provider/scopes' do |provider, options|
   if !options[:box]
     raise ArgumentError,
-      "box option must be specified for provider: #{provider}"
+          "box option must be specified for provider: #{provider}"
   end
 
   include_context 'acceptance'

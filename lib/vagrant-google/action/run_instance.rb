@@ -76,7 +76,7 @@ module VagrantPlugins
             request_start_time = Time.now().to_i
             #Warn on ssh-key overrides
             if env[:machine].config.ssh.username.nil?
-               env[:ui].warn(I18n.t("vagrant_google.warn_ssh_vagrant_user"))
+              env[:ui].warn(I18n.t("vagrant_google.warn_ssh_vagrant_user"))
             end
             #Check if specified external ip is available
             if !external_ip.nil?
@@ -84,7 +84,7 @@ module VagrantPlugins
               if !address.nil?
                 if address.in_use?
                   raise Errors::ExternalIpError,
-                    :externalip => external_ip
+                        :externalip => external_ip
                 end
               end
             end
@@ -95,7 +95,7 @@ module VagrantPlugins
                 disk_type = disk_type_obj[0]["selfLink"]
               else
                 raise Errors::DiskTypeError,
-                  :disktype => disk_type
+                      :disktype => disk_type
               end
             end
 
@@ -125,22 +125,22 @@ module VagrantPlugins
             end
 
             defaults = {
-              :name               => name,
-              :zone_name          => zone,
-              :machine_type       => machine_type,
-              :disk_size          => disk_size,
-              :disk_type          => disk_type,
-              :image              => image,
-              :network            => network,
-              :metadata           => metadata,
-              :tags               => tags,
-              :can_ip_forward     => can_ip_forward,
-              :external_ip        => external_ip,
-              :preemptible        => preemptible,
-              :auto_restart       => auto_restart,
-              :on_host_maintenance=> on_host_maintenance,
-              :disks              => [disk.get_as_boot_disk(true, autodelete_disk)],
-              :service_accounts   => service_accounts,
+              :name                => name,
+              :zone_name           => zone,
+              :machine_type        => machine_type,
+              :disk_size           => disk_size,
+              :disk_type           => disk_type,
+              :image               => image,
+              :network             => network,
+              :metadata            => metadata,
+              :tags                => tags,
+              :can_ip_forward      => can_ip_forward,
+              :external_ip         => external_ip,
+              :preemptible         => preemptible,
+              :auto_restart        => auto_restart,
+              :on_host_maintenance => on_host_maintenance,
+              :disks               => [disk.get_as_boot_disk(true, autodelete_disk)],
+              :service_accounts    => service_accounts
             }
             server = env[:google_compute].servers.create(defaults)
             @logger.info("Machine '#{zone}:#{name}' created.")
