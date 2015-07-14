@@ -22,7 +22,7 @@ namespace :acceptance do
   desc "runs acceptance tests using vagrant-spec"
   task :run do
 
-    yellow "NOTE: For acceptance tests to be functional, correct ssh key needs to be added to GCE metadata.\033[0m"
+    yellow "NOTE: For acceptance tests to be functional, correct ssh key needs to be added to GCE metadata."
 
     if !ENV["GOOGLE_JSON_KEY_LOCATION"] && !ENV["GOOGLE_KEY_LOCATION"]
       abort ("Environment variables GOOGLE_JSON_KEY_LOCATION or GOOGLE_KEY_LOCATION are not set. Aborting.")
@@ -44,6 +44,7 @@ namespace :acceptance do
       multi_instance
       preemptible
       scopes
+      synced_folder/rsync
       provisioner/shell
       provisioner/chef-solo
     ).map{ |s| "provider/google/#{s}" }
