@@ -66,7 +66,7 @@ module VagrantPlugins
             end
 
             b2.use Provision
-            b2.use SyncFolders
+            b2.use SyncedFolders
           end
         end
       end
@@ -144,7 +144,7 @@ module VagrantPlugins
               end
             else
               b1.use Provision
-              b1.use SyncFolders
+              b1.use SyncedFolders
               b1.use WarnNetworks
               b1.use RunInstance
             end
@@ -182,7 +182,6 @@ module VagrantPlugins
       autoload :RunInstance, action_root.join("run_instance")
       autoload :StartInstance, action_root.join("start_instance")
       autoload :StopInstance, action_root.join("stop_instance")
-      autoload :SyncFolders, action_root.join("sync_folders")
       autoload :TerminateInstance, action_root.join("terminate_instance")
       autoload :TimedProvision, action_root.join("timed_provision")
       autoload :WarnNetworks, action_root.join("warn_networks")
