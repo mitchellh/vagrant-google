@@ -46,8 +46,8 @@ Service Account for API Access.
    If prompted, review and agree to the terms of service.
 1. While still in the Developers Console, go to `API & AUTH`, `Credentials`
    section and click the `Create new Client ID` button.  In the pop-up dialog,
-   select the `Service Account` radio button and the click the `Create Client ID`
-   button.
+   select the `Service Account` radio button and the click the
+   `Create Client ID` button.
 1. Make sure to download the *P12 private key* and save this file in a secure
    and reliable location.  This key file will be used to authorize all API
    requests to Google Compute Engine.
@@ -56,6 +56,10 @@ Service Account for API Access.
    with `@developer.gserviceaccount.com`) associated with the new Service
    Account you just created.  You will need this email address and the
    location of the private key file to properly configure this Vagrant plugin.
+1. Add the SSH key you're going to use to GCE Metadata in `Compute` ->
+   `Compute Engine` -> `Metadata` section of the console, `SSH Keys` tab. (Read
+   the [SSH Support](https://github.com/mitchellh/vagrant-google#ssh-support)
+   readme section for more information.)
 
 ## Quick Start
 
@@ -92,9 +96,9 @@ end
 And then run `vagrant up --provider=google`.
 
 This will start a Debian 7 (Wheezy) instance in the `us-central1-f` zone,
-with an `n1-standard-1` machine, and the `"default"` network within your project.
-And assuming your SSH information (see below) was filled in properly within
-your Vagrantfile, SSH and provisioning will work as well.
+with an `n1-standard-1` machine, and the `"default"` network within your
+project. And assuming your SSH information (see below) was filled in properly
+within your Vagrantfile, SSH and provisioning will work as well.
 
 Note that normally a lot of this boilerplate is encoded within the box file,
 but the box file used for the quick start, the "google" box, has no
@@ -180,8 +184,9 @@ This provider exposes quite a few provider-specific configuration options:
 * `on_host_maintenance` - What to do on host maintenance. Default is "MIGRATE".
 * `service_accounts` or `scopes` - An array of OAuth2 account scopes for
   services that the instance will have access to. Those can be both full API
-  scopes and just endpoint aliases (the part after `...auth/`), for example:
-  `['bigquery', 'https://www.googleapis.com/auth/compute']`.
+  scopes, just endpoint aliases (the part after `...auth/`), and `gcloud`
+  utility aliases, for example:
+  `['storage-full', 'bigquery', 'https://www.googleapis.com/auth/compute']`.
 
 These can be set like typical provider-specific configuration:
 
@@ -251,7 +256,7 @@ See [Vagrant Synced folders: rsync](https://docs.vagrantup.com/v2/synced-folders
 
 ## Development
 
-To work on the `vagrant-google` plugin, clone this repository out, and use
+To work on the `vagrant-google` plugin, clone this repository, and use
 [Bundler](http://gembundler.com) to get the dependencies:
 
 ```sh
@@ -266,8 +271,8 @@ $ bundle exec rake
 
 If those pass, you're ready to start developing the plugin. You can test
 the plugin without installing it into your Vagrant environment by just
-creating a `Vagrantfile` in the top level of this directory (it is gitignored)
-that uses it, and uses bundler to execute Vagrant:
+creating a `Vagrantfile` in the top level of this directory (it is ignored by
+ git), and use bundler to execute Vagrant:
 
 ```sh
 $ bundle exec vagrant up --provider=google
@@ -278,9 +283,8 @@ $ bundle exec vagrant up --provider=google
 **Work-in-progress:** Acceptance tests are based on vagrant-spec library which
 is currently under active development so they may occasionally break.
 
-Before you start acceptance tests, you'll need to set the authentication variables accordingly.
-
-Next, export your GCP authentication data:
+Before you start acceptance tests, you'll need to set the authentication
+shell variables accordingly:
 
 ```sh
 export GOOGLE_CLIENT_EMAIL="your-google_service_account_email@developer.gserviceaccount.com"
@@ -291,10 +295,17 @@ export GOOGLE_SSH_USER="testuser"
 export GOOGLE_SSH_KEY_LOCATION="/home/testuser/.ssh/id_rsa"
 ```
 
-After, you can run acceptance tests by running the `run` task in `acceptance` namespace:
+After, you can run acceptance tests by running the `run` task in `acceptance`
+namespace:
 ```sh
 $ bundle exec rake acceptance:run
 ```
+
+**IMPORTANT NOTES**:
+
+- Since acceptance tests spin up instances on GCE, the whole suite may take
+ 20+ minutes to run.
+- Since those are live instances, **you will be billed** for running them.
 
 ## Changelog
  * See [CHANGELOG.md](https://github.com/mitchellh/vagrant-google/blob/master/CHANGELOG.md)
