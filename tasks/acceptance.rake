@@ -44,7 +44,6 @@ namespace :acceptance do
       multi_instance
       preemptible
       scopes
-      synced_folder/rsync
       provisioner/shell
       provisioner/chef-solo
     ).map{ |s| "provider/google/#{s}" }

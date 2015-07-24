@@ -1,3 +1,7 @@
+# 0.2.1 (July 2015)
+
+* Temporarily reverted the old SyncedFolders behaviour. (See #94)
+
 # 0.2.0 (July 2015)
 
 * Added support for service account definitions [tcr]
