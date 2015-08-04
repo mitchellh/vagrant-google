@@ -25,8 +25,6 @@ en:
       Terminating the instance...
     waiting_for_ready: |-
       Waiting for instance to become "ready"...
-    waiting_for_stop: |-
-      Waiting for instance to become terminated...
     waiting_for_ssh: |-
       Waiting for SSH to become available...
     warn_networks: |-
@@ -49,13 +47,14 @@ en:
 #-------------------------------------------------------------------------------
     config:
       google_client_email_required: |-
-        A Google Service Account client email is required via "google_client_email"
+        A Google Service Account client email is required via
+        "google_client_email".
       private_key_missing: |-
-        The specified private key for Google could not be found
+        Private key for Google could not be found in the specified location.
       zone_required: |-
-        A zone must be specified via "zone"
+        A zone must be specified via "zone".
       name_required: |-
-        An instance name must be specified via "name"
+        An instance name must be specified via "name".
       google_key_location_required: |-
         A private key pathname is required via:
          "google_json_key_location" (for JSON keys)
@@ -65,7 +64,7 @@ en:
         Both "google_json_key_location" and "google_key_location" are specified.
         Config must specify only one key location.
       google_project_id_required: |-
-        A Google Cloud Project ID is required via "google_project_id"
+        A Google Cloud Project ID is required via "google_project_id".
       auto_restart_invalid_on_preemptible: |-
         "auto_restart" option must be set to "false" for preemptible instances.
       on_host_maintenance_invalid_on_preemptible: |-

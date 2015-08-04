@@ -41,7 +41,7 @@ module VagrantPlugins
             next if data[:disabled]
 
             unless Vagrant::Util::Which.which('rsync')
-              env[:ui].warn(I18n.t('vagrant_aws.rsync_not_found_warning'))
+              env[:ui].warn(I18n.t('vagrant_google.rsync_not_found_warning'))
               break
             end
 

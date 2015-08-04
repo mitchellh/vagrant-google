@@ -326,6 +326,9 @@ module VagrantPlugins
             !config.google_key_location.nil? and !config.google_json_key_location.nil?
           errors << I18n.t("vagrant_google.config.google_key_location_required") if \
             config.google_key_location.nil? and config.google_json_key_location.nil?
+          errors << I18n.t("vagrant_google.config.private_key_missing") unless \
+            File.exist?(config.google_key_location.to_s) or \
+            File.exist?(config.google_json_key_location.to_s)
 
           if config.preemptible
             errors << I18n.t("vagrant_google.config.auto_restart_invalid_on_preemptible") if \
