@@ -41,8 +41,10 @@ namespace :acceptance do
     end
 
     components = %w(
+      halt
       multi_instance
       preemptible
+      reload
       scopes
       provisioner/shell
       provisioner/chef-solo
