@@ -1,0 +1,17 @@
+# This is a generic acceptance skeleton with no particular settings, set in
+# europe-west1-d zone
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "basic"
+
+  config.vm.provider :google do |google, override|
+
+    google.zone = "europe-west1-d"
+
+    google.zone_config "europe-west1-d" do |zone1d|
+      zone1d.name = "vagrant-testing-halt"
+      zone1d.image = "debian-7-wheezy-v20150603"
+      zone1d.zone = "europe-west1-d"
+    end
+  end
+end
