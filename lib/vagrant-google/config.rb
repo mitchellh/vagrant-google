@@ -250,7 +250,8 @@ module VagrantPlugins
         # Default disk type is pd-standard
         @disk_type = "pd-standard" if @disk_type == UNSET_VALUE
 
-        # Instance name defaults to a new datetime value (hour granularity)
+        # Instance name defaults to a new datetime value + random seed
+        # e.g. i-2015081013-15637fdb
         if @name == UNSET_VALUE
           t = Time.now
           @name = "i-#{t.strftime("%Y%m%d%H")}-" + SecureRandom.hex(4)
