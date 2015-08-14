@@ -172,7 +172,8 @@ This provider exposes quite a few provider-specific configuration options:
 * `disk_size` - The disk size in GB.  The default is 10.
 * `disk_name` - The disk name to use.  If the disk exists, it will be reused, otherwise created.
 * `metadata` - Custom key/value pairs of metadata to add to the instance.
-* `name` - The name of your instance.  The default is "i-yyyyMMddHH". Example 2014/10/01 10:00:00 is "i-2014100101".
+* `name` - The name of your instance.  The default is "i-yyyymmddhh-randomsd",
+  e.g. 10/08/2015 13:15:15 is "i-2015081013-15637fda".
 * `network` - The name of the network to use for the instance.  Default is
  "default".
 * `tags` - An array of tags to apply to this instance.
@@ -180,8 +181,8 @@ This provider exposes quite a few provider-specific configuration options:
 * `can_ip_forward` - Boolean whether to enable IP Forwarding.
 * `external_ip` - The external IP address to use (supports names).
 * `preemptible` - Boolean whether to enable preemptibility. Default is false.
-* `auto_restart` - Boolean whether to enable auto_restart. Default is true.  
-* `on_host_maintenance` - What to do on host maintenance. Default is "MIGRATE".  
+* `auto_restart` - Boolean whether to enable auto_restart. Default is true.
+* `on_host_maintenance` - What to do on host maintenance. Default is "MIGRATE".
 * `service_accounts` or `scopes` - An array of OAuth2 account scopes for
   services that the instance will have access to. Those can be both full API
   scopes, just endpoint aliases (the part after `...auth/`), and `gcloud`
