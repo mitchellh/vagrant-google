@@ -28,15 +28,15 @@ namespace :acceptance do
       abort ("Environment variables GOOGLE_JSON_KEY_LOCATION or GOOGLE_KEY_LOCATION are not set. Aborting.")
     end
 
-    if !ENV["GOOGLE_PROJECT_ID"]
+    unless ENV["GOOGLE_PROJECT_ID"]
       abort ("Environment variable GOOGLE_PROJECT_ID is not set. Aborting.")
     end
 
-    if !ENV["GOOGLE_CLIENT_EMAIL"]
+    unless ENV["GOOGLE_CLIENT_EMAIL"]
       abort ("Environment variable GOOGLE_CLIENT_EMAIL is not set. Aborting.")
     end
 
-    if !ENV["GOOGLE_SSH_USER"]
+    unless ENV["GOOGLE_SSH_USER"]
       puts "WARNING: GOOGLE_SSH_USER variable is not set. Will try to start tests using insecure Vagrant private key."
     end
 

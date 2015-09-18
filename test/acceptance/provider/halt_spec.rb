@@ -1,6 +1,6 @@
 # This tests that an instance can be halted correctly
 shared_examples 'provider/halt' do |provider, options|
-  if !options[:box]
+  unless options[:box]
     raise ArgumentError,
           "box option must be specified for provider: #{provider}"
   end

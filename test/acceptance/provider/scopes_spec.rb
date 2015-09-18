@@ -3,7 +3,7 @@
 # available and gcloud GCE aliases can be used.
 # (see lib/fog/google/models/compute/server.rb in fog-google)
 shared_examples 'provider/scopes' do |provider, options|
-  if !options[:box]
+  unless options[:box]
     raise ArgumentError,
           "box option must be specified for provider: #{provider}"
   end

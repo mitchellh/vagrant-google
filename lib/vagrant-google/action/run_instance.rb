@@ -156,7 +156,7 @@ module VagrantPlugins
             env[:interrupted] = true
           end
 
-          if !env[:terminated]
+          unless env[:terminated]
             env[:metrics]["instance_ssh_time"] = Util::Timer.time do
               # Wait for SSH to be ready.
               env[:ui].info(I18n.t("vagrant_google.waiting_for_ssh"))

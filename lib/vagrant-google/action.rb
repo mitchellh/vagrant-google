@@ -24,7 +24,7 @@ module VagrantPlugins
         Vagrant::Action::Builder.new.tap do |b|
           b.use ConfigValidate
           b.use Call, IsCreated do |env, b2|
-            if !env[:result]
+            unless env[:result]
               b2.use MessageNotCreated
               next
             end
@@ -41,7 +41,7 @@ module VagrantPlugins
             if env[:result]
               b2.use ConfigValidate
               b2.use Call, IsCreated do |env2, b3|
-                if !env2[:result]
+                unless env2[:result]
                   b3.use MessageNotCreated
                   next
                 end
@@ -60,7 +60,7 @@ module VagrantPlugins
         Vagrant::Action::Builder.new.tap do |b|
           b.use ConfigValidate
           b.use Call, IsCreated do |env, b2|
-            if !env[:result]
+            unless env[:result]
               b2.use MessageNotCreated
               next
             end
@@ -98,7 +98,7 @@ module VagrantPlugins
         Vagrant::Action::Builder.new.tap do |b|
           b.use ConfigValidate
           b.use Call, IsCreated do |env, b2|
-            if !env[:result]
+            unless env[:result]
               b2.use MessageNotCreated
               next
             end
@@ -112,7 +112,7 @@ module VagrantPlugins
         Vagrant::Action::Builder.new.tap do |b|
           b.use ConfigValidate
           b.use Call, IsCreated do |env, b2|
-            if !env[:result]
+            unless env[:result]
               b2.use MessageNotCreated
               next
             end
@@ -157,7 +157,7 @@ module VagrantPlugins
           b.use ConfigValidate
           b.use ConnectGoogle
           b.use Call, IsCreated do |env1, b1|
-            if !env1[:result]
+            unless env1[:result]
               b1.use MessageNotCreated
               next
             end
