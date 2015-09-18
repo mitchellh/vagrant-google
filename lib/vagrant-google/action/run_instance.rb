@@ -80,16 +80,8 @@ module VagrantPlugins
             end
             # Check if specified external ip is available
             external_ip = get_external_ip(env, external_ip) if external_ip
-            # Check if disk type is available in the zone
-            if !disk_type.nil?
-              disk_type_obj = env[:google_compute].list_disk_types(zone).body['items'].select { |dt| dt['name'] == disk_type } || []
-              if !disk_type_obj.empty?
-                disk_type = disk_type_obj[0]["selfLink"]
-              else
-                raise Errors::DiskTypeError,
-                      :disktype => disk_type
-              end
-            end
+            # Check if disk type is available in the zone and set the proper resource link
+            disk_type = get_disk_type(env, disk_type, zone)
 
             if disk_name.nil?
               # no disk_name... disk_name defaults to instance name
@@ -137,7 +129,7 @@ module VagrantPlugins
             server = env[:google_compute].servers.create(defaults)
             @logger.info("Machine '#{zone}:#{name}' created.")
           rescue Fog::Compute::Google::NotFound => e
-            raise
+            raise Errors::FogError, :message => e.message
           rescue Fog::Compute::Google::Error => e
             raise Errors::FogError, :message => e.message
           end
@@ -192,6 +184,17 @@ module VagrantPlugins
           destroy_env[:config_validate] = false
           destroy_env[:force_confirm_destroy] = true
           env[:action_runner].run(Action.action_destroy, destroy_env)
+        end
+
+        def get_disk_type(env, disk_type, zone)
+          begin
+            # TODO(temikus): Outsource parsing logic to fog-google
+            disk_type=env[:google_compute].get_disk_type(disk_type, zone).body["selfLink"]
+          rescue Fog::Errors::NotFound
+            raise Errors::DiskTypeError,
+                  :disktype => disk_type
+          end
+          disk_type
         end
 
         def get_external_ip(env, external_ip)
