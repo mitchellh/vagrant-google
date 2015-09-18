@@ -73,7 +73,7 @@ module VagrantPlugins
           env[:ui].info(" -- Autodelete Disk: #{autodelete_disk}")
           env[:ui].info(" -- Scopes:          #{service_accounts}")
           begin
-            request_start_time = Time.now().to_i
+            request_start_time = Time.now.to_i
             # Warn on ssh-key overrides
             if env[:machine].config.ssh.username.nil?
               env[:ui].warn(I18n.t("vagrant_google.warn_ssh_vagrant_user"))
@@ -149,7 +149,7 @@ module VagrantPlugins
           env[:ui].info(I18n.t("vagrant_google.waiting_for_ready"))
           begin
             server.wait_for { ready? }
-            env[:metrics]["instance_ready_time"] = Time.now().to_i - request_start_time
+            env[:metrics]["instance_ready_time"] = Time.now.to_i - request_start_time
             @logger.info("Time for instance ready: #{env[:metrics]["instance_ready_time"]}")
             env[:ui].info(I18n.t("vagrant_google.ready"))
           rescue
