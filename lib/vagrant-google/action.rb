@@ -136,6 +136,7 @@ module VagrantPlugins
                   b2.use Provision
                   b2.use SyncFolders
                   b2.use WarnNetworks
+                  b2.use WarnSshKeys
                   b2.use StartInstance
                 else
                   # TODO: Impement better messages for different states
@@ -146,6 +147,7 @@ module VagrantPlugins
               b1.use Provision
               b1.use SyncFolders
               b1.use WarnNetworks
+              b1.use WarnSshKeys
               b1.use RunInstance
             end
           end
@@ -186,6 +188,7 @@ module VagrantPlugins
       autoload :TerminateInstance, action_root.join("terminate_instance")
       autoload :TimedProvision, action_root.join("timed_provision")
       autoload :WarnNetworks, action_root.join("warn_networks")
+      autoload :WarnSshKeys, action_root.join("warn_ssh_keys")
     end
   end
 end

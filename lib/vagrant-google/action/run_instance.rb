@@ -74,10 +74,7 @@ module VagrantPlugins
           env[:ui].info(" -- Scopes:          #{service_accounts}")
           begin
             request_start_time = Time.now.to_i
-            # Warn on ssh-key overrides
-            if env[:machine].config.ssh.username.nil?
-              env[:ui].warn(I18n.t("vagrant_google.warn_ssh_vagrant_user"))
-            end
+
             # Check if specified external ip is available
             external_ip = get_external_ip(env, external_ip) if external_ip
             # Check if disk type is available in the zone and set the proper resource link
