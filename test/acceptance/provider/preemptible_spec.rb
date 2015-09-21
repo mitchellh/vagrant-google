@@ -1,6 +1,6 @@
 # This tests that a preemptible instance can be brought up correctly
 shared_examples 'provider/preemptible' do |provider, options|
-  if !options[:box]
+  unless options[:box]
     raise ArgumentError,
           "box option must be specified for provider: #{provider}"
   end

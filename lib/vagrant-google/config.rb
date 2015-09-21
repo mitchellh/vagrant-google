@@ -288,7 +288,7 @@ module VagrantPlugins
 
         # Compile our zone specific configurations only within
         # NON-zone-SPECIFIC configurations.
-        if !@__zone_specific
+        unless @__zone_specific
           @__zone_config.each do |zone, blocks|
             config = self.class.new(true).merge(self)
 
@@ -348,7 +348,7 @@ module VagrantPlugins
       # This gets the configuration for a specific zone. It shouldn't
       # be called by the general public and is only used internally.
       def get_zone_config(name)
-        if !@__finalized
+        unless @__finalized
           raise "Configuration must be finalized before calling this method."
         end
 

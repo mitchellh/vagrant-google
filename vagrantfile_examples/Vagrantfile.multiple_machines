@@ -29,7 +29,7 @@ $GOOGLE_JSON_KEY_LOCATION = "/path/to/your/private-key.json"
 $LOCAL_USER = "mitchellh"
 $LOCAL_SSH_KEY = "~/.ssh/id_rsa"
 
-# Example Debian provistion script
+# Example Debian provision script
 $PROVISION_DEBIAN = <<SCRIPT
 uname=$(uname -a)
 ver=$(cat /etc/debian_version)

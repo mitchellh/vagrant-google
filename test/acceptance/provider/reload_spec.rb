@@ -1,6 +1,6 @@
 # This tests that an instance can be reloaded correctly
 shared_examples 'provider/reload' do |provider, options|
-  if !options[:box]
+  unless options[:box]
     raise ArgumentError,
           "box option must be specified for provider: #{provider}"
   end

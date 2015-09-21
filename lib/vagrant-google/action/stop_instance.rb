@@ -37,7 +37,7 @@ module VagrantPlugins
           else
             env[:ui].info(I18n.t("vagrant_google.stopping"))
             operation = server.stop
-            operation.wait_for() { ready? }
+            operation.wait_for { ready? }
           end
 
           @app.call(env)
