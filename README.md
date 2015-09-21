@@ -298,10 +298,10 @@ export GOOGLE_SSH_USER="testuser"
 export GOOGLE_SSH_KEY_LOCATION="/home/testuser/.ssh/id_rsa"
 ```
 
-After, you can run acceptance tests by running the `run` task in `acceptance`
+After, you can run acceptance tests by running the `full` task in `acceptance`
 namespace:
 ```sh
-$ bundle exec rake acceptance:run
+$ bundle exec rake acceptance:full
 ```
 
 **IMPORTANT NOTES**:
