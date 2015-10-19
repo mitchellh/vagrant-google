@@ -22,6 +22,12 @@ module VagrantPlugins
       class RunInstance
         include Vagrant::Util::Retryable
 
+        FOG_ERRORS = [
+          Fog::Compute::Google::NotFound,
+          Fog::Compute::Google::Error,
+          Fog::Errors::Error
+        ]
+
         def initialize(app, env)
           @app    = app
           @logger = Log4r::Logger.new("vagrant_google::action::run_instance")
@@ -80,6 +86,7 @@ module VagrantPlugins
             # Check if disk type is available in the zone and set the proper resource link
             disk_type = get_disk_type(env, disk_type, zone)
 
+            disk_created_by_vagrant = false
             if disk_name.nil?
               # no disk_name... disk_name defaults to instance name
               disk = env[:google_compute].disks.create(
@@ -89,6 +96,7 @@ module VagrantPlugins
                   zone_name: zone,
                   source_image: image
               )
+              disk_created_by_vagrant = true
               disk.wait_for { disk.ready? }
             else
               disk = env[:google_compute].disks.get(disk_name, zone)
@@ -101,6 +109,7 @@ module VagrantPlugins
                     zone_name: zone,
                     source_image: image
                 )
+                disk_created_by_vagrant = true
                 disk.wait_for { disk.ready? }
               end
             end
@@ -125,9 +134,13 @@ module VagrantPlugins
             }
             server = env[:google_compute].servers.create(defaults)
             @logger.info("Machine '#{zone}:#{name}' created.")
-          rescue Fog::Compute::Google::NotFound => e
-            raise Errors::FogError, :message => e.message
-          rescue Fog::Compute::Google::Error => e
+          rescue *FOG_ERRORS => e
+            # there is a chance Google responded with error but actually created
+            # instance, so we need to remove it
+            cleanup_instance(env)
+            # there is a chance Google has failed to create instance, so we need
+            # to remove created disk
+            cleanup_disk(disk.name, env) if disk && disk_created_by_vagrant
             raise Errors::FogError, :message => e.message
           end
 
@@ -206,6 +219,22 @@ module VagrantPlugins
           end
           # Resolve the name to IP address
           address.address
+        end
+
+        def cleanup_instance(env)
+          zone = env[:machine].provider_config.zone
+          zone_config = env[:machine].provider_config.get_zone_config(zone)
+          server = env[:google_compute].servers.get(zone_config.name, zone)
+          server.destroy(false) if server
+        end
+
+        def cleanup_disk(disk_name, env)
+          zone = env[:machine].provider_config.zone
+          autodelete_disk = env[:machine].provider_config.get_zone_config(zone).autodelete_disk
+          if autodelete_disk
+            disk = env[:google_compute].disks.get(disk_name, zone)
+            disk.destroy(false) if disk
+          end
         end
       end
     end
