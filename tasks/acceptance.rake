@@ -46,7 +46,6 @@ namespace :acceptance do
     end
   end
 
-  desc "runs full set of acceptance tests using vagrant-spec"
   task :run_full do
     components = %w(
       halt
@@ -64,7 +63,6 @@ namespace :acceptance do
     exec(command)
   end
 
-  desc "runs a basic shell provisioner test using vagrant-spec"
   task :run_smoke do
     components = %w(
       provisioner/shell
