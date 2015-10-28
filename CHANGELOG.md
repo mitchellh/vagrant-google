@@ -1,3 +1,10 @@
+# 0.2.2 (October 2015)
+
+* Cleanup instance and disks on backend failures [p0deje]
+* Refactoring ssh warnings into separate action [temikus]
+* Refactoring disk type detection logic [temikus]
+* Miscellaneous doc updates and minor fixes [mbrukman, temikus]
+
 # 0.2.1 (July 2015)
 
 * Temporarily reverted the old SyncedFolders behaviour. (See #94)
