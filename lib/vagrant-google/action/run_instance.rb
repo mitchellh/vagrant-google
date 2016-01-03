@@ -19,7 +19,7 @@ module VagrantPlugins
   module Google
     module Action
       # This runs the configured instance.
-      class RunInstance
+      class RunInstance # rubocop:disable Metrics/ClassLength
         include Vagrant::Util::Retryable
 
         FOG_ERRORS = [
@@ -33,7 +33,7 @@ module VagrantPlugins
           @logger = Log4r::Logger.new("vagrant_google::action::run_instance")
         end
 
-        def call(env)
+        def call(env) # rubocop:disable Metrics/MethodLength
           # Initialize metrics if they haven't been
           env[:metrics] ||= {}
 
@@ -199,7 +199,7 @@ module VagrantPlugins
         def get_disk_type(env, disk_type, zone)
           begin
             # TODO(temikus): Outsource parsing logic to fog-google
-            disk_type=env[:google_compute].get_disk_type(disk_type, zone).body["selfLink"]
+            disk_type = env[:google_compute].get_disk_type(disk_type, zone).body["selfLink"]
           rescue Fog::Errors::NotFound
             raise Errors::DiskTypeError,
                   :disktype => disk_type
