@@ -236,7 +236,7 @@ describe VagrantPlugins::Google::Config do
         instance.get_zone_config(zone)
       end
 
-      its("image")           { should == "child" }
+      its("image") { should == "child" }
     end
 
     describe "shortcut configuration" do

@@ -29,7 +29,7 @@ module VagrantPlugins
           @logger = Log4r::Logger.new("vagrant_google::action::sync_folders")
         end
 
-        def call(env)
+        def call(env) # rubocop:disable Metrics/MethodLength
           @app.call(env)
 
           ssh_info = env[:machine].ssh_info

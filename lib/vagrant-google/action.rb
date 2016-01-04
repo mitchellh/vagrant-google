@@ -15,7 +15,7 @@ require "vagrant/action/builder"
 
 module VagrantPlugins
   module Google
-    module Action
+    module Action # rubocop:disable Metrics/ModuleLength
       # Include the built-in modules so we can use them as top-level things.
       include Vagrant::Action::Builtin
 
