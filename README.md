@@ -5,6 +5,9 @@
 [![Dependency Status](https://gemnasium.com/mitchellh/vagrant-google.png)][gemnasium]
 </span>
 
+[gem]: https://rubygems.org/gems/vagrant-google
+[gemnasium]: https://gemnasium.com/mitchellh/vagrant-google
+
 This is a [Vagrant](http://www.vagrantup.com) 1.2+ plugin that adds an
 [Google Compute Engine](http://cloud.google.com/compute/) (GCE) provider to
 Vagrant, allowing Vagrant to control and provision instances in GCE.
