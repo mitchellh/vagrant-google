@@ -82,6 +82,11 @@ module VagrantPlugins
       # @return [Array]
       attr_accessor :tags
 
+      # whether to use private IP for SSH
+      #
+      # @return Boolean
+      attr_accessor :use_private_ip
+
       # whether to enable ip forwarding
       #
       # @return Boolean
@@ -149,6 +154,7 @@ module VagrantPlugins
         @name                = UNSET_VALUE
         @network             = UNSET_VALUE
         @tags                = []
+        @use_private_ip      = UNSET_VALUE
         @can_ip_forward      = UNSET_VALUE
         @external_ip         = UNSET_VALUE
         @autodelete_disk     = UNSET_VALUE
@@ -264,6 +270,9 @@ module VagrantPlugins
 
         # autodelete_disk defaults to true
         @autodelete_disk = true if @autodelete_disk == UNSET_VALUE
+
+        # use_private_ip defaults to false
+        @use_private_ip = false if @use_private_ip == UNSET_VALUE
 
         # can_ip_forward defaults to nil
         @can_ip_forward = nil if @can_ip_forward == UNSET_VALUE
