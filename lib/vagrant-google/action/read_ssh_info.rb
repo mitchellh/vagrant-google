@@ -41,12 +41,25 @@ module VagrantPlugins
             machine.id = nil
             return nil
           end
+          # Check if we should use public or private IP address of the instance
+          # Get the zone we're going to use
+          zone = env[:machine].provider_config.zone
+          # Get the Bool value from the configs for that zone
+          use_private_ip = env[:machine].provider_config.get_zone_config(zone)zone_config.can_ip_forward
 
-          # Read SSH network info
-          return {
-            :host => server.public_ip_address,
-            :port => 22
-          }
+          if use_private_ip:
+            ssh_info = {
+              :host => server.private_ip_address,
+              :port => 22
+            }
+          else
+            ssh_info = {
+              :host => server.public_ip_address,
+              :port => 22
+            }
+          end
+          # Return SSH network info
+          return ssh_info
         end
       end
     end
