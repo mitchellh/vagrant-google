@@ -45,7 +45,7 @@ module VagrantPlugins
           # Get the zone we're going to use
           zone = env[:machine].provider_config.zone
           # Get the Bool value from the configs for that zone
-          use_private_ip = env[:machine].provider_config.get_zone_config(zone)zone_config.can_ip_forward
+          use_private_ip = env[:machine].provider_config.get_zone_config(zone)zone_config.use_private_ip
 
           if use_private_ip:
             ssh_info = {
