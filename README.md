@@ -52,16 +52,15 @@ Service Account for API Access.
 1. Next, visit the [Developers Console](https://console.developers.google.com)
    make sure to enable the `Google Compute Engine` service for your project
    If prompted, review and agree to the terms of service.
-1. While still in the Developers Console, go to `API & AUTH`, `Credentials`
-   section and click the `Create new Client ID` button.  In the pop-up dialog,
-   select the `Service Account` radio button and the click the
-   `Create Client ID` button.
-1. Make sure to download the *P12 private key* and save this file in a secure
+1. While still in the Developers Console, go to `Permissions`, `Service Accounts`
+   section and click the `Create service account` button.  In the pop-up dialog,
+   click the `Furnish a new private key` box.
+1. Download the JSON private key and save this file in a secure
    and reliable location.  This key file will be used to authorize all API
    requests to Google Compute Engine.
-1. Still on the same page, find the newly created `Service Account` text
-   block on the API Access page.  Record the `Email address` (it should end
-   with `@developer.gserviceaccount.com`) associated with the new Service
+1. Still on the same page, find the
+   `Email address` (it should end
+   with `gserviceaccount.com`) associated with the new Service
    Account you just created.  You will need this email address and the
    location of the private key file to properly configure this Vagrant plugin.
 1. Add the SSH key you're going to use to GCE Metadata in `Compute` ->
