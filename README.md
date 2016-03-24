@@ -178,6 +178,7 @@ This provider exposes quite a few provider-specific configuration options:
 * `machine_type` - The machine type to use.  The default is "n1-standard-1".
 * `disk_size` - The disk size in GB.  The default is 10.
 * `disk_name` - The disk name to use.  If the disk exists, it will be reused, otherwise created.
+* `disk_type` - Whether to use Standard disk or SSD disk. Use either `pd-ssd` or `pd-standard`.
 * `metadata` - Custom key/value pairs of metadata to add to the instance.
 * `name` - The name of your instance.  The default is "i-yyyymmddhh-randomsd",
   e.g. 10/08/2015 13:15:15 is "i-2015081013-15637fda".
