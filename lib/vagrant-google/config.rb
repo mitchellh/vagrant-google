@@ -16,7 +16,7 @@ require "securerandom"
 
 module VagrantPlugins
   module Google
-    class Config < Vagrant.plugin("2", :config)
+    class Config < Vagrant.plugin("2", :config) # rubocop:disable Metrics/ClassLength
       # The Service Account Client ID Email address
       #
       # @return [String]
@@ -132,8 +132,8 @@ module VagrantPlugins
       #
       # @return [Array]
       attr_accessor :service_accounts
-      alias_method :scopes, :service_accounts
-      alias_method :scopes=, :service_accounts=
+      alias scopes service_accounts
+      alias scopes= service_accounts=
 
       def initialize(zone_specific=false)
         @google_client_email = UNSET_VALUE
@@ -227,7 +227,7 @@ module VagrantPlugins
         end
       end
 
-      def finalize!
+      def finalize! # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         # Try to get access keys from standard Google environment variables; they
         # will default to nil if the environment variables are not present.
         @google_client_email = ENV['GOOGLE_CLIENT_EMAIL'] if @google_client_email == UNSET_VALUE

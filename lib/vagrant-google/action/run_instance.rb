@@ -26,14 +26,14 @@ module VagrantPlugins
           Fog::Compute::Google::NotFound,
           Fog::Compute::Google::Error,
           Fog::Errors::Error
-        ]
+        ].freeze
 
         def initialize(app, env)
           @app    = app
           @logger = Log4r::Logger.new("vagrant_google::action::run_instance")
         end
 
-        def call(env) # rubocop:disable Metrics/MethodLength
+        def call(env) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
           # Initialize metrics if they haven't been
           env[:metrics] ||= {}
 

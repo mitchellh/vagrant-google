@@ -1,7 +1,11 @@
 # Importing TODO list to sanely lint new submissions.
 inherit_from: .rubocop_todo.yml
 
+# Custom project config
 AllCops:
   Exclude:
   - './Vagrantfile'
   - './vagrant-google.gemspec'
+
+Style/EmptyLinesAroundBlockBody:
+  Enabled: false
