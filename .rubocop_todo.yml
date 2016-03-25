@@ -22,16 +22,12 @@ Lint/RescueException:
   Exclude:
     - 'lib/vagrant-google/action/read_state.rb'
 
-# Offense count: 6
+# Offense count: 1
 # Cop supports --auto-correct.
 # Configuration parameters: IgnoreEmptyBlocks.
 Lint/UnusedBlockArgument:
   Exclude:
     - 'lib/vagrant-google/action/sync_folders.rb'
-    - 'test/acceptance/skeletons/generic/Vagrantfile'
-    - 'test/acceptance/skeletons/multi_instance/Vagrantfile'
-    - 'test/acceptance/skeletons/preemptible/Vagrantfile'
-    - 'test/acceptance/skeletons/scopes/Vagrantfile'
 
 # Offense count: 17
 # Cop supports --auto-correct.

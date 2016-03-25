@@ -4,7 +4,7 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "basic"
 
-  config.vm.provider :google do |google, override|
+  config.vm.provider :google do |google|
 
     google.zone = "europe-west1-d"
 

@@ -62,6 +62,7 @@ namespace :acceptance do
       preemptible
       reload
       scopes
+      instance_groups
       provisioner/shell
       provisioner/chef-solo
     ).map{ |s| "provider/google/#{s}" }
