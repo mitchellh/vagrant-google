@@ -43,6 +43,7 @@ module VagrantPlugins
           # Get the configs
           zone_config         = env[:machine].provider_config.get_zone_config(zone)
           image               = zone_config.image
+          instance_group      = zone_config.instance_group
           name                = zone_config.name
           machine_type        = zone_config.machine_type
           disk_size           = zone_config.disk_size
@@ -67,6 +68,7 @@ module VagrantPlugins
           env[:ui].info(" -- Disk size:       #{disk_size} GB")
           env[:ui].info(" -- Disk name:       #{disk_name}")
           env[:ui].info(" -- Image:           #{image}")
+          env[:ui].info(" -- Instance Group:  #{instance_group}")
           env[:ui].info(" -- Zone:            #{zone}") if zone
           env[:ui].info(" -- Network:         #{network}") if network
           env[:ui].info(" -- Metadata:        '#{metadata}'")

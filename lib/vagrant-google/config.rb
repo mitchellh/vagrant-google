@@ -42,6 +42,11 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :image
 
+      # The instance group name to put the instance in.
+      #
+      # @return [String]
+      attr_accessor :instance_group
+
       # The type of machine to launch, such as "n1-standard-1"
       #
       # @return [String]
@@ -141,6 +146,7 @@ module VagrantPlugins
         @google_json_key_location = UNSET_VALUE
         @google_project_id   = UNSET_VALUE
         @image               = UNSET_VALUE
+        @instance_group      = UNSET_VALUE
         @machine_type        = UNSET_VALUE
         @disk_size           = UNSET_VALUE
         @disk_name           = UNSET_VALUE
@@ -237,6 +243,9 @@ module VagrantPlugins
 
         # Image must be nil, since we can't default that
         @image = "debian-7-wheezy-v20150127" if @image == UNSET_VALUE
+
+        # Default instance group name is nil
+        @instance_group = nil if @instance_group == UNSET_VALUE
 
         # Default instance type is an n1-standard-1
         @machine_type = "n1-standard-1" if @machine_type == UNSET_VALUE
