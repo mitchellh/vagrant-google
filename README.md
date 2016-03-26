@@ -166,13 +166,19 @@ configuration for this provider.
 
 This provider exposes quite a few provider-specific configuration options:
 
-* `google_client_email` - The Client Email address for your Service Account.
+* `google_client_email` - The Client Email address for your Service Account.  
+  (Can also be configured with `GOOGLE_CLIENT_EMAIL` environment variable.)
 * `google_key_location` - The location of the P12 private key file matching your
-  Service Account.
+  Service Account.  
+  (Can also be configured with `GOOGLE_KEY_LOCATION` environment variable.)
 * `google_json_key_location` - The location of the JSON private key file matching your
-  Service Account.
-* `google_project_id` - The Project ID for your Google Cloud Platform account.
+  Service Account.  
+  (Can also be configured with `GOOGLE_JSON_KEY_LOCATION` environment variable.)
+* `google_project_id` - The Project ID for your Google Cloud Platform account.  
+  (Can also be configured with `GOOGLE_PROJECT_ID` environment variable.)
 * `image` - The image name to use when booting your instance.
+* `instance_group` - Unmanaged instance group to add the machine to. If one
+  doesn't exist it will be created.
 * `instance_ready_timeout` - The number of seconds to wait for the instance
   to become "ready" in GCE. Defaults to 20 seconds.
 * `machine_type` - The machine type to use.  The default is "n1-standard-1".

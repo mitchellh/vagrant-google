@@ -30,19 +30,28 @@ namespace :acceptance do
     yellow "NOTE: For acceptance tests to be functional, correct ssh key needs to be added to GCE metadata."
 
     if !ENV["GOOGLE_JSON_KEY_LOCATION"] && !ENV["GOOGLE_KEY_LOCATION"]
-      abort ("Environment variables GOOGLE_JSON_KEY_LOCATION or GOOGLE_KEY_LOCATION are not set. Aborting.")
+      abort "Environment variables GOOGLE_JSON_KEY_LOCATION or GOOGLE_KEY_LOCATION are not set. Aborting."
     end
 
     unless ENV["GOOGLE_PROJECT_ID"]
-      abort ("Environment variable GOOGLE_PROJECT_ID is not set. Aborting.")
+      abort "Environment variable GOOGLE_PROJECT_ID is not set. Aborting."
     end
 
     unless ENV["GOOGLE_CLIENT_EMAIL"]
-      abort ("Environment variable GOOGLE_CLIENT_EMAIL is not set. Aborting.")
+      abort "Environment variable GOOGLE_CLIENT_EMAIL is not set. Aborting."
     end
 
     unless ENV["GOOGLE_SSH_USER"]
-      puts "WARNING: GOOGLE_SSH_USER variable is not set. Will try to start tests using insecure Vagrant private key."
+      yellow "WARNING: GOOGLE_SSH_USER variable is not set. Will try to start tests using insecure Vagrant private key."
+    end
+
+    if ENV["GOOGLE_SSH_KEY_LOCATION"]
+      if File.read(ENV["GOOGLE_SSH_KEY_LOCATION"]).include?('ENCRYPTED')
+        unless `ssh-add -L`.include?(ENV["GOOGLE_SSH_KEY_LOCATION"])
+          yellow "WARNING: It looks like ssh key is encrypted and ssh-agent doesn't contain any identities."
+          yellow "This will likely cause the connection to the machine to fail."
+        end
+      end
     end
   end
 
@@ -53,6 +62,7 @@ namespace :acceptance do
       preemptible
       reload
       scopes
+      instance_groups
       provisioner/shell
       provisioner/chef-solo
     ).map{ |s| "provider/google/#{s}" }

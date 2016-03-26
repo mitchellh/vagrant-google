@@ -149,6 +149,7 @@ module VagrantPlugins
               b1.use WarnNetworks
               b1.use WarnSshKeys
               b1.use RunInstance
+              b1.use AssignInstanceGroups
             end
           end
         end
@@ -173,6 +174,7 @@ module VagrantPlugins
 
       # The autoload farm
       action_root = Pathname.new(File.expand_path("../action", __FILE__))
+      autoload :AssignInstanceGroups, action_root.join("assign_instance_groups")
       autoload :ConnectGoogle, action_root.join("connect_google")
       autoload :IsCreated, action_root.join("is_created")
       autoload :IsTerminated, action_root.join("is_terminated")

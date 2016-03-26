@@ -16,7 +16,7 @@ require "securerandom"
 
 module VagrantPlugins
   module Google
-    class Config < Vagrant.plugin("2", :config)
+    class Config < Vagrant.plugin("2", :config) # rubocop:disable Metrics/ClassLength
       # The Service Account Client ID Email address
       #
       # @return [String]
@@ -41,6 +41,11 @@ module VagrantPlugins
       #
       # @return [String]
       attr_accessor :image
+
+      # The instance group name to put the instance in.
+      #
+      # @return [String]
+      attr_accessor :instance_group
 
       # The type of machine to launch, such as "n1-standard-1"
       #
@@ -132,8 +137,8 @@ module VagrantPlugins
       #
       # @return [Array]
       attr_accessor :service_accounts
-      alias_method :scopes, :service_accounts
-      alias_method :scopes=, :service_accounts=
+      alias scopes service_accounts
+      alias scopes= service_accounts=
 
       def initialize(zone_specific=false)
         @google_client_email = UNSET_VALUE
@@ -141,6 +146,7 @@ module VagrantPlugins
         @google_json_key_location = UNSET_VALUE
         @google_project_id   = UNSET_VALUE
         @image               = UNSET_VALUE
+        @instance_group      = UNSET_VALUE
         @machine_type        = UNSET_VALUE
         @disk_size           = UNSET_VALUE
         @disk_name           = UNSET_VALUE
@@ -227,7 +233,7 @@ module VagrantPlugins
         end
       end
 
-      def finalize!
+      def finalize! # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         # Try to get access keys from standard Google environment variables; they
         # will default to nil if the environment variables are not present.
         @google_client_email = ENV['GOOGLE_CLIENT_EMAIL'] if @google_client_email == UNSET_VALUE
@@ -237,6 +243,9 @@ module VagrantPlugins
 
         # Image must be nil, since we can't default that
         @image = "debian-7-wheezy-v20150127" if @image == UNSET_VALUE
+
+        # Default instance group name is nil
+        @instance_group = nil if @instance_group == UNSET_VALUE
 
         # Default instance type is an n1-standard-1
         @machine_type = "n1-standard-1" if @machine_type == UNSET_VALUE
