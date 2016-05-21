@@ -7,9 +7,8 @@ Vagrant.configure("2") do |config|
 
       google.zone_config "europe-west1-c" do |z1a_zone|
         z1a_zone.name = "vagrant-acceptance-multi-z1a"
-        z1a_zone.image = "debian-7-wheezy-v20150603"
         z1a_zone.machine_type = "n1-standard-1"
-        z1a_zone.zone = "europe-west1-c"
+        z1a_zone.disk_type = "pd-ssd"
       end
     end
   end
@@ -20,9 +19,8 @@ Vagrant.configure("2") do |config|
 
       google.zone_config "europe-west1-d" do |z1b_zone|
         z1b_zone.name = "vagrant-testing-acceptance-multi-z1b"
-        z1b_zone.image = "debian-7-wheezy-v20150603"
         z1b_zone.machine_type = "n1-standard-2"
-        z1b_zone.zone = "europe-west1-d"
+        z1b_zone.disk_type = "pd-ssd"
       end
     end
   end

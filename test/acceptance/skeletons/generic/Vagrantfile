@@ -9,8 +9,8 @@ Vagrant.configure("2") do |config|
     google.zone = "europe-west1-d"
 
     google.zone_config "europe-west1-d" do |zone1d|
-      zone1d.image = "debian-7-wheezy-v20150603"
-      zone1d.zone = "europe-west1-d"
+      zone1d.name = "vagrant-acceptance-generic"
+      zone1d.disk_type = "pd-ssd"
     end
   end
 end

@@ -8,8 +8,7 @@ Vagrant.configure("2") do |config|
     google.zone_config "europe-west1-d" do |zone1d|
       zone1d.name = "vagrant-acceptance-instance-groups"
       zone1d.instance_group = "vagrant-acceptance-#{('a'..'z').to_a.sample(8).join}"
-      zone1d.image = "debian-7-wheezy-v20150603"
-      zone1d.zone = "europe-west1-d"
+      zone1d.disk_type = "pd-ssd"
     end
   end
 end
