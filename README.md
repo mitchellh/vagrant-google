@@ -102,7 +102,7 @@ end
 
 And then run `vagrant up --provider=google`.
 
-This will start a Debian 7 (Wheezy) instance in the `us-central1-f` zone,
+This will start a Debian 8 (Jessie) instance in the `us-central1-f` zone,
 with an `n1-standard-1` machine, and the `"default"` network within your
 project. And assuming your SSH information (see below) was filled in properly
 within your Vagrantfile, SSH and provisioning will work as well.
@@ -237,7 +237,7 @@ Vagrant.configure("2") do |config|
 
     google.zone_config "us-central1-f" do |zone1f|
         zone1f.name = "testing-vagrant"
-        zone1f.image = "debian-7-wheezy-v20150127"
+        zone1f.image = "debian-8-jessie-v20160511"
         zone1f.machine_type = "n1-standard-4"
         zone1f.zone = "us-central1-f"
         zone1f.metadata = {'custom' => 'metadata', 'testing' => 'foobarbaz'}

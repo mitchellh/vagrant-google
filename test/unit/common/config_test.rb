@@ -31,7 +31,7 @@ describe VagrantPlugins::Google::Config do
     end
 
     its("name")                   { should match "i-[0-9]{10}-[0-9a-f]{4}" }
-    its("image")                  { should == "debian-7-wheezy-v20150127" }
+    its("image")                  { should == "debian-8-jessie-v20160511" }
     its("instance_group")         { should be_nil }
     its("zone")                   { should == "us-central1-f" }
     its("network")                { should == "default" }
