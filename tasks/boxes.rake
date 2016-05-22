@@ -7,7 +7,7 @@ namespace :boxes do
     Dir.chdir(boxes_dir)
 
     puts "Repacking main box"
-    system('tar cvzf ../google.box -C ./gce ./metadata.json ./Vagrantfile')
+    system('tar cvzf ../google.box -C ./gce ./metadata.json')
   end
 
   task :repack_testing do

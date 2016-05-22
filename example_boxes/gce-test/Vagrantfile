@@ -15,16 +15,10 @@
 # limitations under the License.
 
 Vagrant.configure("2") do |config|
-  config.vm.provider :google do |google, override|
-
+  config.vm.provider :google do |_google, override|
     if ENV['GOOGLE_SSH_USER'] and ENV['GOOGLE_SSH_KEY_LOCATION']
       override.ssh.username = ENV['GOOGLE_SSH_USER']
       override.ssh.private_key_path = ENV['GOOGLE_SSH_KEY_LOCATION']
     end
-
-    google.image = "debian-7-wheezy-v20150127"
-    google.machine_type = "n1-standard-1"
-    google.zone = "us-central1-f"
-
   end
 end

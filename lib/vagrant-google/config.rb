@@ -242,7 +242,7 @@ module VagrantPlugins
         @google_project_id = ENV['GOOGLE_PROJECT_ID'] if @google_project_id == UNSET_VALUE
 
         # Image must be nil, since we can't default that
-        @image = "debian-7-wheezy-v20150127" if @image == UNSET_VALUE
+        @image = "debian-8-jessie-v20160511" if @image == UNSET_VALUE
 
         # Default instance group name is nil
         @instance_group = nil if @instance_group == UNSET_VALUE
