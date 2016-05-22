@@ -47,22 +47,26 @@ Service Account for API Access.
 
 1. Log in with your Google Account and go to
    [Google Cloud Platform](https://cloud.google.com) and click on the
-   `Try it now` button.
+   `Try it free` button.
 1. Create a new project and remember to record the `Project ID`
-1. Next, visit the [Developers Console](https://console.developers.google.com)
-   make sure to enable the `Google Compute Engine` service for your project
-   If prompted, review and agree to the terms of service.
-1. While still in the Developers Console, go to `Permissions`, `Service Accounts`
-   section and click the `Create service account` button.  In the pop-up dialog,
-   click the `Furnish a new private key` box.
+1. Next, enable the
+   [Google Compute Engine API](https://console.cloud.google.com/apis/api/compute_component/)
+   for your project in the API console. If prompted, review and agree to the
+   terms of service.
+1. While still in the API Console, go to
+   [Credentials subsection](https://console.cloud.google.com/apis/credentials),
+   and click `Create credentials` -> `Service account key`. In the
+   next dialog, create a new service account, select `JSON` key type and
+   click `Create`.
 1. Download the JSON private key and save this file in a secure
    and reliable location.  This key file will be used to authorize all API
    requests to Google Compute Engine.
-1. Still on the same page, find the
-   `Email address` (it should end
-   with `gserviceaccount.com`) associated with the new Service
-   Account you just created.  You will need this email address and the
-   location of the private key file to properly configure this Vagrant plugin.
+1. Still on the same page, click on
+   [Manage service accounts](https://console.cloud.google.com/permissions/serviceaccounts)
+   link to go to IAM console. Copy the `Service account id` value of the service
+   account you just selected. (it should end with `gserviceaccount.com`) You will
+   need this email address and the location of the private key file to properly
+   configure this Vagrant plugin.
 1. Add the SSH key you're going to use to GCE Metadata in `Compute` ->
    `Compute Engine` -> `Metadata` section of the console, `SSH Keys` tab. (Read
    the [SSH Support](https://github.com/mitchellh/vagrant-google#ssh-support)
