@@ -75,21 +75,15 @@ Service Account for API Access.
 ## Quick Start
 
 After installing the plugin (instructions above), the quickest way to get
-started is to actually use a dummy Google box and specify all the details
-manually within a `config.vm.provider` block. So first, add the Google box
-using any name you want:
+started is to actually use a dummy Google box from Atlas and specify all the 
+details manually within a `config.vm.provider` block. 
 
-```sh
-$ vagrant box add gce https://github.com/mitchellh/vagrant-google/raw/master/google.box
-...
-```
-
-And then make a Vagrantfile that looks like the following, filling in
-your information where necessary.
+So first, make a Vagrantfile that looks like the following, filling in
+your information where necessary:
 
 ```ruby
 Vagrant.configure("2") do |config|
-  config.vm.box = "gce"
+  config.vm.box = "google/gce"
 
   config.vm.provider :google do |google, override|
     google.google_project_id = "YOUR_GOOGLE_CLOUD_PROJECT_ID"
@@ -229,7 +223,7 @@ zone you want to actually use, however. This looks like this:
 ```ruby
 Vagrant.configure("2") do |config|
 
-  config.vm.box = "gce"
+  config.vm.box = "google/gce"
 
   config.vm.provider :google do |google|
     google.google_project_id = "YOUR_GOOGLE_CLOUD_PROJECT_ID"
@@ -241,7 +235,7 @@ Vagrant.configure("2") do |config|
 
     google.zone_config "us-central1-f" do |zone1f|
         zone1f.name = "testing-vagrant"
-        zone1f.image = "debian-8-jessie-v20160511"
+        zone1f.image = "debian-8-jessie-v20160923"
         zone1f.machine_type = "n1-standard-4"
         zone1f.zone = "us-central1-f"
         zone1f.metadata = {'custom' => 'metadata', 'testing' => 'foobarbaz'}
