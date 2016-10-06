@@ -214,7 +214,8 @@ module VagrantPlugins
           # has it.
           new_zone_specific = other.instance_variable_get(:@__zone_specific)
           result.instance_variable_set(
-            :@__zone_specific, new_zone_specific || @__zone_specific)
+            :@__zone_specific, new_zone_specific || @__zone_specific
+          )
 
           # Go through all the zone configs and prepend ours onto
           # theirs.

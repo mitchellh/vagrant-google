@@ -25,7 +25,8 @@ module VagrantPlugins
         def initialize(app, env)
           @app = app
           @logger = Log4r::Logger.new(
-            "vagrant_google::action::assign_instance_groups")
+            "vagrant_google::action::assign_instance_groups"
+          )
         end
 
         def call(env)
@@ -58,7 +59,8 @@ module VagrantPlugins
             )
             unless response.body["status"] == "DONE"
               operation = env[:google_compute].operations.get(
-                operation.body["name"], zone)
+                operation.body["name"], zone
+              )
               env[:ui].info(I18n.t("vagrant_google.waiting_for_operation",
                                    name: operation.body["name"]))
               operation.wait_for { ready? }
