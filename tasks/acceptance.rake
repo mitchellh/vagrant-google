@@ -49,7 +49,8 @@ namespace :acceptance do
       if File.read(ENV["GOOGLE_SSH_KEY_LOCATION"]).include?('ENCRYPTED')
         unless `ssh-add -L`.include?(ENV["GOOGLE_SSH_KEY_LOCATION"])
           yellow "WARNING: It looks like ssh key is encrypted and ssh-agent doesn't contain any identities."
-          yellow "This will likely cause the connection to the machine to fail."
+          puts "Trying to add identity, executing ssh-add..."
+          system("ssh-add #{ENV["GOOGLE_SSH_KEY_LOCATION"]}")
         end
       end
     end
