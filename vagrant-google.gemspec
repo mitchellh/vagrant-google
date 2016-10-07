@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project         = "vagrant-google"
 
-  s.add_runtime_dependency "fog-google", "~> 0.2.0"
+  s.add_runtime_dependency "fog-google", "~> 0.4.0"
   s.add_runtime_dependency "google-api-client", "< 0.9", ">= 0.6.2"
 
   s.add_development_dependency "pry"
@@ -36,6 +36,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec", "~> 2.14"
   s.add_development_dependency "rubocop", "~> 0.35"
+  s.add_development_dependency "highline"
 
   # The following block of code determines the files that should be included
   # in the gem. It does this by reading all the files in the directory where

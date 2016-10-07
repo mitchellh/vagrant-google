@@ -64,7 +64,8 @@ module VagrantPlugins
             # Create the guest path
             env[:machine].communicate.sudo("mkdir -p '#{guestpath}'")
             env[:machine].communicate.sudo(
-              "chown #{ssh_info[:username]} '#{guestpath}'")
+              "chown #{ssh_info[:username]} '#{guestpath}'"
+            )
 
             # patch from https://github.com/tmatilai/vagrant-aws/commit/4a043a96076c332220ec4ec19470c4af5597dd51
             def ssh_key_options(ssh_info)
@@ -81,7 +82,8 @@ module VagrantPlugins
               *excludes.map{|e| ['--exclude', e]}.flatten,
               "-e", "ssh -p #{ssh_info[:port]} -o StrictHostKeyChecking=no #{ssh_key_options(ssh_info)}",
               hostpath,
-              "#{ssh_info[:username]}@#{ssh_info[:host]}:#{guestpath}"]
+              "#{ssh_info[:username]}@#{ssh_info[:host]}:#{guestpath}"
+            ]
 
             # we need to fix permissions when using rsync.exe on windows, see
             # http://stackoverflow.com/questions/5798807/rsync-permission-denied-created-directories-have-no-permissions
@@ -90,7 +92,7 @@ module VagrantPlugins
             end
 
             r = Vagrant::Util::Subprocess.execute(*command)
-            if r.exit_code != 0
+            if r.exit_code.nonzero?
               raise Errors::RsyncError,
                     :guestpath => guestpath,
                     :hostpath => hostpath,

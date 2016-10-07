@@ -111,8 +111,8 @@ module VagrantPlugins
                     zone_name: zone,
                     source_image: image
                 )
-                disk_created_by_vagrant = true
                 disk.wait_for { disk.ready? }
+                disk_created_by_vagrant = true
               end
             end
 
@@ -137,11 +137,9 @@ module VagrantPlugins
             server = env[:google_compute].servers.create(defaults)
             @logger.info("Machine '#{zone}:#{name}' created.")
           rescue *FOG_ERRORS => e
-            # there is a chance Google responded with error but actually created
-            # instance, so we need to remove it
-            cleanup_instance(env)
-            # there is a chance Google has failed to create instance, so we need
-            # to remove created disk
+            # TODO: Cleanup the Fog catch-all once Fog implements better exceptions
+            # There is a chance Google has failed to create an instance, so we need
+            # to clean up the created disk.
             cleanup_disk(disk.name, env) if disk && disk_created_by_vagrant
             raise Errors::FogError, :message => e.message
           end
@@ -221,13 +219,6 @@ module VagrantPlugins
           end
           # Resolve the name to IP address
           address.address
-        end
-
-        def cleanup_instance(env)
-          zone = env[:machine].provider_config.zone
-          zone_config = env[:machine].provider_config.get_zone_config(zone)
-          server = env[:google_compute].servers.get(zone_config.name, zone)
-          server.destroy(false) if server
         end
 
         def cleanup_disk(disk_name, env)
