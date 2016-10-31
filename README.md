@@ -192,6 +192,7 @@ This provider exposes quite a few provider-specific configuration options:
 * `zone` - The zone name where the instance will be created.
 * `can_ip_forward` - Boolean whether to enable IP Forwarding.
 * `external_ip` - The external IP address to use (supports names).
+* `use_private_ip` - Boolean whether to use private IP for SSH/provisioning. Default is false.
 * `preemptible` - Boolean whether to enable preemptibility. Default is false.
 * `auto_restart` - Boolean whether to enable auto_restart. Default is true.
 * `on_host_maintenance` - What to do on host maintenance. Default is "MIGRATE".
