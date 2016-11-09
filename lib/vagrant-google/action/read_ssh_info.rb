@@ -42,11 +42,24 @@ module VagrantPlugins
             return nil
           end
 
-          # Read SSH network info
-          return {
+          # Get private_ip setting
+          use_private_ip = machine.provider_config.get_zone_config(zone).use_private_ip
+
+          # Default to use public ip address
+          ssh_info = {
             :host => server.public_ip_address,
             :port => 22
           }
+
+          if use_private_ip then
+            ssh_info = {
+              :host => server.private_ip_address,
+              :port => 22
+            }
+          end
+
+          # Return SSH network info
+          return ssh_info
         end
       end
     end

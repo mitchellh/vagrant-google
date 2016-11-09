@@ -53,6 +53,7 @@ module VagrantPlugins
           metadata            = zone_config.metadata
           tags                = zone_config.tags
           can_ip_forward      = zone_config.can_ip_forward
+          use_private_ip      = zone_config.use_private_ip
           external_ip         = zone_config.external_ip
           preemptible         = zone_config.preemptible
           auto_restart        = zone_config.auto_restart
@@ -74,6 +75,7 @@ module VagrantPlugins
           env[:ui].info(" -- Metadata:        '#{metadata}'")
           env[:ui].info(" -- Tags:            '#{tags}'")
           env[:ui].info(" -- IP Forward:      #{can_ip_forward}")
+          env[:ui].info(" -- Use private IP:  #{use_private_ip}")
           env[:ui].info(" -- External IP:     #{external_ip}")
           env[:ui].info(" -- Preemptible:     #{preemptible}")
           env[:ui].info(" -- Auto Restart:    #{auto_restart}")
@@ -127,6 +129,7 @@ module VagrantPlugins
               :metadata            => metadata,
               :tags                => tags,
               :can_ip_forward      => can_ip_forward,
+              :use_private_ip      => use_private_ip,
               :external_ip         => external_ip,
               :preemptible         => preemptible,
               :auto_restart        => auto_restart,

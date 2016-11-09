@@ -97,6 +97,11 @@ module VagrantPlugins
       # @return String
       attr_accessor :external_ip
 
+      # Use private ip address
+      #
+      # @return Boolean
+      attr_accessor :use_private_ip
+
       # whether to autodelete disk on instance delete
       #
       # @return Boolean
@@ -157,6 +162,7 @@ module VagrantPlugins
         @tags                = []
         @can_ip_forward      = UNSET_VALUE
         @external_ip         = UNSET_VALUE
+        @use_private_ip      = UNSET_VALUE
         @autodelete_disk     = UNSET_VALUE
         @preemptible         = UNSET_VALUE
         @auto_restart        = UNSET_VALUE
@@ -280,6 +286,9 @@ module VagrantPlugins
 
         # external_ip defaults to nil
         @external_ip = nil if @external_ip == UNSET_VALUE
+
+        # use_private_ip defaults to false
+        @use_private_ip = false if @use_private_ip == UNSET_VALUE
 
         # preemptible defaults to false
         @preemptible = false if @preemptible == UNSET_VALUE
