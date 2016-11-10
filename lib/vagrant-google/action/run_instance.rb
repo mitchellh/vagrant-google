@@ -138,8 +138,8 @@ module VagrantPlugins
                 zone_name: zone,
                 source_image: image
               )
-              disk_created_by_vagrant = true
               disk.wait_for { disk.ready? }
+              disk_created_by_vagrant = true
             else
               disk = env[:google_compute].disks.get(disk_name, zone)
               if disk.nil?
