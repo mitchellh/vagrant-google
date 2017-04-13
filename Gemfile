@@ -16,6 +16,11 @@ source "https://rubygems.org"
 
 gemspec
 
+# This is a restriction to avoid an error "undefined method 'last_comment'" which is deprecated
+# https://github.com/ruby/rake/issues/116
+# Remove it after update rspec-core-2.99.2 to version greater than 3.4.4
+gem 'rake', '< 11' 
+
 group :development do
   # We depend on Vagrant for development, but we don't add it as a
   # gem dependency because we expect to be installed within the
