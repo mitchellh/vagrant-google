@@ -15,6 +15,7 @@
 $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
 require "vagrant-google/version"
 
+
 Gem::Specification.new do |s|
   s.name          = "vagrant-google"
   s.version       = VagrantPlugins::Google::VERSION
@@ -28,8 +29,8 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project         = "vagrant-google"
 
-  s.add_runtime_dependency "fog-google", "~> 0.4.0"
-  s.add_runtime_dependency "google-api-client", "< 0.9", ">= 0.6.2"
+  s.add_runtime_dependency "fog-google", "~> 0.5.2"
+  s.add_runtime_dependency "google-api-client", "< 0.9", "> 0.8.5"
 
   s.add_development_dependency "pry"
   s.add_development_dependency "pry-byebug"
