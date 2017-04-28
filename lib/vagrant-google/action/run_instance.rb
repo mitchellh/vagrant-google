@@ -61,7 +61,7 @@ module VagrantPlugins
           on_host_maintenance = zone_config.on_host_maintenance
           autodelete_disk     = zone_config.autodelete_disk
           service_accounts    = zone_config.service_accounts
- 
+
           # Launch!
           env[:ui].info(I18n.t("vagrant_google.launching_instance"))
           env[:ui].info(" -- Name:            #{name}")

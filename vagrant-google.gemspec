@@ -15,7 +15,6 @@
 $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
 require "vagrant-google/version"
 
-
 Gem::Specification.new do |s|
   s.name          = "vagrant-google"
   s.version       = VagrantPlugins::Google::VERSION
