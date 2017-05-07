@@ -210,6 +210,11 @@ module VagrantPlugins
         @__zone_config[zone] << block if block_given?
       end
 
+      def expand_path(path, root_path)
+        return path if not path
+        return Pathname.new(path).expand_path(root_path)
+      end
+
       #-------------------------------------------------------------------
       # Internal methods.
       #-------------------------------------------------------------------
@@ -337,6 +342,9 @@ module VagrantPlugins
 
         if @zone
           config = get_zone_config(@zone)
+
+          config.google_key_location = expand_path(config.google_key_location, machine.env.root_path)
+          config.google_json_key_location = expand_path(config.google_json_key_location, machine.env.root_path)
 
           errors << I18n.t("vagrant_google.config.google_project_id_required") if \
             config.google_project_id.nil?
