@@ -82,6 +82,11 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :network
 
+      # The name of the subnetwork
+      #
+      # @return [String]
+      attr_accessor :subnetwork
+
       # Tags to apply to the instance
       #
       # @return [Array]
@@ -159,6 +164,7 @@ module VagrantPlugins
         @metadata            = {}
         @name                = UNSET_VALUE
         @network             = UNSET_VALUE
+        @subnetwork          = UNSET_VALUE
         @tags                = []
         @can_ip_forward      = UNSET_VALUE
         @external_ip         = UNSET_VALUE
@@ -279,6 +285,9 @@ module VagrantPlugins
         end
         # Network defaults to 'default'
         @network = "default" if @network == UNSET_VALUE
+
+        # Subnetwork defaults to nil
+        @subnetwork = nil if @subnetwork == UNSET_VALUE
 
         # Default zone is us-central1-f.
         @zone = "us-central1-f" if @zone == UNSET_VALUE

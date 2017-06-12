@@ -50,6 +50,7 @@ module VagrantPlugins
           disk_name           = zone_config.disk_name
           disk_type           = zone_config.disk_type
           network             = zone_config.network
+          subnetwork          = zone_config.subnetwork
           metadata            = zone_config.metadata
           tags                = zone_config.tags
           can_ip_forward      = zone_config.can_ip_forward
@@ -72,6 +73,7 @@ module VagrantPlugins
           env[:ui].info(" -- Instance Group:  #{instance_group}")
           env[:ui].info(" -- Zone:            #{zone}") if zone
           env[:ui].info(" -- Network:         #{network}") if network
+          env[:ui].info(" -- Subnetwork:      #{subnetwork}") if subnetwork
           env[:ui].info(" -- Metadata:        '#{metadata}'")
           env[:ui].info(" -- Tags:            '#{tags}'")
           env[:ui].info(" -- IP Forward:      #{can_ip_forward}")
@@ -126,6 +128,7 @@ module VagrantPlugins
               :disk_type           => disk_type,
               :image               => image,
               :network             => network,
+              :subnetwork          => subnetwork,
               :metadata            => metadata,
               :tags                => tags,
               :can_ip_forward      => can_ip_forward,
