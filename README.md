@@ -1,9 +1,8 @@
 # Vagrant Google Compute Engine (GCE) Provider
 
-<span class="badges">
+
 [![Gem Version](https://badge.fury.io/rb/vagrant-google.png)][gem]
 [![Dependency Status](https://gemnasium.com/mitchellh/vagrant-google.png)][gemnasium]
-</span>
 
 [gem]: https://rubygems.org/gems/vagrant-google
 [gemnasium]: https://gemnasium.com/mitchellh/vagrant-google
