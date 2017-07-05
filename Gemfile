@@ -22,6 +22,10 @@ group :development do
   # Vagrant environment itself using `vagrant plugin`.
   gem 'vagrant', git: "https://github.com/mitchellh/vagrant.git"
   gem 'vagrant-spec', git: "https://github.com/mitchellh/vagrant-spec.git"
+  # This is a restriction to avoid an error "undefined method 'last_comment'" which is deprecated
+  # https://github.com/ruby/rake/issues/116
+  # Remove it after update rspec-core-2.99.2 to version greater or equal to 3.4.4
+  gem 'rake', '< 11'
 end
 
 group :plugins do
