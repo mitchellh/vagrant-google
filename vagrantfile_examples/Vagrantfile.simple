@@ -15,7 +15,7 @@
 # limitations under the License.
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "gce"
+  config.vm.box = "google/gce"
 
   config.vm.provider :google do |google, override|
     google.google_project_id = "YOUR_GOOGLE_CLOUD_PROJECT_ID"
