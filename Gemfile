@@ -14,7 +14,10 @@
 
 source "https://rubygems.org"
 
-gemspec
+group :plugins do
+  # Dependencies need to be specified in vagrant-google.gemspec
+  gemspec
+end
 
 group :development do
   # We depend on Vagrant for development, but we don't add it as a
@@ -22,8 +25,4 @@ group :development do
   # Vagrant environment itself using `vagrant plugin`.
   gem 'vagrant', git: "https://github.com/mitchellh/vagrant.git"
   gem 'vagrant-spec', git: "https://github.com/mitchellh/vagrant-spec.git"
-end
-
-group :plugins do
-  gem "vagrant-google" , path: "."
 end
