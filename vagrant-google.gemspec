@@ -33,7 +33,11 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "pry"
   s.add_development_dependency "pry-byebug"
-  s.add_development_dependency "rake"
+
+  # This is a restriction to avoid an error "undefined method 'last_comment'"
+  # which is deprecated (see https://github.com/ruby/rake/issues/116)
+  # Remove it after update rspec-core to version greater than or equal to 3.4.4
+  s.add_development_dependency "rake", "< 11.0"
   s.add_development_dependency "rspec", "~> 2.14"
   s.add_development_dependency "rubocop", "~> 0.35"
   s.add_development_dependency "highline"
