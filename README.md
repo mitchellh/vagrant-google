@@ -11,7 +11,7 @@ This is a [Vagrant](http://www.vagrantup.com) 1.2+ plugin that adds an
 [Google Compute Engine](http://cloud.google.com/compute/) (GCE) provider to
 Vagrant, allowing Vagrant to control and provision instances in GCE.
 
-**NOTE:** This plugin requires Vagrant 1.2+.
+The maintainers for this plugin are @temikus(primary), @erjohnso(backup).
 
 ## Features
 
@@ -187,6 +187,7 @@ This provider exposes quite a few provider-specific configuration options:
   e.g. 10/08/2015 13:15:15 is "i-2015081013-15637fda".
 * `network` - The name of the network to use for the instance.  Default is
  "default".
+* `subnetwork` - The name of the subnetwork to use for the instance.
 * `tags` - An array of tags to apply to this instance.
 * `zone` - The zone name where the instance will be created.
 * `can_ip_forward` - Boolean whether to enable IP Forwarding.
