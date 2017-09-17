@@ -42,6 +42,11 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :image
 
+      # The image family of the instance to use.
+      #
+      # @return [String]
+      attr_accessor :image_family
+
       # The instance group name to put the instance in.
       #
       # @return [String]
@@ -156,6 +161,7 @@ module VagrantPlugins
         @google_json_key_location = UNSET_VALUE
         @google_project_id   = UNSET_VALUE
         @image               = UNSET_VALUE
+        @image_family        = UNSET_VALUE
         @instance_group      = UNSET_VALUE
         @machine_type        = UNSET_VALUE
         @disk_size           = UNSET_VALUE
@@ -261,6 +267,9 @@ module VagrantPlugins
 
         # Image must be nil, since we can't default that
         @image = "debian-8-jessie-v20160511" if @image == UNSET_VALUE
+
+        # Default image family is nil
+        @image_family = nil if @image_family == UNSET_VALUE
 
         # Default instance group name is nil
         @instance_group = nil if @instance_group == UNSET_VALUE
