@@ -282,6 +282,14 @@ describe VagrantPlugins::Google::Config do
         end
       end
 
+      before :each do
+        # Stub out required env to make sure we produce only errors we're looking for.
+        ENV.stub(:[]).with("GOOGLE_CLIENT_EMAIL").and_return("client_id_email")
+        ENV.stub(:[]).with("GOOGLE_PROJECT_ID").and_return("my-awesome-project")
+        ENV.stub(:[]).with("GOOGLE_JSON_KEY_LOCATION").and_return("/path/to/json/key")
+        ENV.stub(:[]).with("GOOGLE_SSH_KEY_LOCATION").and_return("/path/to/ssh/key")
+      end
+
       it "should fail auto_restart validation" do
         expected_error = "en.vagrant_google.config.auto_restart_invalid_on_preemptible"
         errors = subject.validate("foo")["Google Provider"]
