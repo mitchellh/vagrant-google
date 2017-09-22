@@ -165,7 +165,7 @@ describe VagrantPlugins::Google::Config do
 
     it "should raise an exception if not finalized" do
       expect { instance.get_zone_config("us-central1-f") }.
-        to raise_error
+        to raise_error(RuntimeError,/Configuration must be finalized/)
     end
 
     context "with no specific config set" do
