@@ -59,26 +59,24 @@ describe VagrantPlugins::Google::Config do
       it "should not default #{attribute} if overridden" do
         instance.send("#{attribute}=".to_sym, "foo")
         instance.finalize!
-        instance.send(attribute).should == "foo"
+        expect(instance.send(attribute)).to eq "foo"
       end
     end
 
     it "should raise error when preemptible and auto_restart is true" do
       instance.preemptible = true
       instance.auto_restart = true
-      expected_error = "en.vagrant_google.config.auto_restart_invalid_on_preemptible"
       instance.finalize!
       errors = instance.validate("foo")["Google Provider"]
-      errors.inject(false) { |a, e| a or e.include?(expected_error) }.should == true
+      expect(errors).to include(/auto_restart_invalid_on_preemptible/)
     end
 
     it "should raise error when preemptible and on_host_maintenance is not TERMINATE" do
       instance.preemptible = true
       instance.on_host_maintenance = "MIGRATE"
-      expected_error = "en.vagrant_google.config.on_host_maintenance_invalid_on_preemptible"
       instance.finalize!
       errors = instance.validate("foo")["Google Provider"]
-      errors.inject(false) { |a, e| a or e.include?(expected_error) }.should == true
+      expect(errors).to include(/on_host_maintenance_invalid_on_preemptible/)
     end
   end
 
@@ -260,10 +258,10 @@ describe VagrantPlugins::Google::Config do
         second.metadata["two"] = "bar"
 
         third = first.merge(second)
-        third.metadata.should == {
+        expect(third.metadata).to eq({
           "one" => "foo",
           "two" => "bar"
-        }
+        })
       end
     end
 
