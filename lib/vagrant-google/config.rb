@@ -266,10 +266,6 @@ module VagrantPlugins
         @google_project_id = ENV['GOOGLE_PROJECT_ID'] if @google_project_id == UNSET_VALUE
 
         # Image must be nil, since we can't default that
-        if (@image == UNSET_VALUE) && (@image_family == UNSET_VALUE)
-          @image = "debian-8-jessie-v20160511"
-        end
-
         if @image == UNSET_VALUE
           if @image_family == UNSET_VALUE
             @image = "debian-8-jessie-v20160511"
