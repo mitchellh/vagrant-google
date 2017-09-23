@@ -64,7 +64,7 @@ module VagrantPlugins
           service_accounts    = zone_config.service_accounts
 
           # If image_family is set, get the latest image image from the family.
-          if !image_family.nil?
+          unless image_family.nil?
             image = env[:google_compute].images.get_from_family(image_family).name
           end
 
