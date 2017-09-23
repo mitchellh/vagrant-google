@@ -78,6 +78,8 @@ en:
       on_host_maintenance_invalid_on_preemptible: |-
         "on_host_maintenance" option must be set to "TERMINATE" for preemptible
         instances.
+      image_and_image_family_set: |-
+        "image" must be unset when setting "image_family"
 #-------------------------------------------------------------------------------
 # Translations for exception classes
 #-------------------------------------------------------------------------------
