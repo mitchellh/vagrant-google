@@ -20,7 +20,7 @@ describe VagrantPlugins::Google::Config do
 
   # Ensure tests are not affected by Google credential environment variables
   before :each do
-    ENV.stub(:[] => nil)
+    allow(ENV).to receive_messages(:[] => nil)
   end
 
   describe "defaults" do
@@ -97,9 +97,9 @@ describe VagrantPlugins::Google::Config do
 
     context "with Google credential environment variables" do
       before :each do
-        ENV.stub(:[]).with("GOOGLE_CLIENT_EMAIL").and_return("client_id_email")
-        ENV.stub(:[]).with("GOOGLE_KEY_LOCATION").and_return("/path/to/key")
-        ENV.stub(:[]).with("GOOGLE_JSON_KEY_LOCATION").and_return("/path/to/json/key")
+        allow(ENV).to receive(:[]).with("GOOGLE_CLIENT_EMAIL").and_return("client_id_email")
+        allow(ENV).to receive(:[]).with("GOOGLE_KEY_LOCATION").and_return("/path/to/key")
+        allow(ENV).to receive(:[]).with("GOOGLE_JSON_KEY_LOCATION").and_return("/path/to/json/key")
       end
 
       subject do
@@ -115,9 +115,9 @@ describe VagrantPlugins::Google::Config do
 
     context "With both Google credential environment variables" do
       before :each do
-        ENV.stub(:[]).with("GOOGLE_CLIENT_EMAIL").and_return("client_id_email")
-        ENV.stub(:[]).with("GOOGLE_KEY_LOCATION").and_return("/path/to/key")
-        ENV.stub(:[]).with("GOOGLE_JSON_KEY_LOCATION").and_return("/path/to/json/key")
+        allow(ENV).to receive(:[]).with("GOOGLE_CLIENT_EMAIL").and_return("client_id_email")
+        allow(ENV).to receive(:[]).with("GOOGLE_KEY_LOCATION").and_return("/path/to/key")
+        allow(ENV).to receive(:[]).with("GOOGLE_JSON_KEY_LOCATION").and_return("/path/to/json/key")
       end
 
       it "Should return duplicate key location errors" do
@@ -128,7 +128,7 @@ describe VagrantPlugins::Google::Config do
 
     context "With none of the Google credential environment variables set" do
       before :each do
-        ENV.stub(:[]).with("GOOGLE_CLIENT_EMAIL").and_return("client_id_email")
+        allow(ENV).to receive(:[]).with("GOOGLE_CLIENT_EMAIL").and_return("client_id_email")
       end
 
       it "Should return no key set errors" do
@@ -284,22 +284,20 @@ describe VagrantPlugins::Google::Config do
 
       before :each do
         # Stub out required env to make sure we produce only errors we're looking for.
-        ENV.stub(:[]).with("GOOGLE_CLIENT_EMAIL").and_return("client_id_email")
-        ENV.stub(:[]).with("GOOGLE_PROJECT_ID").and_return("my-awesome-project")
-        ENV.stub(:[]).with("GOOGLE_JSON_KEY_LOCATION").and_return("/path/to/json/key")
-        ENV.stub(:[]).with("GOOGLE_SSH_KEY_LOCATION").and_return("/path/to/ssh/key")
+        allow(ENV).to receive(:[]).with("GOOGLE_CLIENT_EMAIL").and_return("client_id_email")
+        allow(ENV).to receive(:[]).with("GOOGLE_PROJECT_ID").and_return("my-awesome-project")
+        allow(ENV).to receive(:[]).with("GOOGLE_JSON_KEY_LOCATION").and_return("/path/to/json/key")
+        allow(ENV).to receive(:[]).with("GOOGLE_SSH_KEY_LOCATION").and_return("/path/to/ssh/key")
       end
 
       it "should fail auto_restart validation" do
-        expected_error = "en.vagrant_google.config.auto_restart_invalid_on_preemptible"
         errors = subject.validate("foo")["Google Provider"]
-        errors.inject(false) { |a, e| a or e.include?(expected_error) }.should == true
+        expect(errors).to include(/auto_restart_invalid_on_preemptible/)
       end
 
       it "should fail on_host_maintenance validation" do
-        expected_error = "en.vagrant_google.config.on_host_maintenance_invalid_on_preemptible"
         errors = subject.validate("foo")["Google Provider"]
-        errors.inject(false) { |a, e| a or e.include?(expected_error) }.should == true
+        expect(errors).to include(/on_host_maintenance_invalid_on_preemptible/)
       end
     end
   end
