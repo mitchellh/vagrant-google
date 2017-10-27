@@ -37,9 +37,10 @@ Gem::Specification.new do |s|
   # This is a restriction to avoid an error "undefined method 'last_comment'"
   # which is deprecated (see https://github.com/ruby/rake/issues/116)
   # Remove it after update rspec-core to version greater than or equal to 3.4.4
-  s.add_development_dependency "rake", "< 11.0"
-  s.add_development_dependency "rspec", "~> 2.14"
-  s.add_development_dependency "rubocop", "~> 0.35"
+  # s.add_development_dependency "rake", "< 11.0"
+  s.add_development_dependency "rspec", ">= 3.5.0", "<= 3.6"
+  s.add_development_dependency "rspec-its", "~> 1.2"
+  s.add_development_dependency "rubocop", "~> 0.50"
   s.add_development_dependency "highline"
 
   # The following block of code determines the files that should be included
