@@ -43,6 +43,7 @@ module VagrantPlugins
           # Get the configs
           zone_config         = env[:machine].provider_config.get_zone_config(zone)
           image               = zone_config.image
+          image_family        = zone_config.image_family
           instance_group      = zone_config.instance_group
           name                = zone_config.name
           machine_type        = zone_config.machine_type
@@ -62,6 +63,11 @@ module VagrantPlugins
           autodelete_disk     = zone_config.autodelete_disk
           service_accounts    = zone_config.service_accounts
 
+          # If image_family is set, get the latest image image from the family.
+          unless image_family.nil?
+            image = env[:google_compute].images.get_from_family(image_family).name
+          end
+
           # Launch!
           env[:ui].info(I18n.t("vagrant_google.launching_instance"))
           env[:ui].info(" -- Name:            #{name}")
@@ -70,6 +76,7 @@ module VagrantPlugins
           env[:ui].info(" -- Disk size:       #{disk_size} GB")
           env[:ui].info(" -- Disk name:       #{disk_name}")
           env[:ui].info(" -- Image:           #{image}")
+          env[:ui].info(" -- Image family:    #{image_family}")
           env[:ui].info(" -- Instance Group:  #{instance_group}")
           env[:ui].info(" -- Zone:            #{zone}") if zone
           env[:ui].info(" -- Network:         #{network}") if network
