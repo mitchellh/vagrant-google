@@ -31,17 +31,16 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "fog-google", "~> 0.5.3"
   s.add_runtime_dependency "google-api-client", "< 0.9", "> 0.8.5"
 
-  s.add_development_dependency "pry"
-  s.add_development_dependency "pry-byebug"
+  # This is a restriction to avoid errors on `failure_message_for_should`
+  # TODO: revise after vagrant_spec goes past >0.0.1 (at master@e623a56)
+  s.add_development_dependency "rspec-legacy_formatters"
 
-  # This is a restriction to avoid an error "undefined method 'last_comment'"
-  # which is deprecated (see https://github.com/ruby/rake/issues/116)
-  # Remove it after update rspec-core to version greater than or equal to 3.4.4
-  # s.add_development_dependency "rake", "< 11.0"
   s.add_development_dependency "rspec", ">= 3.5.0", "<= 3.6"
   s.add_development_dependency "rspec-its", "~> 1.2"
   s.add_development_dependency "rubocop", "~> 0.50"
   s.add_development_dependency "highline"
+  s.add_development_dependency "pry"
+  s.add_development_dependency "pry-byebug"
 
   # The following block of code determines the files that should be included
   # in the gem. It does this by reading all the files in the directory where
