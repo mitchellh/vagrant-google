@@ -261,7 +261,13 @@ module VagrantPlugins
         @google_project_id = ENV['GOOGLE_PROJECT_ID'] if @google_project_id == UNSET_VALUE
 
         # Image must be nil, since we can't default that
-        @image = "debian-8-jessie-v20160511" if @image == UNSET_VALUE
+        if @image == UNSET_VALUE
+          if @image_family == UNSET_VALUE
+            @image = "debian-8-jessie-v20160511"
+          else
+            @image = nil
+          end
+        end
 
         # Default image family is nil
         @image_family = nil if @image_family == UNSET_VALUE
@@ -374,9 +380,14 @@ module VagrantPlugins
             errors << I18n.t("vagrant_google.config.on_host_maintenance_invalid_on_preemptible") unless \
              config.on_host_maintenance == "TERMINATE"
           end
+
+          if config.image_family
+            errors << I18n.t("vagrant_google.config.image_and_image_family_set") if \
+             config.image
+          end
         end
 
-        errors << I18n.t("vagrant_google.config.image_required") if config.image.nil?
+        errors << I18n.t("vagrant_google.config.image_required") if config.image.nil? && config.image_family.nil?
         errors << I18n.t("vagrant_google.config.name_required") if @name.nil?
 
         { "Google Provider" => errors }
