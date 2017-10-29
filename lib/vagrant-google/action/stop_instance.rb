@@ -18,10 +18,8 @@ require 'vagrant-google/util/timer'
 module VagrantPlugins
   module Google
     module Action
-
       # This stops the running instance.
       class StopInstance
-
         include Vagrant::Util::Retryable
 
         def initialize(app, env)
