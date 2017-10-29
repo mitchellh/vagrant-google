@@ -68,7 +68,7 @@ namespace :acceptance do
       provisioner/chef-solo
     ).map{ |s| "provider/google/#{s}" }
 
-    command = "bundle exec vagrant-spec test --components=#{components.join(" ")}"
+    command = "vagrant-spec test --components=#{components.join(" ")}"
     puts command
     puts
     exec(command)
