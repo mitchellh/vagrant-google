@@ -103,11 +103,11 @@ module VagrantPlugins
             if disk_name.nil?
               # no disk_name... disk_name defaults to instance name
               disk = env[:google_compute].disks.create(
-                  name: name,
-                  size_gb: disk_size,
-                  type: disk_type,
-                  zone_name: zone,
-                  source_image: image
+                name: name,
+                size_gb: disk_size,
+                type: disk_type,
+                zone_name: zone,
+                source_image: image
               )
               disk_created_by_vagrant = true
               disk.wait_for { disk.ready? }
@@ -116,11 +116,11 @@ module VagrantPlugins
               if disk.nil?
                 # disk not found... create it with name
                 disk = env[:google_compute].disks.create(
-                    name: disk_name,
-                    size_gb: disk_size,
-                    type: disk_type,
-                    zone_name: zone,
-                    source_image: image
+                  name: disk_name,
+                  size_gb: disk_size,
+                  type: disk_type,
+                  zone_name: zone,
+                  source_image: image
                 )
                 disk.wait_for { disk.ready? }
                 disk_created_by_vagrant = true
