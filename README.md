@@ -182,6 +182,7 @@ This provider exposes quite a few provider-specific configuration options:
 * `disk_size` - The disk size in GB.  The default is 10.
 * `disk_name` - The disk name to use.  If the disk exists, it will be reused, otherwise created.
 * `disk_type` - Whether to use Standard disk or SSD disk. Use either `pd-ssd` or `pd-standard`.
+* `autodelete_disk` - Boolean whether to delete the disk when the instance is deleted or not. Default is true.
 * `metadata` - Custom key/value pairs of metadata to add to the instance.
 * `name` - The name of your instance.  The default is "i-yyyymmddhh-randomsd",
   e.g. 10/08/2015 13:15:15 is "i-2015081013-15637fda".
@@ -195,7 +196,7 @@ This provider exposes quite a few provider-specific configuration options:
 * `use_private_ip` - Boolean whether to use private IP for SSH/provisioning. Default is false.
 * `preemptible` - Boolean whether to enable preemptibility. Default is false.
 * `auto_restart` - Boolean whether to enable auto_restart. Default is true.
-* `on_host_maintenance` - What to do on host maintenance. Default is "MIGRATE".
+* `on_host_maintenance` - What to do on host maintenance. Can be set to `MIGRATE` or `TERMINATE` Default is `MIGRATE`.
 * `service_accounts` or `scopes` - An array of OAuth2 account scopes for
   services that the instance will have access to. Those can be both full API
   scopes, just endpoint aliases (the part after `...auth/`), and `gcloud`
