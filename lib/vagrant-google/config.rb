@@ -92,6 +92,11 @@ module VagrantPlugins
       # @return [Array]
       attr_accessor :tags
 
+      # Labels to apply to the instance
+      #
+      # @return [Hash<String, String>]
+      attr_accessor :labels
+
       # whether to enable ip forwarding
       #
       # @return Boolean
@@ -166,6 +171,7 @@ module VagrantPlugins
         @network             = UNSET_VALUE
         @subnetwork          = UNSET_VALUE
         @tags                = []
+        @labels              = {}
         @can_ip_forward      = UNSET_VALUE
         @external_ip         = UNSET_VALUE
         @use_private_ip      = UNSET_VALUE

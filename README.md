@@ -187,6 +187,7 @@ This provider exposes quite a few provider-specific configuration options:
  "default".
 * `subnetwork` - The name of the subnetwork to use for the instance.
 * `tags` - An array of tags to apply to this instance.
+* `labels` - Custom key/value pairs of labels to add to the instance.
 * `zone` - The zone name where the instance will be created.
 * `can_ip_forward` - Boolean whether to enable IP Forwarding.
 * `external_ip` - The external IP address to use (supports names). Set to `false` to not assign an external address.

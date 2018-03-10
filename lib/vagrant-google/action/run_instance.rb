@@ -53,6 +53,7 @@ module VagrantPlugins
           network             = zone_config.network
           subnetwork          = zone_config.subnetwork
           metadata            = zone_config.metadata
+          labels              = zone_config.labels
           tags                = zone_config.tags
           can_ip_forward      = zone_config.can_ip_forward
           use_private_ip      = zone_config.use_private_ip
@@ -79,6 +80,7 @@ module VagrantPlugins
           env[:ui].info(" -- Network:         #{network}") if network
           env[:ui].info(" -- Subnetwork:      #{subnetwork}") if subnetwork
           env[:ui].info(" -- Metadata:        '#{metadata}'")
+          env[:ui].info(" -- Labels:          '#{labels}'")
           env[:ui].info(" -- Tags:            '#{tags}'")
           env[:ui].info(" -- IP Forward:      #{can_ip_forward}")
           env[:ui].info(" -- Use private IP:  #{use_private_ip}")
@@ -163,6 +165,7 @@ module VagrantPlugins
               :image               => image,
               :network_interfaces  => network_interfaces,
               :metadata            => { :items => metadata.each.map { |k, v| {:key => k.to_s, :value => v.to_s} } },
+              :labels              => labels,
               :tags                => { :items => tags },
               :can_ip_forward      => can_ip_forward,
               :use_private_ip      => use_private_ip,
