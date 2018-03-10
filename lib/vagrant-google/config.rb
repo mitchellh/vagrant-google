@@ -22,11 +22,6 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :google_client_email
 
-      # The path to the Service Account private key
-      #
-      # @return [String]
-      attr_accessor :google_key_location
-
       # The path to the Service Account json-formatted private key
       #
       # @return [String]
@@ -157,7 +152,6 @@ module VagrantPlugins
 
       def initialize(zone_specific=false)
         @google_client_email = UNSET_VALUE
-        @google_key_location = UNSET_VALUE
         @google_json_key_location = UNSET_VALUE
         @google_project_id   = UNSET_VALUE
         @image               = UNSET_VALUE
@@ -256,7 +250,6 @@ module VagrantPlugins
         # Try to get access keys from standard Google environment variables; they
         # will default to nil if the environment variables are not present.
         @google_client_email = ENV['GOOGLE_CLIENT_EMAIL'] if @google_client_email == UNSET_VALUE
-        @google_key_location = ENV['GOOGLE_KEY_LOCATION'] if @google_key_location == UNSET_VALUE
         @google_json_key_location = ENV['GOOGLE_JSON_KEY_LOCATION'] if @google_json_key_location == UNSET_VALUE
         @google_project_id = ENV['GOOGLE_PROJECT_ID'] if @google_project_id == UNSET_VALUE
 
@@ -366,12 +359,9 @@ module VagrantPlugins
             config.google_project_id.nil?
           errors << I18n.t("vagrant_google.config.google_client_email_required") if \
             config.google_client_email.nil?
-          errors << I18n.t("vagrant_google.config.google_duplicate_key_location") if \
-            !config.google_key_location.nil? and !config.google_json_key_location.nil?
           errors << I18n.t("vagrant_google.config.google_key_location_required") if \
-            config.google_key_location.nil? and config.google_json_key_location.nil?
+            config.google_json_key_location.nil?
           errors << I18n.t("vagrant_google.config.private_key_missing") unless \
-            File.exist?(config.google_key_location.to_s) or \
             File.exist?(config.google_json_key_location.to_s)
 
           if config.preemptible

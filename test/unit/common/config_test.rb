@@ -89,14 +89,12 @@ describe VagrantPlugins::Google::Config do
       end
 
       its("google_client_email") { should be_nil }
-      its("google_key_location") { should be_nil }
       its("google_json_key_location") { should be_nil }
     end
 
     context "with Google credential environment variables" do
       before :each do
         allow(ENV).to receive(:[]).with("GOOGLE_CLIENT_EMAIL").and_return("client_id_email")
-        allow(ENV).to receive(:[]).with("GOOGLE_KEY_LOCATION").and_return("/path/to/key")
         allow(ENV).to receive(:[]).with("GOOGLE_JSON_KEY_LOCATION").and_return("/path/to/json/key")
       end
 
@@ -107,21 +105,7 @@ describe VagrantPlugins::Google::Config do
       end
 
       its("google_client_email") { should == "client_id_email" }
-      its("google_key_location") { should == "/path/to/key" }
       its("google_json_key_location") { should == "/path/to/json/key" }
-    end
-
-    context "With both Google credential environment variables" do
-      before :each do
-        allow(ENV).to receive(:[]).with("GOOGLE_CLIENT_EMAIL").and_return("client_id_email")
-        allow(ENV).to receive(:[]).with("GOOGLE_KEY_LOCATION").and_return("/path/to/key")
-        allow(ENV).to receive(:[]).with("GOOGLE_JSON_KEY_LOCATION").and_return("/path/to/json/key")
-      end
-
-      it "Should return duplicate key location errors" do
-        instance.finalize!
-        expect(instance.validate("foo")["Google Provider"][1]).to include("en.vagrant_google.config.google_duplicate_key_location")
-      end
     end
 
     context "With none of the Google credential environment variables set" do

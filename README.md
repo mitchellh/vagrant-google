@@ -165,9 +165,6 @@ This provider exposes quite a few provider-specific configuration options:
 
 * `google_client_email` - The Client Email address for your Service Account.  
   (Can also be configured with `GOOGLE_CLIENT_EMAIL` environment variable.)
-* `google_key_location` - The location of the P12 private key file matching your
-  Service Account.  
-  (Can also be configured with `GOOGLE_KEY_LOCATION` environment variable.)
 * `google_json_key_location` - The location of the JSON private key file matching your
   Service Account.  
   (Can also be configured with `GOOGLE_JSON_KEY_LOCATION` environment variable.)
