@@ -53,6 +53,7 @@ module VagrantPlugins
           network             = zone_config.network
           subnetwork          = zone_config.subnetwork
           metadata            = zone_config.metadata
+          labels              = zone_config.labels
           tags                = zone_config.tags
           can_ip_forward      = zone_config.can_ip_forward
           use_private_ip      = zone_config.use_private_ip
@@ -62,15 +63,12 @@ module VagrantPlugins
           on_host_maintenance = zone_config.on_host_maintenance
           autodelete_disk     = zone_config.autodelete_disk
           service_accounts    = zone_config.service_accounts
-
-          # If image_family is set, get the latest image image from the family.
-          unless image_family.nil?
-            image = env[:google_compute].images.get_from_family(image_family).name
-          end
+          project_id          = zone_config.google_project_id
 
           # Launch!
           env[:ui].info(I18n.t("vagrant_google.launching_instance"))
           env[:ui].info(" -- Name:            #{name}")
+          env[:ui].info(" -- Project:         #{project_id}")
           env[:ui].info(" -- Type:            #{machine_type}")
           env[:ui].info(" -- Disk type:       #{disk_type}")
           env[:ui].info(" -- Disk size:       #{disk_size} GB")
@@ -82,6 +80,7 @@ module VagrantPlugins
           env[:ui].info(" -- Network:         #{network}") if network
           env[:ui].info(" -- Subnetwork:      #{subnetwork}") if subnetwork
           env[:ui].info(" -- Metadata:        '#{metadata}'")
+          env[:ui].info(" -- Labels:          '#{labels}'")
           env[:ui].info(" -- Tags:            '#{tags}'")
           env[:ui].info(" -- IP Forward:      #{can_ip_forward}")
           env[:ui].info(" -- Use private IP:  #{use_private_ip}")
@@ -91,6 +90,36 @@ module VagrantPlugins
           env[:ui].info(" -- On Maintenance:  #{on_host_maintenance}")
           env[:ui].info(" -- Autodelete Disk: #{autodelete_disk}")
           env[:ui].info(" -- Scopes:          #{service_accounts}")
+
+          # Munge image configs
+          image = env[:google_compute].images.get(image).self_link
+
+          # If image_family is set, get the latest image image from the family.
+          unless image_family.nil?
+            image = env[:google_compute].images.get_from_family(image_family).self_link
+          end
+
+          # Munge network configs
+          if network != 'default'
+            network = "projects/#{project_id}/global/networks/#{network}"
+            subnetwork  = "projects/#{project_id}/regions/#{zone.split('-')[0..1].join('-')}/subnetworks/#{subnetwork}"
+          else
+            network = "global/networks/default"
+          end
+
+          if external_ip == false
+            # No external IP
+            network_interfaces = [ { :network => network, :subnetwork => subnetwork } ]
+          else
+            network_interfaces = [ { :network => network, :subnetwork => subnetwork, :access_configs => [{:name => 'External NAT', :type => 'ONE_TO_ONE_NAT'}]} ]
+          end
+
+          # Munge scheduling configs
+          scheduling = { :automatic_restart => auto_restart, :on_host_maintenance => on_host_maintenance, :preemptible => preemptible}
+
+          # Munge service_accounts / scopes config
+          service_accounts = [ { :scopes => service_accounts } ]
+
           begin
             request_start_time = Time.now.to_i
 
@@ -129,22 +158,20 @@ module VagrantPlugins
 
             defaults = {
               :name                => name,
-              :zone_name           => zone,
+              :zone                => zone,
               :machine_type        => machine_type,
               :disk_size           => disk_size,
               :disk_type           => disk_type,
               :image               => image,
-              :network             => network,
-              :subnetwork          => subnetwork,
-              :metadata            => metadata,
-              :tags                => tags,
+              :network_interfaces  => network_interfaces,
+              :metadata            => { :items => metadata.each.map { |k, v| {:key => k.to_s, :value => v.to_s} } },
+              :labels              => labels,
+              :tags                => { :items => tags },
               :can_ip_forward      => can_ip_forward,
               :use_private_ip      => use_private_ip,
               :external_ip         => external_ip,
-              :preemptible         => preemptible,
-              :auto_restart        => auto_restart,
-              :on_host_maintenance => on_host_maintenance,
               :disks               => [disk.get_as_boot_disk(true, autodelete_disk)],
+              :scheduling          => scheduling,
               :service_accounts    => service_accounts
             }
             server = env[:google_compute].servers.create(defaults)
@@ -212,7 +239,7 @@ module VagrantPlugins
         def get_disk_type(env, disk_type, zone)
           begin
             # TODO(temikus): Outsource parsing logic to fog-google
-            disk_type = env[:google_compute].get_disk_type(disk_type, zone).body["selfLink"]
+            disk_type = env[:google_compute].get_disk_type(disk_type, zone).self_link
           rescue Fog::Errors::NotFound
             raise Errors::DiskTypeError,
                   :disktype => disk_type

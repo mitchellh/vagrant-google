@@ -47,13 +47,13 @@ module VagrantPlugins
 
           # Default to use public ip address
           ssh_info = {
-            :host => server.public_ip_address,
+            :host => server.public_ip_addresses[0],
             :port => 22
           }
 
           if use_private_ip then
             ssh_info = {
-              :host => server.private_ip_address,
+              :host => server.private_ip_addresses[0],
               :port => 22
             }
           end

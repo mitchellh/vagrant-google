@@ -35,11 +35,8 @@ module VagrantPlugins
             :google_project      => provider_config.google_project_id,
             :google_client_email => provider_config.google_client_email
           }
-          if provider_config.google_json_key_location.nil?
-            fog_config[:google_key_location] = find_key(provider_config.google_key_location, env)
-          else
-            fog_config[:google_json_key_location] = find_key(provider_config.google_json_key_location, env)
-          end
+
+          fog_config[:google_json_key_location] = find_key(provider_config.google_json_key_location, env)
 
           @logger.info("Connecting to Google...")
           env[:google_compute] = Fog::Compute.new(fog_config)

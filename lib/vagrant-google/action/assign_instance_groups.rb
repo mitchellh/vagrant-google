@@ -34,6 +34,8 @@ module VagrantPlugins
           zone_config = env[:machine].provider_config.get_zone_config(zone)
           instance_name = zone_config.name
           instance_group_name = zone_config.instance_group
+          network = zone_config.network
+          subnetwork = zone_config.subnetwork
 
           if instance_group_name
             group = env[:google_compute].instance_groups.get(instance_group_name,
@@ -44,7 +46,9 @@ module VagrantPlugins
               instance_group_config = {
                 name: instance_group_name,
                 zone: zone,
-                description: "Created by Vagrant"
+                description: "Created by Vagrant",
+                network: network,
+                subnetwork: subnetwork,
               }
               env[:google_compute].instance_groups.create(instance_group_config)
             end
@@ -52,17 +56,15 @@ module VagrantPlugins
             # Add the machine to instance group
             env[:ui].info(I18n.t("vagrant_google.instance_group_add"))
 
-            response = env[:google_compute].instance_groups.add_instance(
-              group: instance_group_name,
-              zone: zone,
-              instance: instance_name
+            response = env[:google_compute].add_instance_group_instances(
+              instance_group_name,
+              zone,
+              [instance_name]
             )
-            unless response.body["status"] == "DONE"
-              operation = env[:google_compute].operations.get(
-                operation.body["name"], zone
-              )
+            unless response.status == "DONE"
+              operation = env[:google_compute].operations.get(response.name, zone)
               env[:ui].info(I18n.t("vagrant_google.waiting_for_operation",
-                                   name: operation.body["name"]))
+                                   name: operation.name))
               operation.wait_for { ready? }
             end
           end
