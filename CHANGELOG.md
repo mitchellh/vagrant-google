@@ -1,3 +1,14 @@
+# 2.0.0 (Release Date TBD)
+
+* Update to use fog-google gem v1
+* Drop support for configuration option `google_key_location`(GCP P12 key)
+* Add new configuration option `labels` for setting [labels](https://cloud.google.com/compute/docs/labeling-resources) on GCE instances
+
+# 1.0.0 (July 2017)
+# 0.2.5 (October 2016)
+# 0.2.4 (April 2016)
+# 0.2.3 (January 2016)
+
 # 0.2.2 (October 2015)
 
 * Cleanup instance and disks on backend failures [p0deje]
