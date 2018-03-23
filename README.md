@@ -88,7 +88,9 @@ Vagrant.configure("2") do |config|
     google.google_project_id = "YOUR_GOOGLE_CLOUD_PROJECT_ID"
     google.google_client_email = "YOUR_SERVICE_ACCOUNT_EMAIL_ADDRESS"
     google.google_json_key_location = "/path/to/your/private-key.json"
-
+    
+    google.image_family = 'ubuntu-1604-lts'
+    
     override.ssh.username = "USERNAME"
     override.ssh.private_key_path = "~/.ssh/id_rsa"
     #override.ssh.private_key_path = "~/.ssh/google_compute_engine"
@@ -99,10 +101,11 @@ end
 
 And then run `vagrant up --provider=google`.
 
-This will start a Debian 8 (Jessie) instance in the `us-central1-f` zone,
-with an `n1-standard-1` machine, and the `"default"` network within your
-project. And assuming your SSH information (see below) was filled in properly
-within your Vagrantfile, SSH and provisioning will work as well.
+This will start a latest version of Ubuntu 16.04 LTS instance in the 
+`us-central1-f` zone, with an `n1-standard-1` machine, and the `"default"` 
+network within your project. And assuming your SSH information (see below) was 
+filled in properly within your Vagrantfile, SSH and provisioning will work as 
+well.
 
 Note that normally a lot of this boilerplate is encoded within the box file,
 but the box file used for the quick start, the "google" box, has no
@@ -235,7 +238,7 @@ Vagrant.configure("2") do |config|
 
     google.zone_config "us-central1-f" do |zone1f|
         zone1f.name = "testing-vagrant"
-        zone1f.image = "debian-8-jessie-v20160923"
+        zone1f.image = "debian-8-jessie-v20180307"
         zone1f.machine_type = "n1-standard-4"
         zone1f.zone = "us-central1-f"
         zone1f.metadata = {'custom' => 'metadata', 'testing' => 'foobarbaz'}

@@ -1,8 +1,13 @@
 # 2.0.0 (Release Date TBD)
 
 * Update to use fog-google gem v1
-* Drop support for configuration option `google_key_location`(GCP P12 key)
 * Add new configuration option `labels` for setting [labels](https://cloud.google.com/compute/docs/labeling-resources) on GCE instances
+* Fix disk cleanup issue causing the disk to be marked as created before insertion
+* Test environment fixups to avoid 'Encoded files can't be read outside of the Vagrant installer.'
+* Breaking changes:
+  * Drop support for configuration option `google_key_location`(GCP P12 key)
+  * `image` parameter no longer defaults to an arbitrary image and must be 
+    specified at runtime.
 
 # 1.0.0 (July 2017)
 # 0.2.5 (October 2016)

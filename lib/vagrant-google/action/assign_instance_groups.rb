@@ -56,6 +56,8 @@ module VagrantPlugins
             # Add the machine to instance group
             env[:ui].info(I18n.t("vagrant_google.instance_group_add"))
 
+            # Fixup with add_instance_group_instance after adding to fog
+            # See https://github.com/fog/fog-google/issues/308
             response = env[:google_compute].add_instance_group_instances(
               instance_group_name,
               zone,
