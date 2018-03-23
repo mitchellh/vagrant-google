@@ -67,6 +67,7 @@ namespace :acceptance do
       reload
       scopes
       instance_groups
+      synced_folder/rsync
       provisioner/shell
       provisioner/chef-solo
     ).map{ |s| "provider/google/#{s}" }

@@ -19,6 +19,11 @@ module VagrantPlugins
     class Provider < Vagrant.plugin("2", :provider)
       def initialize(machine)
         @machine = machine
+
+        # Turn off NFS/SMB functionality by default, so machine always uses
+        # rsync, see https://github.com/mitchellh/vagrant-google/issues/94
+        @machine.config.nfs.functional = false
+        @machine.config.smb.functional = false
       end
 
       def action(name)
