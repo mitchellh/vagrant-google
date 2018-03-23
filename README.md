@@ -18,7 +18,8 @@ The maintainers for this plugin are @temikus(primary), @erjohnso(backup).
 * Boot Google Compute Engine instances.
 * SSH into the instances.
 * Provision the instances with any built-in Vagrant provisioner.
-* Minimal synced folder support via `rsync`.
+* Synced folder support via Vagrant's 
+[rsync action](https://www.vagrantup.com/docs/synced-folders/rsync.html).
 * Define zone-specific configurations so Vagrant can manage machines in
   multiple zones.
 
@@ -264,13 +265,9 @@ emit a warning, but will otherwise boot the GCE machine.
 
 ## Synced Folders
 
-There is minimal support for synced folders. Upon `vagrant up`,
-`vagrant reload`, and `vagrant provision`, the Google provider will use
-`rsync` (if available) to uni-directionally sync the folder to the remote
-machine over SSH.
-
-This is good enough for all built-in Vagrant provisioners (`shell`, `chef`, and
-`puppet`) to work!
+Since plugin version 2.0, this is implemented via built-in `SyncedFolders` action.
+See Vagrant's [rsync action](https://www.vagrantup.com/docs/synced-folders/rsync.html) 
+documentation for more info.
 
 ## Development
 
