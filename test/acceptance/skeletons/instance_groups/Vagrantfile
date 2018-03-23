@@ -9,6 +9,7 @@ Vagrant.configure("2") do |config|
       zone.name = "vagrant-acceptance-instance-groups-#{('a'..'z').to_a.sample(8).join}"
       zone.instance_group = "vagrant-acceptance-#{('a'..'z').to_a.sample(8).join}"
       zone.disk_type = "pd-ssd"
+      zone.image_family = "debian-9"
     end
   end
 end

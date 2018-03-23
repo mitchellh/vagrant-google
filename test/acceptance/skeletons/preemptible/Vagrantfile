@@ -11,6 +11,7 @@ Vagrant.configure("2") do |config|
       zone.preemptible = true
       zone.auto_restart = false
       zone.on_host_maintenance = "TERMINATE"
+      zone.image_family = "debian-9"
     end
   end
 end

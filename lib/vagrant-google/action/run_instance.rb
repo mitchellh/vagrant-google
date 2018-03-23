@@ -81,7 +81,7 @@ module VagrantPlugins
           env[:ui].info(" -- Subnetwork:      #{subnetwork}") if subnetwork
           env[:ui].info(" -- Metadata:        '#{metadata}'")
           env[:ui].info(" -- Labels:          '#{labels}'")
-          env[:ui].info(" -- Tags:            '#{tags}'")
+          env[:ui].info(" -- Network tags:    '#{tags}'")
           env[:ui].info(" -- IP Forward:      #{can_ip_forward}")
           env[:ui].info(" -- Use private IP:  #{use_private_ip}")
           env[:ui].info(" -- External IP:     #{external_ip}")

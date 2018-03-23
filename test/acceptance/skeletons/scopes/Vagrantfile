@@ -11,6 +11,7 @@ Vagrant.configure("2") do |config|
                        'bigquery',
                        'https://www.googleapis.com/auth/compute']
       zone.disk_type = "pd-ssd"
+      zone.image_family = "debian-9"
     end
   end
 end
