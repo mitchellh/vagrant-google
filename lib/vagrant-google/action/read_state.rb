@@ -43,7 +43,7 @@ module VagrantPlugins
             @logger.info(e.message)
             server = nil
           end
-          if server.nil? || [:"shutting-down", :terminated].include?(server.state.to_sym)
+          if server.nil? || [:"shutting-down", :terminated].include?(server.status.to_sym)
             # The machine can't be found
             @logger.info("Machine '#{zone}:#{machine.id}' not found or terminated, assuming it got destroyed.")
             machine.id = nil
@@ -51,7 +51,7 @@ module VagrantPlugins
           end
 
           # Return the state
-          return server.state.to_sym
+          return server.status.to_sym
         end
       end
     end

@@ -35,17 +35,23 @@ module VagrantPlugins
             :google_project      => provider_config.google_project_id,
             :google_client_email => provider_config.google_client_email
           }
-          if provider_config.google_json_key_location.nil?
-            fog_config[:google_key_location] = provider_config.google_key_location
-          else
-            fog_config[:google_json_key_location] = provider_config.google_json_key_location
-          end
+
+          fog_config[:google_json_key_location] = find_key(provider_config.google_json_key_location, env)
 
           @logger.info("Connecting to Google...")
           env[:google_compute] = Fog::Compute.new(fog_config)
 
           @app.call(env)
           @logger.info("...Connected!")
+        end
+
+        # If the key is not found, try expanding from root location (see #159)
+        def find_key(location, env)
+           if File.file?(location)
+             return location
+           else
+             return File.expand_path(location, env[:root_path])
+           end
         end
       end
     end

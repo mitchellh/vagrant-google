@@ -9,6 +9,7 @@ pkg/*
 tags
 Gemfile.lock
 /vagrant-google/*
+vendor/*
 
 # Vagrant
 .vagrant
