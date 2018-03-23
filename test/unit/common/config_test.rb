@@ -271,14 +271,17 @@ describe VagrantPlugins::Google::Config do
         allow(ENV).to receive(:[]).with("GOOGLE_PROJECT_ID").and_return("my-awesome-project")
         allow(ENV).to receive(:[]).with("GOOGLE_JSON_KEY_LOCATION").and_return("/path/to/json/key")
         allow(ENV).to receive(:[]).with("GOOGLE_SSH_KEY_LOCATION").and_return("/path/to/ssh/key")
+        allow(File).to receive(:exist?).with("/path/to/json/key").and_return(true)
       end
 
       it "should fail auto_restart validation" do
+        instance.finalize!
         errors = subject.validate("foo")["Google Provider"]
         expect(errors).to include(/auto_restart_invalid_on_preemptible/)
       end
 
       it "should fail on_host_maintenance validation" do
+        instance.finalize!
         errors = subject.validate("foo")["Google Provider"]
         expect(errors).to include(/on_host_maintenance_invalid_on_preemptible/)
       end
