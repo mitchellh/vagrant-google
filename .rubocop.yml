@@ -12,3 +12,6 @@ Style/EmptyLinesAroundBlockBody:
 
 Style/StringLiterals:
   Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false

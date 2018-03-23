@@ -47,8 +47,8 @@ module VagrantPlugins
 
         # If the key is not found, try expanding from root location (see #159)
         def find_key(location, env)
-           if File.file?(location)
-             return location
+           if File.file?(File.expand_path(location))
+             return File.expand_path(location)
            else
              return File.expand_path(location, env[:root_path])
            end
