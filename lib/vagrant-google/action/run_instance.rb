@@ -210,7 +210,7 @@ module VagrantPlugins
               end
             end
             @logger.info("Time for SSH ready: #{env[:metrics]["instance_ssh_time"]}")
-            env[:ui].info(I18n.t("vagrant_google.ready_ssh"))
+            env[:ui].info(I18n.t("vagrant_google.ready_ssh")) unless env[:interrupted]
           end
 
           # Terminate the instance if we were interrupted
