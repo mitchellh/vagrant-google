@@ -196,7 +196,7 @@ module VagrantPlugins
       # image and machine type name for zones. Example:
       #
       #     google.zone_config "us-central1-f" do |zone|
-      #       zone.image = "debian-7-wheezy-v20150127"
+      #       zone.image = "ubuntu-1604-xenial-v20180306"
       #       zone.machine_type = "n1-standard-4"
       #     end
       #
@@ -259,14 +259,8 @@ module VagrantPlugins
         @google_json_key_location = ENV['GOOGLE_JSON_KEY_LOCATION'] if @google_json_key_location == UNSET_VALUE
         @google_project_id = ENV['GOOGLE_PROJECT_ID'] if @google_project_id == UNSET_VALUE
 
-        # Image must be nil, since we can't default that
-        if @image == UNSET_VALUE
-          if @image_family == UNSET_VALUE
-            @image = "debian-8-jessie-v20160511"
-          else
-            @image = nil
-          end
-        end
+        # Default image is nil
+        @image = nil if @image == UNSET_VALUE
 
         # Default image family is nil
         @image_family = nil if @image_family == UNSET_VALUE
@@ -361,6 +355,7 @@ module VagrantPlugins
         if @zone
           config = get_zone_config(@zone)
 
+          # TODO: Check why provider-level settings are validated in the zone config
           errors << I18n.t("vagrant_google.config.google_project_id_required") if \
             config.google_project_id.nil?
           errors << I18n.t("vagrant_google.config.google_client_email_required") if \
@@ -368,7 +363,8 @@ module VagrantPlugins
           errors << I18n.t("vagrant_google.config.google_key_location_required") if \
             config.google_json_key_location.nil?
           errors << I18n.t("vagrant_google.config.private_key_missing") unless \
-            File.exist?(config.google_json_key_location.to_s)
+            File.exist?(File.expand_path(config.google_json_key_location.to_s)) or
+            File.exist?(File.expand_path(config.google_json_key_location.to_s, machine.env.root_path))
 
           if config.preemptible
             errors << I18n.t("vagrant_google.config.auto_restart_invalid_on_preemptible") if \

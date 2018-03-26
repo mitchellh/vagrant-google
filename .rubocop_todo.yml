@@ -75,11 +75,6 @@ Lint/RescueException:
     - 'lib/vagrant-google/action/read_state.rb'
 
 # Offense count: 1
-Lint/RescueWithoutErrorClass:
-  Exclude:
-    - 'lib/vagrant-google/action/run_instance.rb'
-
-# Offense count: 1
 # Cop supports --auto-correct.
 # Configuration parameters: IgnoreEmptyBlocks, AllowUnusedKeywordArguments.
 Lint/UnusedBlockArgument:
@@ -137,13 +132,6 @@ Naming/FileName:
   Exclude:
     - 'lib/vagrant-google.rb'
     - 'vagrant-spec.config.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AutoCorrect.
-Performance/HashEachMethods:
-  Exclude:
-    - 'lib/vagrant-google/action/sync_folders.rb'
 
 # Offense count: 4
 # Cop supports --auto-correct.

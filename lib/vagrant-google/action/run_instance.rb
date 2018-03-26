@@ -81,7 +81,7 @@ module VagrantPlugins
           env[:ui].info(" -- Subnetwork:      #{subnetwork}") if subnetwork
           env[:ui].info(" -- Metadata:        '#{metadata}'")
           env[:ui].info(" -- Labels:          '#{labels}'")
-          env[:ui].info(" -- Tags:            '#{tags}'")
+          env[:ui].info(" -- Network tags:    '#{tags}'")
           env[:ui].info(" -- IP Forward:      #{can_ip_forward}")
           env[:ui].info(" -- Use private IP:  #{use_private_ip}")
           env[:ui].info(" -- External IP:     #{external_ip}")
@@ -138,8 +138,8 @@ module VagrantPlugins
                 zone_name: zone,
                 source_image: image
               )
-              disk_created_by_vagrant = true
               disk.wait_for { disk.ready? }
+              disk_created_by_vagrant = true
             else
               disk = env[:google_compute].disks.get(disk_name, zone)
               if disk.nil?
@@ -210,7 +210,7 @@ module VagrantPlugins
               end
             end
             @logger.info("Time for SSH ready: #{env[:metrics]["instance_ssh_time"]}")
-            env[:ui].info(I18n.t("vagrant_google.ready_ssh"))
+            env[:ui].info(I18n.t("vagrant_google.ready_ssh")) unless env[:interrupted]
           end
 
           # Terminate the instance if we were interrupted

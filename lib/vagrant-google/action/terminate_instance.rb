@@ -28,6 +28,8 @@ module VagrantPlugins
 
           # Destroy the server and remove the tracking ID
           # destroy() is called with 'false' to disable asynchronous execution.
+          # TODO: Add "override_async" option for faster test
+          # TODO: Look at fog logic for possibly making sync faster
           env[:ui].info(I18n.t("vagrant_google.terminating"))
           server.destroy(false) unless server.nil?
           env[:machine].id = nil

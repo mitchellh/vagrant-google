@@ -20,5 +20,6 @@ Vagrant.configure("2") do |config|
       override.ssh.username = ENV['GOOGLE_SSH_USER']
       override.ssh.private_key_path = ENV['GOOGLE_SSH_KEY_LOCATION']
     end
+      _google.image_family = "debian-9"
   end
 end

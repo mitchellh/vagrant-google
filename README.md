@@ -18,7 +18,8 @@ The maintainers for this plugin are @temikus(primary), @erjohnso(backup).
 * Boot Google Compute Engine instances.
 * SSH into the instances.
 * Provision the instances with any built-in Vagrant provisioner.
-* Minimal synced folder support via `rsync`.
+* Synced folder support via Vagrant's 
+[rsync action](https://www.vagrantup.com/docs/synced-folders/rsync.html).
 * Define zone-specific configurations so Vagrant can manage machines in
   multiple zones.
 
@@ -88,7 +89,9 @@ Vagrant.configure("2") do |config|
     google.google_project_id = "YOUR_GOOGLE_CLOUD_PROJECT_ID"
     google.google_client_email = "YOUR_SERVICE_ACCOUNT_EMAIL_ADDRESS"
     google.google_json_key_location = "/path/to/your/private-key.json"
-
+    
+    google.image_family = 'ubuntu-1604-lts'
+    
     override.ssh.username = "USERNAME"
     override.ssh.private_key_path = "~/.ssh/id_rsa"
     #override.ssh.private_key_path = "~/.ssh/google_compute_engine"
@@ -99,10 +102,11 @@ end
 
 And then run `vagrant up --provider=google`.
 
-This will start a Debian 8 (Jessie) instance in the `us-central1-f` zone,
-with an `n1-standard-1` machine, and the `"default"` network within your
-project. And assuming your SSH information (see below) was filled in properly
-within your Vagrantfile, SSH and provisioning will work as well.
+This will start a latest version of Ubuntu 16.04 LTS instance in the 
+`us-central1-f` zone, with an `n1-standard-1` machine, and the `"default"` 
+network within your project. And assuming your SSH information (see below) was 
+filled in properly within your Vagrantfile, SSH and provisioning will work as 
+well.
 
 Note that normally a lot of this boilerplate is encoded within the box file,
 but the box file used for the quick start, the "google" box, has no
@@ -171,6 +175,9 @@ This provider exposes quite a few provider-specific configuration options:
 * `google_project_id` - The Project ID for your Google Cloud Platform account.  
   (Can also be configured with `GOOGLE_PROJECT_ID` environment variable.)
 * `image` - The image name to use when booting your instance.
+* `image_family` - Specify an "image family" to pull the latest image from. For example: `centos-7` 
+will pull the most recent CentOS 7 image. For more info, refer to 
+[Google Image documentation](https://cloud.google.com/compute/docs/images#image_families).
 * `instance_group` - Unmanaged instance group to add the machine to. If one
   doesn't exist it will be created.
 * `instance_ready_timeout` - The number of seconds to wait for the instance
@@ -235,7 +242,7 @@ Vagrant.configure("2") do |config|
 
     google.zone_config "us-central1-f" do |zone1f|
         zone1f.name = "testing-vagrant"
-        zone1f.image = "debian-8-jessie-v20160923"
+        zone1f.image = "debian-8-jessie-v20180307"
         zone1f.machine_type = "n1-standard-4"
         zone1f.zone = "us-central1-f"
         zone1f.metadata = {'custom' => 'metadata', 'testing' => 'foobarbaz'}
@@ -261,13 +268,9 @@ emit a warning, but will otherwise boot the GCE machine.
 
 ## Synced Folders
 
-There is minimal support for synced folders. Upon `vagrant up`,
-`vagrant reload`, and `vagrant provision`, the Google provider will use
-`rsync` (if available) to uni-directionally sync the folder to the remote
-machine over SSH.
-
-This is good enough for all built-in Vagrant provisioners (`shell`, `chef`, and
-`puppet`) to work!
+Since plugin version 2.0, this is implemented via built-in `SyncedFolders` action.
+See Vagrant's [rsync action](https://www.vagrantup.com/docs/synced-folders/rsync.html) 
+documentation for more info.
 
 ## Development
 

@@ -62,7 +62,7 @@ en:
       name_required: |-
         An instance name must be specified via "name" option.
       image_required: |-
-        An image must be specified via "image" option.
+        An image must be specified via "image" or "image_family" option.
       google_key_location_required: |-
         A private key pathname is required via:
          "google_json_key_location" (for JSON keys)
