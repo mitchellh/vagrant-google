@@ -192,6 +192,7 @@ will pull the most recent CentOS 7 image. For more info, refer to
   e.g. 10/08/2015 13:15:15 is "i-2015081013-15637fda".
 * `network` - The name of the network to use for the instance.  Default is
  "default".
+* `network_project_id` - The ID of the GCP project for the network and subnetwork to use for the instance. Default is `google_project_id`.
 * `subnetwork` - The name of the subnetwork to use for the instance.
 * `tags` - An array of tags to apply to this instance.
 * `labels` - Custom key/value pairs of labels to add to the instance.

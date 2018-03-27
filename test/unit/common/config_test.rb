@@ -55,7 +55,7 @@ describe VagrantPlugins::Google::Config do
     # each of these attributes to "foo" in isolation, and reads the value
     # and asserts the proper result comes back out.
     [:name, :image, :zone, :instance_ready_timeout, :machine_type, :disk_size, :disk_name, :disk_type,
-     :network, :metadata, :labels, :can_ip_forward, :external_ip, :autodelete_disk].each do |attribute|
+     :network, :network_project_id, :metadata, :labels, :can_ip_forward, :external_ip, :autodelete_disk].each do |attribute|
 
       it "should not default #{attribute} if overridden" do
         instance.send("#{attribute}=".to_sym, "foo")

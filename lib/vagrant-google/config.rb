@@ -82,6 +82,11 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :network
 
+      # The name of the network_project_id
+      #
+      # @return [String]
+      attr_accessor :network_project_id
+
       # The name of the subnetwork
       #
       # @return [String]
@@ -169,6 +174,7 @@ module VagrantPlugins
         @metadata            = {}
         @name                = UNSET_VALUE
         @network             = UNSET_VALUE
+        @network_project_id  = UNSET_VALUE
         @subnetwork          = UNSET_VALUE
         @tags                = []
         @labels              = {}
@@ -288,6 +294,9 @@ module VagrantPlugins
         end
         # Network defaults to 'default'
         @network = "default" if @network == UNSET_VALUE
+
+        # Network project id defaults to project_id
+        @network_project_id = @google_project_id if @network_project_id == UNSET_VALUE
 
         # Subnetwork defaults to nil
         @subnetwork = nil if @subnetwork == UNSET_VALUE
