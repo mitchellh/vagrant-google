@@ -51,6 +51,7 @@ module VagrantPlugins
           disk_name           = zone_config.disk_name
           disk_type           = zone_config.disk_type
           network             = zone_config.network
+          network_project_id  = zone_config.network_project_id
           subnetwork          = zone_config.subnetwork
           metadata            = zone_config.metadata
           labels              = zone_config.labels
@@ -78,6 +79,7 @@ module VagrantPlugins
           env[:ui].info(" -- Instance Group:  #{instance_group}")
           env[:ui].info(" -- Zone:            #{zone}") if zone
           env[:ui].info(" -- Network:         #{network}") if network
+          env[:ui].info(" -- Network Project: #{network_project_id}") if network_project_id
           env[:ui].info(" -- Subnetwork:      #{subnetwork}") if subnetwork
           env[:ui].info(" -- Metadata:        '#{metadata}'")
           env[:ui].info(" -- Labels:          '#{labels}'")
@@ -101,8 +103,8 @@ module VagrantPlugins
 
           # Munge network configs
           if network != 'default'
-            network = "projects/#{project_id}/global/networks/#{network}"
-            subnetwork  = "projects/#{project_id}/regions/#{zone.split('-')[0..1].join('-')}/subnetworks/#{subnetwork}"
+            network = "projects/#{network_project_id}/global/networks/#{network}"
+            subnetwork  = "projects/#{network_project_id}/regions/#{zone.split('-')[0..1].join('-')}/subnetworks/#{subnetwork}"
           else
             network = "global/networks/default"
           end
