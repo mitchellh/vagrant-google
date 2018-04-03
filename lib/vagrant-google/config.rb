@@ -42,6 +42,11 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :image_family
 
+      # The name of the image_project_id
+      #
+      # @return [String]
+      attr_accessor :image_project_id
+
       # The instance group name to put the instance in.
       #
       # @return [String]
@@ -166,6 +171,7 @@ module VagrantPlugins
         @google_project_id   = UNSET_VALUE
         @image               = UNSET_VALUE
         @image_family        = UNSET_VALUE
+        @image_project_id    = UNSET_VALUE
         @instance_group      = UNSET_VALUE
         @machine_type        = UNSET_VALUE
         @disk_size           = UNSET_VALUE
@@ -270,6 +276,9 @@ module VagrantPlugins
 
         # Default image family is nil
         @image_family = nil if @image_family == UNSET_VALUE
+
+        # Default image project is nil
+        @image_project_id = nil if @image_project_id == UNSET_VALUE
 
         # Default instance group name is nil
         @instance_group = nil if @instance_group == UNSET_VALUE
