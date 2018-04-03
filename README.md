@@ -178,6 +178,7 @@ This provider exposes quite a few provider-specific configuration options:
 * `image_family` - Specify an "image family" to pull the latest image from. For example: `centos-7` 
 will pull the most recent CentOS 7 image. For more info, refer to 
 [Google Image documentation](https://cloud.google.com/compute/docs/images#image_families).
+* `image_project_id` - The ID of the GCP project to search for the `image` or `image_family`.
 * `instance_group` - Unmanaged instance group to add the machine to. If one
   doesn't exist it will be created.
 * `instance_ready_timeout` - The number of seconds to wait for the instance

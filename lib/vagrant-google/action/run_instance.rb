@@ -44,6 +44,7 @@ module VagrantPlugins
           zone_config         = env[:machine].provider_config.get_zone_config(zone)
           image               = zone_config.image
           image_family        = zone_config.image_family
+          image_project_id    = zone_config.image_project_id
           instance_group      = zone_config.instance_group
           name                = zone_config.name
           machine_type        = zone_config.machine_type
@@ -76,6 +77,7 @@ module VagrantPlugins
           env[:ui].info(" -- Disk name:       #{disk_name}")
           env[:ui].info(" -- Image:           #{image}")
           env[:ui].info(" -- Image family:    #{image_family}")
+          env[:ui].info(" -- Image Project:   #{image_project_id}") if image_project_id
           env[:ui].info(" -- Instance Group:  #{instance_group}")
           env[:ui].info(" -- Zone:            #{zone}") if zone
           env[:ui].info(" -- Network:         #{network}") if network
@@ -94,11 +96,11 @@ module VagrantPlugins
           env[:ui].info(" -- Scopes:          #{service_accounts}")
 
           # Munge image configs
-          image = env[:google_compute].images.get(image).self_link
+          image = env[:google_compute].images.get(image, image_project_id).self_link
 
           # If image_family is set, get the latest image image from the family.
           unless image_family.nil?
-            image = env[:google_compute].images.get_from_family(image_family).self_link
+            image = env[:google_compute].images.get_from_family(image_family, image_project_id).self_link
           end
 
           # Munge network configs
