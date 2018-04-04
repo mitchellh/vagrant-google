@@ -65,6 +65,7 @@ module VagrantPlugins
           on_host_maintenance = zone_config.on_host_maintenance
           autodelete_disk     = zone_config.autodelete_disk
           service_accounts    = zone_config.service_accounts
+          service_account     = zone_config.service_account
           project_id          = zone_config.google_project_id
 
           # Launch!
@@ -93,7 +94,8 @@ module VagrantPlugins
           env[:ui].info(" -- Auto Restart:    #{auto_restart}")
           env[:ui].info(" -- On Maintenance:  #{on_host_maintenance}")
           env[:ui].info(" -- Autodelete Disk: #{autodelete_disk}")
-          env[:ui].info(" -- Scopes:          #{service_accounts}")
+          env[:ui].info(" -- Scopes:          #{service_accounts}") if service_accounts
+          env[:ui].info(" -- Service Account: #{service_account}") if service_account
 
           # Munge image configs
           image = env[:google_compute].images.get(image, image_project_id).self_link
@@ -122,7 +124,7 @@ module VagrantPlugins
           scheduling = { :automatic_restart => auto_restart, :on_host_maintenance => on_host_maintenance, :preemptible => preemptible}
 
           # Munge service_accounts / scopes config
-          service_accounts = [ { :scopes => service_accounts } ]
+          service_accounts = [ { :email => service_account, :scopes => service_accounts } ]
 
           begin
             request_start_time = Time.now.to_i
