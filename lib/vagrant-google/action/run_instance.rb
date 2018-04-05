@@ -41,32 +41,32 @@ module VagrantPlugins
           zone = env[:machine].provider_config.zone
 
           # Get the configs
-          zone_config         = env[:machine].provider_config.get_zone_config(zone)
-          image               = zone_config.image
-          image_family        = zone_config.image_family
-          image_project_id    = zone_config.image_project_id
-          instance_group      = zone_config.instance_group
-          name                = zone_config.name
-          machine_type        = zone_config.machine_type
-          disk_size           = zone_config.disk_size
-          disk_name           = zone_config.disk_name
-          disk_type           = zone_config.disk_type
-          network             = zone_config.network
-          network_project_id  = zone_config.network_project_id
-          subnetwork          = zone_config.subnetwork
-          metadata            = zone_config.metadata
-          labels              = zone_config.labels
-          tags                = zone_config.tags
-          can_ip_forward      = zone_config.can_ip_forward
-          use_private_ip      = zone_config.use_private_ip
-          external_ip         = zone_config.external_ip
-          preemptible         = zone_config.preemptible
-          auto_restart        = zone_config.auto_restart
-          on_host_maintenance = zone_config.on_host_maintenance
-          autodelete_disk     = zone_config.autodelete_disk
-          service_accounts    = zone_config.service_accounts
-          service_account     = zone_config.service_account
-          project_id          = zone_config.google_project_id
+          zone_config            = env[:machine].provider_config.get_zone_config(zone)
+          image                  = zone_config.image
+          image_family           = zone_config.image_family
+          image_project_id       = zone_config.image_project_id
+          instance_group         = zone_config.instance_group
+          name                   = zone_config.name
+          machine_type           = zone_config.machine_type
+          disk_size              = zone_config.disk_size
+          disk_name              = zone_config.disk_name
+          disk_type              = zone_config.disk_type
+          network                = zone_config.network
+          network_project_id     = zone_config.network_project_id
+          subnetwork             = zone_config.subnetwork
+          metadata               = zone_config.metadata
+          labels                 = zone_config.labels
+          tags                   = zone_config.tags
+          can_ip_forward         = zone_config.can_ip_forward
+          use_private_ip         = zone_config.use_private_ip
+          external_ip            = zone_config.external_ip
+          preemptible            = zone_config.preemptible
+          auto_restart           = zone_config.auto_restart
+          on_host_maintenance    = zone_config.on_host_maintenance
+          autodelete_disk        = zone_config.autodelete_disk
+          service_account_scopes = zone_config.service_account_scopes
+          service_account_email  = zone_config.service_account_email
+          project_id             = zone_config.google_project_id
 
           # Launch!
           env[:ui].info(I18n.t("vagrant_google.launching_instance"))
@@ -94,8 +94,8 @@ module VagrantPlugins
           env[:ui].info(" -- Auto Restart:    #{auto_restart}")
           env[:ui].info(" -- On Maintenance:  #{on_host_maintenance}")
           env[:ui].info(" -- Autodelete Disk: #{autodelete_disk}")
-          env[:ui].info(" -- Scopes:          #{service_accounts}") if service_accounts
-          env[:ui].info(" -- Service Account: #{service_account}") if service_account
+          env[:ui].info(" -- Scopes:          #{service_account_scopes}") if service_account_scopes
+          env[:ui].info(" -- Service Account: #{service_account_email}") if service_account_email
 
           # Munge image configs
           image = env[:google_compute].images.get(image, image_project_id).self_link
@@ -124,7 +124,7 @@ module VagrantPlugins
           scheduling = { :automatic_restart => auto_restart, :on_host_maintenance => on_host_maintenance, :preemptible => preemptible}
 
           # Munge service_accounts / scopes config
-          service_accounts = [ { :email => service_account, :scopes => service_accounts } ]
+          service_accounts = [ { :email => service_account_email, :scopes => service_account_scopes } ]
 
           begin
             request_start_time = Time.now.to_i

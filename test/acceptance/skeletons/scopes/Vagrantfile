@@ -7,7 +7,7 @@ Vagrant.configure("2") do |config|
 
     google.zone_config "australia-southeast1-b" do |zone|
       zone.name = "vagrant-acceptance-scopes-#{('a'..'z').to_a.sample(8).join}"
-      zone.scopes = ['sql-admin',
+      zone.service_account_scopes = ['sql-admin',
                        'bigquery',
                        'https://www.googleapis.com/auth/compute']
       zone.disk_type = "pd-ssd"

@@ -161,14 +161,12 @@ module VagrantPlugins
       # The list of access scopes for instance.
       #
       # @return [Array]
-      attr_accessor :service_accounts
-      alias scopes service_accounts
-      alias scopes= service_accounts=
+      attr_accessor :service_account_scopes
 
       # IAM service account for instance.
       #
       # @return [String]
-      attr_accessor :service_account
+      attr_accessor :service_account_email
 
       def initialize(zone_specific=false)
         @google_client_email = UNSET_VALUE
@@ -198,8 +196,8 @@ module VagrantPlugins
         @on_host_maintenance = UNSET_VALUE
         @instance_ready_timeout = UNSET_VALUE
         @zone                = UNSET_VALUE
-        @service_accounts    = UNSET_VALUE
-        @service_account     = UNSET_VALUE
+        @service_account_scopes = UNSET_VALUE
+        @service_account_email = UNSET_VALUE
 
         # Internal state (prefix with __ so they aren't automatically
         # merged)
@@ -344,10 +342,10 @@ module VagrantPlugins
         @instance_ready_timeout = 20 if @instance_ready_timeout == UNSET_VALUE
 
         # Default access scopes
-        @service_accounts = nil if @service_accounts == UNSET_VALUE
+        @service_account_scopes = nil if @service_account_scopes == UNSET_VALUE
 
         # Default IAM service account
-        @service_account = nil if @service_account == UNSET_VALUE
+        @service_account_email = nil if @service_account_email == UNSET_VALUE
 
         # Compile our zone specific configurations only within
         # NON-zone-SPECIFIC configurations.
