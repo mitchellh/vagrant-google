@@ -209,7 +209,7 @@ will pull the most recent CentOS 7 image. For more info, refer to
   scopes, just endpoint aliases (the part after `...auth/`), and `gcloud`
   utility aliases, for example:
   `['storage-full', 'bigquery', 'https://www.googleapis.com/auth/compute']`.
-* `service_account_email` - The IAM service account email to use for the instance.
+* `service_account` - The IAM service account email to use for the instance.
 
 These can be set like typical provider-specific configuration:
 
