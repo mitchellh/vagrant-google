@@ -161,7 +161,7 @@ module VagrantPlugins
       # The list of access scopes for instance.
       #
       # @return [Array]
-      attr_accessor :service_account_scopes
+      attr_accessor :scopes
 
       # IAM service account for instance.
       #
@@ -196,7 +196,7 @@ module VagrantPlugins
         @on_host_maintenance = UNSET_VALUE
         @instance_ready_timeout = UNSET_VALUE
         @zone                = UNSET_VALUE
-        @service_account_scopes = UNSET_VALUE
+        @scopes              = UNSET_VALUE
         @service_account     = UNSET_VALUE
 
         # Internal state (prefix with __ so they aren't automatically
@@ -342,7 +342,7 @@ module VagrantPlugins
         @instance_ready_timeout = 20 if @instance_ready_timeout == UNSET_VALUE
 
         # Default access scopes
-        @service_account_scopes = nil if @service_account_scopes == UNSET_VALUE
+        @scopes = nil if @scopes == UNSET_VALUE
 
         # Default IAM service account
         @service_account = nil if @service_account == UNSET_VALUE

@@ -45,7 +45,7 @@ describe VagrantPlugins::Google::Config do
     its("metadata")               { should == {} }
     its("tags")                   { should == [] }
     its("labels")                 { should == {} }
-    its("service_account_scopes") { should == nil }
+    its("scopes")                 { should == nil }
     its("preemptible")            { should be_falsey }
     its("auto_restart")           { should }
     its("on_host_maintenance")    { should == "MIGRATE" }

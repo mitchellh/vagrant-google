@@ -64,7 +64,7 @@ module VagrantPlugins
           auto_restart           = zone_config.auto_restart
           on_host_maintenance    = zone_config.on_host_maintenance
           autodelete_disk        = zone_config.autodelete_disk
-          service_account_scopes = zone_config.service_account_scopes
+          service_account_scopes = zone_config.scopes
           service_account        = zone_config.service_account
           project_id             = zone_config.google_project_id
 
