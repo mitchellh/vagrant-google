@@ -162,6 +162,8 @@ module VagrantPlugins
       #
       # @return [Array]
       attr_accessor :scopes
+      alias service_accounts scopes
+      alias service_accounts= scopes=
 
       # IAM service account for instance.
       #
