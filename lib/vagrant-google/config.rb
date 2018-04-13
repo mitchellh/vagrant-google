@@ -162,8 +162,11 @@ module VagrantPlugins
       #
       # @return [Array]
       attr_accessor :scopes
-      alias service_accounts scopes
-      alias service_accounts= scopes=
+
+      # Deprecated: the list of access scopes for instance.
+      #
+      # @return [Array]
+      attr_accessor :service_accounts
 
       # IAM service account for instance.
       #
@@ -199,6 +202,7 @@ module VagrantPlugins
         @instance_ready_timeout = UNSET_VALUE
         @zone                = UNSET_VALUE
         @scopes              = UNSET_VALUE
+        @service_accounts    = UNSET_VALUE
         @service_account     = UNSET_VALUE
 
         # Internal state (prefix with __ so they aren't automatically
@@ -346,8 +350,16 @@ module VagrantPlugins
         # Default access scopes
         @scopes = nil if @scopes == UNSET_VALUE
 
+        # Default access scopes
+        @service_accounts = nil if @service_accounts == UNSET_VALUE
+
         # Default IAM service account
         @service_account = nil if @service_account == UNSET_VALUE
+
+        # Config option service_accounts is deprecated
+        if @service_accounts
+          @scopes = @service_accounts
+        end
 
         # Compile our zone specific configurations only within
         # NON-zone-SPECIFIC configurations.
@@ -408,6 +420,10 @@ module VagrantPlugins
 
         errors << I18n.t("vagrant_google.config.image_required") if config.image.nil? && config.image_family.nil?
         errors << I18n.t("vagrant_google.config.name_required") if @name.nil?
+
+        if @service_accounts
+          machine.env.ui.warn(I18n.t("vagrant_google.config.service_accounts_deprecaated"))
+        end
 
         { "Google Provider" => errors }
       end

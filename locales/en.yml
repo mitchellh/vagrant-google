@@ -75,6 +75,8 @@ en:
         instances.
       image_and_image_family_set: |-
         "image" must be unset when setting "image_family"
+      service_accounts_deprecaated: |-
+        "service_accounts is deprecated. Please use scopes instead"
 #-------------------------------------------------------------------------------
 # Translations for exception classes
 #-------------------------------------------------------------------------------
