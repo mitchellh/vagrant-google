@@ -204,11 +204,12 @@ will pull the most recent CentOS 7 image. For more info, refer to
 * `preemptible` - Boolean whether to enable preemptibility. Default is false.
 * `auto_restart` - Boolean whether to enable auto_restart. Default is true.
 * `on_host_maintenance` - What to do on host maintenance. Can be set to `MIGRATE` or `TERMINATE` Default is `MIGRATE`.
-* `service_accounts` or `scopes` - An array of OAuth2 account scopes for
+* `scopes` or `service_accounts` - An array of OAuth2 account scopes for
   services that the instance will have access to. Those can be both full API
   scopes, just endpoint aliases (the part after `...auth/`), and `gcloud`
   utility aliases, for example:
   `['storage-full', 'bigquery', 'https://www.googleapis.com/auth/compute']`.
+* `service_account` - The IAM service account email to use for the instance.
 
 These can be set like typical provider-specific configuration:
 
