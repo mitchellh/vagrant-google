@@ -1,9 +1,9 @@
 # 2.1.0 (May 2018)
 
-* Add new configuration option `image_project_id` to allow using GCE images from other projects
-* Add new configuration option `network_project_id` to allow using GCP Shared VPC networks
-* Add new configuration option `service_account` to allow setting the IAM service account on instances
-* Deprecate configuration option `service_accounts`. Use `scopes` configuration option instead.
+* Add new configuration option `image_project_id` to allow using GCE images from other projects. [seanmalloy]
+* Add new configuration option `network_project_id` to allow using GCP Shared VPC networks. [seanmalloy]
+* Add new configuration option `service_account` to allow setting the IAM service account on instances. [seanmalloy]
+* Deprecate configuration option `service_accounts`. Use `scopes` configuration option instead. [seanmalloy]
 
 # 2.0.0 (March 2018)
 
