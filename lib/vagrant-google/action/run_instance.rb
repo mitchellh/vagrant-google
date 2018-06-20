@@ -119,7 +119,7 @@ module VagrantPlugins
           base_network_interfaces = { :network => network, :subnetwork => subnetwork }
 
           if internal_ip != false
-            base_network_interfaces[:networkIP] = internal_ip
+            base_network_interfaces[:network_ip] = internal_ip
           end
 
           if external_ip == false
@@ -188,7 +188,7 @@ module VagrantPlugins
               :can_ip_forward      => can_ip_forward,
               :use_private_ip      => use_private_ip,
               :external_ip         => external_ip,
-              :internal_ip         => internal_ip,
+              :network_ip         => internal_ip,
               :disks               => [disk.get_as_boot_disk(true, autodelete_disk)],
               :scheduling          => scheduling,
               :service_accounts    => service_accounts
