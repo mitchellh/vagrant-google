@@ -60,6 +60,7 @@ module VagrantPlugins
           can_ip_forward         = zone_config.can_ip_forward
           use_private_ip         = zone_config.use_private_ip
           external_ip            = zone_config.external_ip
+          internal_ip            = zone_config.internal_ip
           preemptible            = zone_config.preemptible
           auto_restart           = zone_config.auto_restart
           on_host_maintenance    = zone_config.on_host_maintenance
@@ -90,6 +91,7 @@ module VagrantPlugins
           env[:ui].info(" -- IP Forward:      #{can_ip_forward}")
           env[:ui].info(" -- Use private IP:  #{use_private_ip}")
           env[:ui].info(" -- External IP:     #{external_ip}")
+          env[:ui].info(" -- Internal IP:     #{internal_ip}")
           env[:ui].info(" -- Preemptible:     #{preemptible}")
           env[:ui].info(" -- Auto Restart:    #{auto_restart}")
           env[:ui].info(" -- On Maintenance:  #{on_host_maintenance}")
@@ -113,11 +115,21 @@ module VagrantPlugins
             network = "global/networks/default"
           end
 
+
+          base_network_interfaces = { :network => network, :subnetwork => subnetwork }
+
+          if internal_ip != false
+            base_network_interfaces[:networkIP] = internal_ip
+          end
+
           if external_ip == false
             # No external IP
-            network_interfaces = [ { :network => network, :subnetwork => subnetwork } ]
+            network_interfaces = [ base_network_interfaces ]
           else
-            network_interfaces = [ { :network => network, :subnetwork => subnetwork, :access_configs => [{:name => 'External NAT', :type => 'ONE_TO_ONE_NAT'}]} ]
+
+            base_network_interfaces[:access_configs] = [{:name => 'External NAT', :type => 'ONE_TO_ONE_NAT'}]
+            
+            network_interfaces = [ base_network_interfaces ]
           end
 
           # Munge scheduling configs
@@ -176,6 +188,7 @@ module VagrantPlugins
               :can_ip_forward      => can_ip_forward,
               :use_private_ip      => use_private_ip,
               :external_ip         => external_ip,
+              :internal_ip         => internal_ip,
               :disks               => [disk.get_as_boot_disk(true, autodelete_disk)],
               :scheduling          => scheduling,
               :service_accounts    => service_accounts

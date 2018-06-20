@@ -134,6 +134,7 @@ describe VagrantPlugins::Google::Config do
     let(:config_network)         { "foo" }
     let(:can_ip_forward)         { true }
     let(:external_ip)            { "foo" }
+    let(:internal_ip)            { "foo" }
 
     def set_test_values(instance)
       instance.name              = config_name
@@ -146,6 +147,7 @@ describe VagrantPlugins::Google::Config do
       instance.zone              = config_zone
       instance.can_ip_forward    = can_ip_forward
       instance.external_ip       = external_ip
+      instance.internal_ip       = internal_ip
     end
 
     it "should raise an exception if not finalized" do

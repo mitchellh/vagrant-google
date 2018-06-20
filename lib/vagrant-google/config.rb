@@ -117,6 +117,11 @@ module VagrantPlugins
       # @return String
       attr_accessor :external_ip
 
+      # The internal IP Address to use
+      #
+      # @return String
+      attr_accessor :internal_ip
+
       # Use private ip address
       #
       # @return Boolean
@@ -194,6 +199,7 @@ module VagrantPlugins
         @labels              = {}
         @can_ip_forward      = UNSET_VALUE
         @external_ip         = UNSET_VALUE
+        @internal_ip         = UNSET_VALUE
         @use_private_ip      = UNSET_VALUE
         @autodelete_disk     = UNSET_VALUE
         @preemptible         = UNSET_VALUE
