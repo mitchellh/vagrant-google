@@ -245,7 +245,7 @@ Vagrant.configure("2") do |config|
 
     google.zone_config "us-central1-f" do |zone1f|
         zone1f.name = "testing-vagrant"
-        zone1f.image = "debian-8-jessie-v20180307"
+        zone1f.image = "debian-9-stretch-v20180611"
         zone1f.machine_type = "n1-standard-4"
         zone1f.zone = "us-central1-f"
         zone1f.metadata = {'custom' => 'metadata', 'testing' => 'foobarbaz'}
