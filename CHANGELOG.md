@@ -2,6 +2,19 @@
 All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.2.1 (October 2018)
+
+### User-facing
+
+- \#206 Fix image selection logic - Plugin no longer traces back with 
+  `image_family` config option. [temikus]
+
+### Development
+
+- \#206 Bumped dependencies. [temikus]
+  - fog-google version to 1.8.1 
+  - vagrant & vagrant-spec are now pointing to new upstream Hashicorp org repos 
+
 ## 2.2.0 (June 2018)
 
 #### Fixed
