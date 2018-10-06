@@ -97,12 +97,11 @@ module VagrantPlugins
           env[:ui].info(" -- Scopes:          #{service_account_scopes}") if service_account_scopes
           env[:ui].info(" -- Service Account: #{service_account}") if service_account
 
-          # Munge image configs
-          image = env[:google_compute].images.get(image, image_project_id).self_link
-
-          # If image_family is set, get the latest image image from the family.
-          unless image_family.nil?
+          # Munge image config
+          if image_family
             image = env[:google_compute].images.get_from_family(image_family, image_project_id).self_link
+          else
+            image = env[:google_compute].images.get(image, image_project_id).self_link
           end
 
           # Munge network configs
