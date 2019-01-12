@@ -173,6 +173,11 @@ module VagrantPlugins
       # @return [String]
       attr_accessor :service_account
 
+      # The configuration for additional disks.
+      #
+      # @return [Array<Hash>]
+      attr_accessor :additional_disks
+
       def initialize(zone_specific=false)
         @google_client_email = UNSET_VALUE
         @google_json_key_location = UNSET_VALUE
@@ -204,6 +209,7 @@ module VagrantPlugins
         @scopes              = UNSET_VALUE
         @service_accounts    = UNSET_VALUE
         @service_account     = UNSET_VALUE
+        @additional_disks    = []
 
         # Internal state (prefix with __ so they aren't automatically
         # merged)
