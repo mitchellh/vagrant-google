@@ -210,18 +210,20 @@ will pull the most recent CentOS 7 image. For more info, refer to
   utility aliases, for example:
   `['storage-full', 'bigquery', 'https://www.googleapis.com/auth/compute']`.
 * `service_account` - The IAM service account email to use for the instance.
-* `additional_disks` - An array of additional disk configurations. Here is an exmaple of configuration.
-* [{
-*   :image_family => "google-image-family",
-*   :image => nil,
-*   :image_project_id => "google-project-id",
-*   :disk_size => 20,
-*   :disk_name => "google-additional-disk-0",
-*   :disk_type => "pd-standard",
-*   :autodelete_disk => true
-*  }]
-* For additional disks, `disk_size` is default to `10`GB; `disk_name` is default to `name` + "-additional-disk-#{index}"; 
-  `disk_type` is default to `pd-standard`; `autodelete_disk` is default to `true`.
+* `additional_disks` - An array of additional disk configurations. `disk_size` is default to `10`GB; 
+  `disk_name` is default to `name` + "-additional-disk-#{index}"; `disk_type` is default to `pd-standard`; 
+  `autodelete_disk` is default to `true`. Here is an example of configuration.
+```ruby
+  [{
+   :image_family => "google-image-family",
+   :image => nil,
+   :image_project_id => "google-project-id",
+   :disk_size => 20,
+   :disk_name => "google-additional-disk-0",
+   :disk_type => "pd-standard",
+   :autodelete_disk => true
+  }]
+```
 
 These can be set like typical provider-specific configuration:
 
