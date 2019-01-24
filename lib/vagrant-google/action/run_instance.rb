@@ -97,7 +97,7 @@ module VagrantPlugins
           env[:ui].info(" -- Autodelete Disk: #{autodelete_disk}")
           env[:ui].info(" -- Scopes:          #{service_account_scopes}") if service_account_scopes
           env[:ui].info(" -- Service Account: #{service_account}") if service_account
-          env[:ui].info(" -- additional Disks:#{additional_disks}")
+          env[:ui].info(" -- Additional Disks:#{additional_disks}")
 
           # Munge image config
           if image_family
@@ -129,7 +129,7 @@ module VagrantPlugins
 
           begin
             request_start_time = Time.now.to_i
-
+            disk = nil
             # Check if specified external ip is available
             external_ip = get_external_ip(env, external_ip) if external_ip
             # Check if disk type is available in the zone and set the proper resource link
@@ -164,7 +164,7 @@ module VagrantPlugins
             end
 
             # Add boot disk to the instance
-            disks = [disk.get_as_boot_disk(boo:true, auto_delete:autodelete_disk)]
+            disks = [disk.get_as_boot_disk(true, autodelete_disk)]
 
             # Configure additional disks
             additional_disks.each_with_index do |disk_config, index|
@@ -264,7 +264,9 @@ module VagrantPlugins
             # TODO: Cleanup the Fog catch-all once Fog implements better exceptions
             # There is a chance Google has failed to create an instance, so we need
             # to clean up the created disk.
-            cleanup_disk(disk.name, env) if disk && disk_created_by_vagrant
+            disks.each do |disk|
+                cleanup_disk(disk.name, env) if disk && disk_created_by_vagrant
+            end
             raise Errors::FogError, :message => e.message
           end
 
