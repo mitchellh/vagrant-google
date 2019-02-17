@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.3.0 (February 2019)
+
+### User-facing
+
+- \#210 Allow adding additional disks to the instances. [whynick1]
+
+### Development
+
+- \#211 Rspec-its is now explicitly required for unit tests. [temikus]
+
 ## 2.2.1 (October 2018)
 
 ### User-facing
