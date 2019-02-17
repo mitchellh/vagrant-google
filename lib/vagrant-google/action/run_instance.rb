@@ -67,6 +67,7 @@ module VagrantPlugins
           service_account_scopes = zone_config.scopes
           service_account        = zone_config.service_account
           project_id             = zone_config.google_project_id
+          additional_disks       = zone_config.additional_disks
 
           # Launch!
           env[:ui].info(I18n.t("vagrant_google.launching_instance"))
@@ -96,6 +97,7 @@ module VagrantPlugins
           env[:ui].info(" -- Autodelete Disk: #{autodelete_disk}")
           env[:ui].info(" -- Scopes:          #{service_account_scopes}") if service_account_scopes
           env[:ui].info(" -- Service Account: #{service_account}") if service_account
+          env[:ui].info(" -- Additional Disks:#{additional_disks}")
 
           # Munge image config
           if image_family
@@ -127,7 +129,7 @@ module VagrantPlugins
 
           begin
             request_start_time = Time.now.to_i
-
+            disk = nil
             # Check if specified external ip is available
             external_ip = get_external_ip(env, external_ip) if external_ip
             # Check if disk type is available in the zone and set the proper resource link
@@ -161,6 +163,83 @@ module VagrantPlugins
               end
             end
 
+            # Add boot disk to the instance
+            disks = [disk.get_as_boot_disk(true, autodelete_disk)]
+
+            # Configure additional disks
+            additional_disks.each_with_index do |disk_config, index|
+              additional_disk = nil
+
+              # Get additional disk image
+              # Create a blank disk if neither image nor additional_disk_image is provided
+              additional_disk_image = nil
+              if disk_config[:image_family]
+                additional_disk_image = env[:google_compute].images.get_from_family(disk_config[:image_family], disk_config[:image_project_id]).self_link
+              elsif disk_config[:image]
+                additional_disk_image = env[:google_compute].images.get(disk_config[:image], disk_config[:image_project_id]).self_link
+              end
+
+              # Get additional disk size
+              additional_disk_size = nil
+              if disk_config[:disk_size].nil?
+                # Default disk size is 10 GB
+                additional_disk_size = 10
+              else
+                additional_disk_size = disk_config[:disk_size]
+              end
+
+              # Get additional disk type
+              additional_disk_type = nil
+              if disk_config[:disk_type].nil?
+                # Default disk type is pd-standard
+                additional_disk_type = get_disk_type(env, "pd-standard", zone)
+              else
+                additional_disk_type = get_disk_type(env, disk_config[:disk_type], zone)
+              end
+
+              # Get additional disk auto delete
+              additional_disk_auto_delete = nil
+              if disk_config[:disk_type].nil?
+                # Default auto delete to true
+                additional_disk_auto_delete = true
+              else
+                additional_disk_auto_delete = disk_config[:autodelete_disk]
+              end
+
+              # Get additional disk name
+              additional_disk_name = nil
+              if disk_config[:disk_name].nil?
+                # no disk_name... disk_name defaults to instance (name + "-additional-disk-#{index}"
+                additional_disk_name = name + "-additional-disk-#{index}"
+                additional_disk = env[:google_compute].disks.create(
+                  name: additional_disk_name,
+                  size_gb: additional_disk_size,
+                  type: additional_disk_type,
+                  zone_name: zone,
+                  source_image: additional_disk_image
+                )
+              else
+                # additional_disk_name set in disk_config
+                additional_disk_name = disk_config[:disk_name]
+
+                additional_disk = env[:google_compute].disks.get(additional_disk_name, zone)
+                if additional_disk.nil?
+                  # disk not found... create it with name
+                  additional_disk = env[:google_compute].disks.create(
+                    name: additional_disk_name,
+                    size_gb: additional_disk_size,
+                    type: additional_disk_type,
+                    zone_name: zone,
+                    source_image: additional_disk_image
+                  )
+                  additional_disk.wait_for { additional_disk.ready? }
+                end
+              end
+
+              # Add additional disk to the instance
+              disks.push(additional_disk.attached_disk_obj(boot:false, writable:true, auto_delete:additional_disk_auto_delete))
+            end
+
             defaults = {
               :name                => name,
               :zone                => zone,
@@ -175,7 +254,7 @@ module VagrantPlugins
               :can_ip_forward      => can_ip_forward,
               :use_private_ip      => use_private_ip,
               :external_ip         => external_ip,
-              :disks               => [disk.get_as_boot_disk(true, autodelete_disk)],
+              :disks               => disks,
               :scheduling          => scheduling,
               :service_accounts    => service_accounts
             }
@@ -185,7 +264,9 @@ module VagrantPlugins
             # TODO: Cleanup the Fog catch-all once Fog implements better exceptions
             # There is a chance Google has failed to create an instance, so we need
             # to clean up the created disk.
-            cleanup_disk(disk.name, env) if disk && disk_created_by_vagrant
+            disks.each do |disk|
+                cleanup_disk(disk.name, env) if disk && disk_created_by_vagrant
+            end
             raise Errors::FogError, :message => e.message
           end
 
