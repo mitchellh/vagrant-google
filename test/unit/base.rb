@@ -1,4 +1,5 @@
 require "rubygems"
+require "rspec/its"
 
 # Set vagrant env to avoid "Encoded files can't be read" error.
 ENV["VAGRANT_INSTALLER_EMBEDDED_DIR"] = File.expand_path("../../../", __FILE__)
