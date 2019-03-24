@@ -26,6 +26,7 @@ module VagrantPlugins
           @logger = Log4r::Logger.new("vagrant_google::action::connect_google")
         end
 
+        # Initialize Fog::Compute and add it to the environment
         def call(env)
           provider_config = env[:machine].provider_config
 
@@ -33,16 +34,23 @@ module VagrantPlugins
           fog_config = {
             :provider            => :google,
             :google_project      => provider_config.google_project_id,
-            :google_client_email => provider_config.google_client_email
           }
 
-          fog_config[:google_json_key_location] = find_key(provider_config.google_json_key_location, env)
+          unless provider_config.google_client_email.nil?
+            fog_config[:google_client_email] = provider_config.google_client_email
+          end
 
-          @logger.info("Connecting to Google...")
+          unless provider_config.google_json_key_location.nil?
+            fog_config[:google_json_key_location] = find_key(provider_config.google_json_key_location, env)
+          end
+
+          if provider_config.google_client_email.nil? and provider_config.google_json_key_location.nil?
+            fog_config[:google_application_default] = true
+          end
+
+          @logger.info("Creating Google API client and adding to Vagrant environment")
           env[:google_compute] = Fog::Compute.new(fog_config)
-
           @app.call(env)
-          @logger.info("...Connected!")
         end
 
         # If the key is not found, try expanding from root location (see #159)

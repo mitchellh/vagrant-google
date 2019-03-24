@@ -52,9 +52,6 @@ en:
 # Translations for config validation errors
 #-------------------------------------------------------------------------------
     config:
-      google_client_email_required: |-
-        A Google Service Account client email is required via
-        "google_client_email".
       private_key_missing: |-
         Private key for Google could not be found in the specified location.
       zone_required: |-
@@ -63,9 +60,6 @@ en:
         An instance name must be specified via "name" option.
       image_required: |-
         An image must be specified via "image" or "image_family" option.
-      google_key_location_required: |-
-        A private key pathname is required via:
-         "google_json_key_location" (for JSON keys)
       google_project_id_required: |-
         A Google Cloud Project ID is required via "google_project_id".
       auto_restart_invalid_on_preemptible: |-
