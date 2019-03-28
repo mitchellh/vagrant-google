@@ -111,17 +111,6 @@ describe VagrantPlugins::Google::Config do
       its("google_client_email") { should == "client_id_email" }
       its("google_json_key_location") { should == "/path/to/json/key" }
     end
-
-    context "With none of the Google credential environment variables set" do
-      before :each do
-        allow(ENV).to receive(:[]).with("GOOGLE_CLIENT_EMAIL").and_return("client_id_email")
-      end
-
-      it "Should return no key set errors" do
-        instance.finalize!
-        expect(instance.validate("foo")["Google Provider"][1]).to include("en.vagrant_google.config.google_key_location_required")
-      end
-    end
   end
 
   describe "zone config" do
