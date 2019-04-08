@@ -272,6 +272,16 @@ describe VagrantPlugins::Google::Config do
         expect(third.tags).to include("bar")
         expect(third.tags).to include("biz")
       end
+
+      it "should merge the additional_disks" do
+        first.additional_disks = [{:one => "one"}]
+        second.additional_disks = [{:two => "two"}]
+
+        third = first.merge(second)
+        expect(third.additional_disks).to contain_exactly(
+          {:one => "one"}, {:two => "two"}
+        )
+      end
     end
 
     describe "zone_preemptible" do

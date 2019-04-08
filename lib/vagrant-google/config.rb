@@ -285,6 +285,10 @@ module VagrantPlugins
           # Merge in the tags
           result.tags |= self.tags
           result.tags |= other.tags
+
+          # Merge in the additional disks
+          result.additional_disks |= self.additional_disks
+          result.additional_disks |= other.additional_disks
         end
       end
 
