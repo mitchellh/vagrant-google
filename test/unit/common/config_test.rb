@@ -251,6 +251,16 @@ describe VagrantPlugins::Google::Config do
           "two" => "bar"
         })
       end
+
+      it "should merge the tags" do
+        first.tags = ["foo", "bar"]
+        second.tags = ["biz"]
+
+        third = first.merge(second)
+        expect(third.tags).to include("foo")
+        expect(third.tags).to include("bar")
+        expect(third.tags).to include("biz")
+      end
     end
 
     describe "zone_preemptible" do

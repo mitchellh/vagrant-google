@@ -277,6 +277,10 @@ module VagrantPlugins
           # Merge in the metadata
           result.metadata.merge!(self.metadata)
           result.metadata.merge!(other.metadata)
+
+          # Merge in the tags
+          result.tags |= self.tags
+          result.tags |= other.tags
         end
       end
 
