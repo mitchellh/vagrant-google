@@ -67,6 +67,13 @@ describe VagrantPlugins::Google::Config do
       end
     end
 
+    it "should raise error when network is not default and zone is not overriden" do
+      instance.network = "not-default"
+      instance.finalize!
+      errors = instance.validate("foo")["Google Provider"]
+      expect(errors).to include(/zone_required/)
+    end
+
     it "should raise error when preemptible and auto_restart is true" do
       instance.preemptible = true
       instance.auto_restart = true
