@@ -252,6 +252,17 @@ describe VagrantPlugins::Google::Config do
         })
       end
 
+      it "should merge the labels" do
+        first.labels["one"] = "one"
+        second.labels["two"] = "two"
+
+        third = first.merge(second)
+        expect(third.labels).to eq({
+          "one" => "one",
+          "two" => "two"
+        })
+      end
+
       it "should merge the tags" do
         first.tags = ["foo", "bar"]
         second.tags = ["biz"]

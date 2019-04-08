@@ -278,6 +278,10 @@ module VagrantPlugins
           result.metadata.merge!(self.metadata)
           result.metadata.merge!(other.metadata)
 
+          # Merge in the labels
+          result.labels.merge!(self.labels)
+          result.labels.merge!(other.labels)
+
           # Merge in the tags
           result.tags |= self.tags
           result.tags |= other.tags
