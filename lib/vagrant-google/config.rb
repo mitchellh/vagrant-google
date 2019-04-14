@@ -152,8 +152,8 @@ module VagrantPlugins
       # @return [Int]
       attr_accessor :instance_ready_timeout
 
-      # The zone to launch the instance into. If nil, it will
-      # use the default us-central1-f.
+      # The zone to launch the instance into.
+      # If nil and the "default" network is set use the default us-central1-f.
       #
       # @return [String]
       attr_accessor :zone
@@ -329,6 +329,7 @@ module VagrantPlugins
           t = Time.now
           @name = "i-#{t.strftime("%Y%m%d%H")}-" + SecureRandom.hex(4)
         end
+
         # Network defaults to 'default'
         @network = "default" if @network == UNSET_VALUE
 
@@ -338,8 +339,13 @@ module VagrantPlugins
         # Subnetwork defaults to nil
         @subnetwork = nil if @subnetwork == UNSET_VALUE
 
-        # Default zone is us-central1-f.
-        @zone = "us-central1-f" if @zone == UNSET_VALUE
+        # Default zone is us-central1-f if using the default network
+        if @zone == UNSET_VALUE
+          @zone = nil
+          if @network == "default"
+            @zone = "us-central1-f"
+          end
+        end
 
         # autodelete_disk defaults to true
         @autodelete_disk = true if @autodelete_disk == UNSET_VALUE
@@ -434,10 +440,10 @@ module VagrantPlugins
             errors << I18n.t("vagrant_google.config.image_and_image_family_set") if \
              config.image
           end
-        end
 
-        errors << I18n.t("vagrant_google.config.image_required") if config.image.nil? && config.image_family.nil?
-        errors << I18n.t("vagrant_google.config.name_required") if @name.nil?
+          errors << I18n.t("vagrant_google.config.image_required") if config.image.nil? && config.image_family.nil?
+          errors << I18n.t("vagrant_google.config.name_required") if @name.nil?
+        end
 
         if @service_accounts
           machine.env.ui.warn(I18n.t("vagrant_google.config.service_accounts_deprecaated"))
