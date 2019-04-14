@@ -277,6 +277,18 @@ module VagrantPlugins
           # Merge in the metadata
           result.metadata.merge!(self.metadata)
           result.metadata.merge!(other.metadata)
+
+          # Merge in the labels
+          result.labels.merge!(self.labels)
+          result.labels.merge!(other.labels)
+
+          # Merge in the tags
+          result.tags |= self.tags
+          result.tags |= other.tags
+
+          # Merge in the additional disks
+          result.additional_disks |= self.additional_disks
+          result.additional_disks |= other.additional_disks
         end
       end
 

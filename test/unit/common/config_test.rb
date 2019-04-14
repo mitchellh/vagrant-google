@@ -251,6 +251,37 @@ describe VagrantPlugins::Google::Config do
           "two" => "bar"
         })
       end
+
+      it "should merge the labels" do
+        first.labels["one"] = "one"
+        second.labels["two"] = "two"
+
+        third = first.merge(second)
+        expect(third.labels).to eq({
+          "one" => "one",
+          "two" => "two"
+        })
+      end
+
+      it "should merge the tags" do
+        first.tags = ["foo", "bar"]
+        second.tags = ["biz"]
+
+        third = first.merge(second)
+        expect(third.tags).to include("foo")
+        expect(third.tags).to include("bar")
+        expect(third.tags).to include("biz")
+      end
+
+      it "should merge the additional_disks" do
+        first.additional_disks = [{:one => "one"}]
+        second.additional_disks = [{:two => "two"}]
+
+        third = first.merge(second)
+        expect(third.additional_disks).to contain_exactly(
+          {:one => "one"}, {:two => "two"}
+        )
+      end
     end
 
     describe "zone_preemptible" do
