@@ -13,6 +13,6 @@
 # limitations under the License.
 module VagrantPlugins
   module Google
-    VERSION = "2.4.0".freeze
+    VERSION = "2.4.0.rc0".freeze
   end
 end
