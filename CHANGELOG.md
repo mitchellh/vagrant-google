@@ -2,6 +2,23 @@
 All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.4.0 (April 2019)
+
+### User-facing
+
+#### Added
+- \#213 Implemented Application Default Credentials authentication [mavin]
+
+#### Fixed
+- \#214 Set a default zone only if `default` network is used [mavin]
+- \#215 Allow tags,labels and additional_disks to be merged with multiple 
+  configs [mavin]
+
+### Development
+
+- \#213 Bumped dependencies [mavin]
+   - fog-google version to 1.9.0
+
 ## 2.3.0 (February 2019)
 
 ### User-facing
