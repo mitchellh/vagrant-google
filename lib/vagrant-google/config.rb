@@ -17,11 +17,6 @@ require "securerandom"
 module VagrantPlugins
   module Google
     class Config < Vagrant.plugin("2", :config) # rubocop:disable Metrics/ClassLength
-      # The Service Account Client ID Email address
-      #
-      # @return [String]
-      attr_accessor :google_client_email
-
       # The path to the Service Account json-formatted private key
       #
       # @return [String]
@@ -179,7 +174,6 @@ module VagrantPlugins
       attr_accessor :additional_disks
 
       def initialize(zone_specific=false)
-        @google_client_email = UNSET_VALUE
         @google_json_key_location = UNSET_VALUE
         @google_project_id   = UNSET_VALUE
         @image               = UNSET_VALUE
@@ -295,7 +289,6 @@ module VagrantPlugins
       def finalize! # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         # Try to get access keys from standard Google environment variables; they
         # will default to nil if the environment variables are not present.
-        @google_client_email = ENV['GOOGLE_CLIENT_EMAIL'] if @google_client_email == UNSET_VALUE
         @google_json_key_location = ENV['GOOGLE_JSON_KEY_LOCATION'] if @google_json_key_location == UNSET_VALUE
         @google_project_id = ENV['GOOGLE_PROJECT_ID'] if @google_project_id == UNSET_VALUE
 

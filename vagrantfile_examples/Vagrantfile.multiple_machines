@@ -24,7 +24,6 @@
 
 # Customize these global variables
 $GOOGLE_PROJECT_ID = "YOUR_GOOGLE_CLOUD_PROJECT_ID"
-$GOOGLE_CLIENT_EMAIL = "YOUR_SERVICE_ACCOUNT_EMAIL_ADDRESS"
 $GOOGLE_JSON_KEY_LOCATION = "/path/to/your/private-key.json"
 $LOCAL_USER = "mitchellh"
 $LOCAL_SSH_KEY = "~/.ssh/id_rsa"
@@ -54,7 +53,6 @@ Vagrant.configure("2") do |config|
   config.vm.define :z1c do |z1c|
     z1c.vm.provider :google do |google, override|
       google.google_project_id = $GOOGLE_PROJECT_ID
-      google.google_client_email = $GOOGLE_CLIENT_EMAIL
       google.google_json_key_location = $GOOGLE_JSON_KEY_LOCATION
       google.zone = "us-central1-c"
 
@@ -74,7 +72,6 @@ Vagrant.configure("2") do |config|
   config.vm.define :z1f do |z1f|
     z1f.vm.provider :google do |google, override|
       google.google_project_id = $GOOGLE_PROJECT_ID
-      google.google_client_email = $GOOGLE_CLIENT_EMAIL
       google.google_json_key_location = $GOOGLE_JSON_KEY_LOCATION
       google.zone = "us-central1-f"
 

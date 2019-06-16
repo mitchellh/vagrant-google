@@ -85,7 +85,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.provider :google do |google, override|
     google.google_project_id = "YOUR_GOOGLE_CLOUD_PROJECT_ID"
-    google.google_client_email = "YOUR_SERVICE_ACCOUNT_EMAIL_ADDRESS"
     google.google_json_key_location = "/path/to/your/private-key.json"
     
     google.image_family = 'ubuntu-1604-lts'
@@ -165,8 +164,6 @@ configuration for this provider.
 
 This provider exposes quite a few provider-specific configuration options:
 
-* `google_client_email` - The Client Email address for your Service Account.  
-  (Can also be configured with `GOOGLE_CLIENT_EMAIL` environment variable.)
 * `google_json_key_location` - The location of the JSON private key file matching your
   Service Account.  
   (Can also be configured with `GOOGLE_JSON_KEY_LOCATION` environment variable.)
@@ -231,7 +228,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.provider :google do |google|
     google.google_project_id = "YOUR_GOOGLE_CLOUD_PROJECT_ID"
-    google.google_client_email = "YOUR_SERVICE_ACCOUNT_EMAIL_ADDRESS"
     google.google_json_key_location = "/path/to/your/private-key.json"
   end
 end
@@ -249,7 +245,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.provider :google do |google|
     google.google_project_id = "YOUR_GOOGLE_CLOUD_PROJECT_ID"
-    google.google_client_email = "YOUR_SERVICE_ACCOUNT_EMAIL_ADDRESS"
     google.google_json_key_location = "/path/to/your/private-key.json"
 
     # Make sure to set this to trigger the zone_config
@@ -320,7 +315,6 @@ Before you start acceptance tests, you'll need to set the authentication
 shell variables accordingly:
 
 ```sh
-export GOOGLE_CLIENT_EMAIL="your-google_service_account_email@developer.gserviceaccount.com"
 export GOOGLE_PROJECT_ID="your-google-cloud-project-id"
 export GOOGLE_JSON_KEY_LOCATION="/full/path/to/your/private-key.json"
 

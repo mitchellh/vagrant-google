@@ -37,10 +37,6 @@ namespace :acceptance do
       abort "Environment variable GOOGLE_PROJECT_ID is not set. Aborting."
     end
 
-    unless ENV["GOOGLE_CLIENT_EMAIL"]
-      abort "Environment variable GOOGLE_CLIENT_EMAIL is not set. Aborting."
-    end
-
     unless ENV["GOOGLE_SSH_USER"]
       yellow "WARNING: GOOGLE_SSH_USER variable is not set. Will try to start tests using insecure Vagrant private key."
     end
@@ -70,7 +66,6 @@ namespace :acceptance do
       image_family
       synced_folder/rsync
       provisioner/shell
-      provisioner/chef-solo
     ).map{ |s| "provider/google/#{s}" }
 
     command = "vagrant-spec test --components=#{components.join(" ")}"

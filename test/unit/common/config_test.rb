@@ -99,13 +99,11 @@ describe VagrantPlugins::Google::Config do
         end
       end
 
-      its("google_client_email") { should be_nil }
       its("google_json_key_location") { should be_nil }
     end
 
     context "with Google credential environment variables" do
       before :each do
-        allow(ENV).to receive(:[]).with("GOOGLE_CLIENT_EMAIL").and_return("client_id_email")
         allow(ENV).to receive(:[]).with("GOOGLE_JSON_KEY_LOCATION").and_return("/path/to/json/key")
       end
 
@@ -115,7 +113,6 @@ describe VagrantPlugins::Google::Config do
         end
       end
 
-      its("google_client_email") { should == "client_id_email" }
       its("google_json_key_location") { should == "/path/to/json/key" }
     end
   end
@@ -297,7 +294,6 @@ describe VagrantPlugins::Google::Config do
 
       before :each do
         # Stub out required env to make sure we produce only errors we're looking for.
-        allow(ENV).to receive(:[]).with("GOOGLE_CLIENT_EMAIL").and_return("client_id_email")
         allow(ENV).to receive(:[]).with("GOOGLE_PROJECT_ID").and_return("my-awesome-project")
         allow(ENV).to receive(:[]).with("GOOGLE_JSON_KEY_LOCATION").and_return("/path/to/json/key")
         allow(ENV).to receive(:[]).with("GOOGLE_SSH_KEY_LOCATION").and_return("/path/to/ssh/key")
