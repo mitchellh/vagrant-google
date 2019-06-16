@@ -66,7 +66,6 @@ namespace :acceptance do
       image_family
       synced_folder/rsync
       provisioner/shell
-      provisioner/chef-solo
     ).map{ |s| "provider/google/#{s}" }
 
     command = "vagrant-spec test --components=#{components.join(" ")}"
