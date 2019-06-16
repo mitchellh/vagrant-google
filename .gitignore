@@ -17,3 +17,6 @@ vendor/*
 
 # Intellij projects folder
 .idea
+
+# Env
+setenv_*.sh

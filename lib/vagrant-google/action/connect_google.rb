@@ -36,16 +36,8 @@ module VagrantPlugins
             :google_project      => provider_config.google_project_id,
           }
 
-          unless provider_config.google_client_email.nil?
-            fog_config[:google_client_email] = provider_config.google_client_email
-          end
-
           unless provider_config.google_json_key_location.nil?
             fog_config[:google_json_key_location] = find_key(provider_config.google_json_key_location, env)
-          end
-
-          if provider_config.google_client_email.nil? and provider_config.google_json_key_location.nil?
-            fog_config[:google_application_default] = true
           end
 
           @logger.info("Creating Google API client and adding to Vagrant environment")
