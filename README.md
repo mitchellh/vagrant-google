@@ -195,6 +195,7 @@ will pull the most recent CentOS 7 image. For more info, refer to
 * `zone` - The zone name where the instance will be created.
 * `can_ip_forward` - Boolean whether to enable IP Forwarding.
 * `external_ip` - The external IP address to use (supports names). Set to `false` to not assign an external address.
+* `network_ip` - The internal IP address to use. Default is to use next available address.
 * `use_private_ip` - Boolean whether to use private IP for SSH/provisioning. Default is false.
 * `preemptible` - Boolean whether to enable preemptibility. Default is false.
 * `auto_restart` - Boolean whether to enable auto_restart. Default is true.
