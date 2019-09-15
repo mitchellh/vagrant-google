@@ -2,6 +2,28 @@
 All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.5.0 (September 2019)
+
+### User-facing
+
+#### Added
+- \#222 Added internal IP support [andrewh1978]
+
+#### Deprecated
+
+- \#220 Deprecated google_client_email parameter, as it's no longer needed or
+  supported by fog-google [temikus]
+
+### Development
+
+#### Added
+
+- \#223 Set up unit test GitHub Action worflow [temikus]
+
+#### Fixed
+
+- \#225 Locked the vagrant dep to 2.2.4 due to bundler issues on 2.2.5 [temikus]
+
 ## 2.4.0 (April 2019)
 
 ### User-facing
@@ -11,7 +33,7 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 
 #### Fixed
 - \#214 Set a default zone only if `default` network is used [mavin]
-- \#215 Allow tags,labels and additional_disks to be merged with multiple 
+- \#215 Allow tags,labels and additional_disks to be merged with multiple
   configs [mavin]
 
 ### Development
@@ -33,14 +55,14 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 
 ### User-facing
 
-- \#206 Fix image selection logic - Plugin no longer traces back with 
+- \#206 Fix image selection logic - Plugin no longer traces back with
   `image_family` config option. [temikus]
 
 ### Development
 
 - \#206 Bumped dependencies. [temikus]
-  - fog-google version to 1.8.1 
-  - vagrant & vagrant-spec are now pointing to new upstream Hashicorp org repos 
+  - fog-google version to 1.8.1
+  - vagrant & vagrant-spec are now pointing to new upstream Hashicorp org repos
 
 ## 2.2.0 (June 2018)
 
@@ -59,13 +81,13 @@ platforms.
 ## 2.0.0 (March 2018)
 
 * Update to use fog-google gem v1
-* Add new configuration option `labels` for setting [labels](https://cloud.google.com/compute/docs/labeling-resources) 
+* Add new configuration option `labels` for setting [labels](https://cloud.google.com/compute/docs/labeling-resources)
   on GCE instances
 * Fix disk cleanup issue causing the disk to be marked as created before insertion
 * Test environment fixups to avoid 'Encoded files can't be read outside of the Vagrant installer.'
 * Breaking changes:
   * Drop support for configuration option `google_key_location`(GCP P12 key)
-  * `image` parameter no longer defaults to an arbitrary image and must be 
+  * `image` parameter no longer defaults to an arbitrary image and must be
     specified at runtime
   * Rsync behavior now consistent with Vagrant's default, removed old rsync code
 
