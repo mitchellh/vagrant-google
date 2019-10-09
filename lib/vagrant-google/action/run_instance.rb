@@ -201,7 +201,7 @@ module VagrantPlugins
 
               # Get additional disk auto delete
               additional_disk_auto_delete = nil
-              if disk_config[:disk_type].nil?
+              if disk_config[:autodelete_disk].nil?
                 # Default auto delete to true
                 additional_disk_auto_delete = true
               else
