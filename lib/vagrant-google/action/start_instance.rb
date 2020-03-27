@@ -65,9 +65,9 @@ module VagrantPlugins
           @logger.info("Time to instance ready: #{env[:metrics]["instance_ready_time"]}")
 
           unless env[:interrupted]
-            env[:metrics]["instance_ssh_time"] = Util::Timer.time do
-              # Wait for SSH to be ready.
-              env[:ui].info(I18n.t("vagrant_google.waiting_for_ssh"))
+            env[:metrics]["instance_comm_time"] = Util::Timer.time do
+              # Wait for Comms to be ready.
+              env[:ui].info(I18n.t("vagrant_google.waiting_for_comm"))
               while true
                 # If we're interrupted then just back out
                 break if env[:interrupted]
@@ -76,7 +76,7 @@ module VagrantPlugins
               end
             end
 
-            @logger.info("Time for SSH ready: #{env[:metrics]["instance_ssh_time"]}")
+            @logger.info("Time for Comms ready: #{env[:metrics]["instance_comm_time"]}")
 
             # Ready and booted!
             env[:ui].info(I18n.t("vagrant_google.ready"))

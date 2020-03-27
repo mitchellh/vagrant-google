@@ -82,6 +82,15 @@ module VagrantPlugins
         end
       end
 
+      # This action is called to setup the Windows user/password on the machine.
+      def self.action_setup_winrm_password
+        Vagrant::Action::Builder.new.tap do |b|
+          b.use ConfigValidate
+          b.use ConnectGoogle
+          b.use SetupWinrmPassword
+        end
+      end
+
       # This action is called to read the state of the machine. The
       # resulting state is expected to be put into the `:machine_state_id`
       # key.
@@ -182,6 +191,7 @@ module VagrantPlugins
       autoload :MessageNotCreated, action_root.join("message_not_created")
       autoload :MessageWillNotDestroy, action_root.join("message_will_not_destroy")
       autoload :ReadSSHInfo, action_root.join("read_ssh_info")
+      autoload :SetupWinrmPassword, action_root.join('setup_winrm_password')
       autoload :ReadState, action_root.join("read_state")
       autoload :RunInstance, action_root.join("run_instance")
       autoload :StartInstance, action_root.join("start_instance")

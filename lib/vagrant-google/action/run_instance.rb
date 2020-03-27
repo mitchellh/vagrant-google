@@ -14,6 +14,7 @@
 require "log4r"
 require 'vagrant/util/retryable'
 require 'vagrant-google/util/timer'
+require 'vagrant-google/action/setup_winrm_password'
 
 module VagrantPlugins
   module Google
@@ -287,10 +288,26 @@ module VagrantPlugins
             env[:interrupted] = true
           end
 
+          # Parse out the image project in case it was not set
+          # and check if it is part of a public windows project
+          img_project = image.split("/")[6]
+          is_windows_image = img_project.eql?("windows-cloud") || img_project.eql?("windows-sql-cloud")
+
+          # Reset the password if a windows image unless flag overrides
+          setup_winrm_password = zone_config.setup_winrm_password
+          if setup_winrm_password.nil? && is_windows_image
+            setup_winrm_password = true
+          end
+
+          if setup_winrm_password
+            env[:ui].info("Setting up WinRM Password")
+            env[:action_runner].run(Action.action_setup_winrm_password, env)
+          end
+
           unless env[:terminated]
-            env[:metrics]["instance_ssh_time"] = Util::Timer.time do
-              # Wait for SSH to be ready.
-              env[:ui].info(I18n.t("vagrant_google.waiting_for_ssh"))
+            env[:metrics]["instance_comm_time"] = Util::Timer.time do
+              # Wait for Comms to be ready.
+              env[:ui].info(I18n.t("vagrant_google.waiting_for_comm"))
               while true
                 # If we're interrupted just back out
                 break if env[:interrupted]
@@ -298,8 +315,8 @@ module VagrantPlugins
                 sleep 2
               end
             end
-            @logger.info("Time for SSH ready: #{env[:metrics]["instance_ssh_time"]}")
-            env[:ui].info(I18n.t("vagrant_google.ready_ssh")) unless env[:interrupted]
+            @logger.info("Time for Comms ready: #{env[:metrics]["instance_comm_time"]}")
+            env[:ui].info(I18n.t("vagrant_google.ready_comm")) unless env[:interrupted]
           end
 
           # Terminate the instance if we were interrupted
