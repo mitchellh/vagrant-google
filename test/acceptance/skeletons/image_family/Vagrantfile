@@ -7,6 +7,8 @@ Vagrant.configure("2") do |config|
 
     google.zone_config "australia-southeast1-b" do |zone|
       zone.name = "vagrant-acceptance-preemptible-#{('a'..'z').to_a.sample(8).join}"
+      # Some images no longer fit into default 10GB disk size
+      zone.disk_size = 30
       zone.disk_type = "pd-ssd"
       zone.image_family = "centos-7"
     end
