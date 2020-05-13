@@ -14,8 +14,8 @@ en:
       Instance is not created. Please run `vagrant up` first.
     ready: |-
       Machine is booted and ready for use!
-    ready_ssh: |-
-      Machine is ready for SSH access!
+    ready_comm: |-
+      Machine is ready for Communicator access!
     rsync_not_found_warning: |-
       Warning! Folder sync disabled because the rsync binary is missing.
       Make sure rsync is installed and the binary can be found in the PATH.
@@ -31,8 +31,8 @@ en:
       Waiting for GCP operation '%{name}' to finish...
     waiting_for_ready: |-
       Waiting for instance to become "ready"...
-    waiting_for_ssh: |-
-      Waiting for SSH to become available...
+    waiting_for_comm: |-
+      Waiting for Communicator to become available...
     warn_networks: |-
       Warning! The Google provider doesn't support any of the Vagrant
       high-level network configurations (`config.vm.network`). They

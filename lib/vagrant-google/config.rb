@@ -178,6 +178,11 @@ module VagrantPlugins
       # @return [Array<Hash>]
       attr_accessor :additional_disks
 
+      # (Optional - Override default WinRM setup before for Public Windows images)
+      #
+      # @return [Boolean]
+      attr_accessor :setup_winrm_password
+
       def initialize(zone_specific=false)
         @google_json_key_location = UNSET_VALUE
         @google_project_id   = UNSET_VALUE
@@ -210,6 +215,7 @@ module VagrantPlugins
         @service_accounts    = UNSET_VALUE
         @service_account     = UNSET_VALUE
         @additional_disks    = []
+        @setup_winrm_password = UNSET_VALUE
 
         # Internal state (prefix with __ so they aren't automatically
         # merged)
@@ -381,6 +387,9 @@ module VagrantPlugins
 
         # Default IAM service account
         @service_account = nil if @service_account == UNSET_VALUE
+
+        # Default Setup WinRM Password
+        @setup_winrm_password = nil if @setup_winrm_password == UNSET_VALUE
 
         # Config option service_accounts is deprecated
         if @service_accounts
