@@ -1,6 +1,6 @@
 name: Run unit tests
 
-on: [push]
+on: [push, pull-request]
 
 jobs:
   build:
@@ -9,12 +9,22 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Set up Ruby 2.4
+
+    - name: Set up Ruby 2.6
       uses: actions/setup-ruby@v1
       with:
-        ruby-version: 2.4.X
-    - name: Build and run unit tests
+        ruby-version: 2.6.6
+
+    - name: Unit tests
       run: |
         gem install bundler
         bundle install --jobs 4 --retry 3
         bundle exec rake
+
+    - name: Linter
+      uses: adwerx/pronto-ruby
+      with:
+        runners: >-
+          rubocop
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
