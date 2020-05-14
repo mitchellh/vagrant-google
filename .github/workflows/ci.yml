@@ -1,6 +1,6 @@
 name: Run unit tests
 
-on: [push, pull-request]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -20,11 +20,3 @@ jobs:
         gem install bundler
         bundle install --jobs 4 --retry 3
         bundle exec rake
-
-    - name: Linter
-      uses: adwerx/pronto-ruby
-      with:
-        runners: >-
-          rubocop
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
