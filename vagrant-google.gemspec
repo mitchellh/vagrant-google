@@ -34,7 +34,7 @@ Gem::Specification.new do |s|
   # TODO: revise after vagrant_spec goes past >0.0.1 (at master@e623a56)
   s.add_development_dependency "rspec-legacy_formatters"
 
-  s.add_development_dependency "rake", "~> 12.3"
+  s.add_development_dependency "rake", ">= 13.0.1"
   s.add_development_dependency "rspec", ">= 3.5.0", "<= 3.6"
   s.add_development_dependency "rspec-its", "~> 1.2"
   s.add_development_dependency "rubocop", "~> 0.50"
