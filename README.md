@@ -209,17 +209,30 @@ will pull the most recent CentOS 7 image. For more info, refer to
 * `additional_disks` - An array of additional disk configurations. `disk_size` is default to `10`GB; 
   `disk_name` is default to `name` + "-additional-disk-#{index}"; `disk_type` is default to `pd-standard`; 
   `autodelete_disk` is default to `true`. Here is an example of configuration.
-```ruby
-  [{
-   :image_family => "google-image-family",
-   :image => nil,
-   :image_project_id => "google-project-id",
-   :disk_size => 20,
-   :disk_name => "google-additional-disk-0",
-   :disk_type => "pd-standard",
-   :autodelete_disk => true
+  ```ruby
+    [{
+     :image_family => "google-image-family",
+     :image => nil,
+     :image_project_id => "google-project-id",
+     :disk_size => 20,
+     :disk_name => "google-additional-disk-0",
+     :disk_type => "pd-standard",
+     :autodelete_disk => true
+    }]
+  ```
+* `accelerators` - An array of accelerator configurations. `type` is the
+  accelerator type (e.g. `nvidia-tesla-k80`); `count` is the number of
+  accelerators and defaults to 1. Note that only `TERMINATE` is supported for
+  `on_host_maintenance`; this should be set explicitly, since the default is
+  `MIGRATE`.
+  ```ruby
+  google.accelerators = [{
+    :type => "nvidia-tesla-k80",
+    :count => 2
   }]
-```
+
+  google.on_host_maintenance = "TERMINATE"
+  ```
 
 These can be set like typical provider-specific configuration:
 

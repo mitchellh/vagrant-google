@@ -70,6 +70,7 @@ module VagrantPlugins
           service_account        = zone_config.service_account
           project_id             = zone_config.google_project_id
           additional_disks       = zone_config.additional_disks
+          accelerators           = zone_config.accelerators
 
           # Launch!
           env[:ui].info(I18n.t("vagrant_google.launching_instance"))
@@ -101,6 +102,7 @@ module VagrantPlugins
           env[:ui].info(" -- Scopes:          #{service_account_scopes}") if service_account_scopes
           env[:ui].info(" -- Service Account: #{service_account}") if service_account
           env[:ui].info(" -- Additional Disks:#{additional_disks}")
+          env[:ui].info(" -- Accelerators:    #{accelerators}")
 
           # Munge image config
           if image_family
@@ -129,6 +131,18 @@ module VagrantPlugins
 
           # Munge service_accounts / scopes config
           service_accounts = [ { :email => service_account, :scopes => service_account_scopes } ]
+
+          # Construct accelerator URLs
+          accelerators_url = []
+          accelerators.each do |accelerator|
+            unless accelerator.key?(:type)
+              next
+            end
+            accelerator_type = "https://compute.googleapis.com/compute/v1/projects/#{project_id}/zones/#{zone}/acceleratorTypes/#{accelerator[:type]}"
+            accelerator_count = accelerator.fetch(:count, 1)
+            accelerators_url.push({ :accelerator_type => accelerator_type,
+                                    :accelerator_count => accelerator_count })
+          end
 
           begin
             request_start_time = Time.now.to_i
@@ -260,7 +274,8 @@ module VagrantPlugins
               :network_ip          => network_ip,
               :disks               => disks,
               :scheduling          => scheduling,
-              :service_accounts    => service_accounts
+              :service_accounts    => service_accounts,
+              :guest_accelerators  => accelerators_url
             }
             server = env[:google_compute].servers.create(defaults)
             @logger.info("Machine '#{zone}:#{name}' created.")

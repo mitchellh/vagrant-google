@@ -183,6 +183,11 @@ module VagrantPlugins
       # @return [Boolean]
       attr_accessor :setup_winrm_password
 
+      # Accelerators
+      #
+      # @return [Array<Hash>]
+      attr_accessor :accelerators
+
       def initialize(zone_specific=false)
         @google_json_key_location = UNSET_VALUE
         @google_project_id   = UNSET_VALUE
@@ -216,6 +221,7 @@ module VagrantPlugins
         @service_account     = UNSET_VALUE
         @additional_disks    = []
         @setup_winrm_password = UNSET_VALUE
+        @accelerators        = []
 
         # Internal state (prefix with __ so they aren't automatically
         # merged)
@@ -453,6 +459,11 @@ module VagrantPlugins
 
           errors << I18n.t("vagrant_google.config.image_required") if config.image.nil? && config.image_family.nil?
           errors << I18n.t("vagrant_google.config.name_required") if @name.nil?
+
+          if !config.accelerators.empty?
+            errors << I18n.t("vagrant_google.config.on_host_maintenance_invalid_with_accelerators") unless \
+              config.on_host_maintenance == "TERMINATE"
+          end
         end
 
         if @service_accounts

@@ -71,6 +71,9 @@ en:
         "image" must be unset when setting "image_family"
       service_accounts_deprecaated: |-
         "service_accounts is deprecated. Please use scopes instead"
+      on_host_maintenance_invalid_with_accelerators: |-
+        "on_host_maintenance" option must be set to "TERMINATE" for instances
+        with accelerators
 #-------------------------------------------------------------------------------
 # Translations for exception classes
 #-------------------------------------------------------------------------------
