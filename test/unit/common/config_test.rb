@@ -50,6 +50,7 @@ describe VagrantPlugins::Google::Config do
     its("preemptible")            { should be_falsey }
     its("auto_restart")           { should }
     its("on_host_maintenance")    { should == "MIGRATE" }
+    its("accelerators")           { should == [] }
   end
 
   describe "overriding defaults" do
@@ -88,6 +89,14 @@ describe VagrantPlugins::Google::Config do
       instance.finalize!
       errors = instance.validate("foo")["Google Provider"]
       expect(errors).to include(/on_host_maintenance_invalid_on_preemptible/)
+    end
+
+    it "should raise error with accelerators and on_host_maintenance is not TERMINATE" do
+      instance.accelerators = [{ :type => "nvidia-tesla-k80" }]
+      instance.on_host_maintenance = "MIGRATE"
+      instance.finalize!
+      errors = instance.validate("foo")["Google Provider"]
+      expect(errors).to include(/on_host_maintenance_invalid_with_accelerators/)
     end
   end
 
@@ -128,6 +137,7 @@ describe VagrantPlugins::Google::Config do
     let(:config_network)         { "foo" }
     let(:can_ip_forward)         { true }
     let(:external_ip)            { "foo" }
+    let(:accelerators)           { [{ :type => "foo" }] }
 
     def set_test_values(instance)
       instance.name              = config_name
@@ -140,6 +150,7 @@ describe VagrantPlugins::Google::Config do
       instance.zone              = config_zone
       instance.can_ip_forward    = can_ip_forward
       instance.external_ip       = external_ip
+      instance.accelerators      = accelerators
     end
 
     it "should raise an exception if not finalized" do
@@ -169,6 +180,7 @@ describe VagrantPlugins::Google::Config do
       its("zone")              { should == config_zone }
       its("can_ip_forward")    { should == can_ip_forward }
       its("external_ip")       { should == external_ip }
+      its("accelerators")      { should == accelerators }
     end
 
     context "with a specific config set" do
@@ -197,6 +209,7 @@ describe VagrantPlugins::Google::Config do
       its("zone")              { should == zone_name }
       its("can_ip_forward")    { should == can_ip_forward }
       its("external_ip")       { should == external_ip }
+      its("accelerators")      { should == accelerators }
     end
 
     describe "inheritance of parent config" do
