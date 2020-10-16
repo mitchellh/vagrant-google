@@ -244,47 +244,76 @@ describe VagrantPlugins::Google::Config do
     end
 
     describe "merging" do
-      let(:first) { described_class.new }
-      let(:second) { described_class.new }
+      let(:current) { described_class.new }
+      let(:other) { described_class.new }
+
+      subject { current.merge(other) }
 
       it "should merge the metadata" do
-        first.metadata["one"] = "foo"
-        second.metadata["two"] = "bar"
+        current.metadata["one"] = "foo"
+        other.metadata["two"] = "bar"
 
-        third = first.merge(second)
-        expect(third.metadata).to eq({
+        expect(subject.metadata).to eq({
           "one" => "foo",
           "two" => "bar"
         })
       end
 
-      it "should merge the labels" do
-        first.labels["one"] = "one"
-        second.labels["two"] = "two"
+      it "should merge the metadata and overwrite older values" do
+        current.metadata = {
+          "one" => "foo",
+          "name" => "current",
+        }
 
-        third = first.merge(second)
-        expect(third.labels).to eq({
+        other.metadata = {
+          "two" => "bar",
+          "name" => "other",
+        }
+
+        expect(subject.metadata).to eq({
+          "one" => "foo",
+          "two" => "bar",
+          "name" => "other",
+        })
+      end
+
+      it "should merge the labels" do
+        current.labels["one"] = "one"
+        other.labels["two"] = "two"
+
+        expect(subject.labels).to eq({
           "one" => "one",
           "two" => "two"
         })
       end
+      
+      it "should merge the labels and overwrite older values" do
+        current.labels["one"] = "one"
+        current.labels["name"] = "current"
+        other.labels["two"] = "two"
+        other.labels["name"] = "other"
+
+        expect(subject.labels).to eq({
+          "one" => "one",
+          "two" => "two",
+          "name" => "other",
+        })
+      end
 
       it "should merge the tags" do
-        first.tags = ["foo", "bar"]
-        second.tags = ["biz"]
+        current.tags = ["foo", "bar"]
+        other.tags = ["biz"]
 
-        third = first.merge(second)
-        expect(third.tags).to include("foo")
-        expect(third.tags).to include("bar")
-        expect(third.tags).to include("biz")
+        expect(subject.tags).to include("foo")
+        expect(subject.tags).to include("bar")
+        expect(subject.tags).to include("biz")
       end
 
       it "should merge the additional_disks" do
-        first.additional_disks = [{:one => "one"}]
-        second.additional_disks = [{:two => "two"}]
+        current.additional_disks = [{:one => "one"}]
+        other.additional_disks = [{:two => "two"}]
 
-        third = first.merge(second)
-        expect(third.additional_disks).to contain_exactly(
+        expect(subject.additional_disks).to contain_exactly(
           {:one => "one"}, {:two => "two"}
         )
       end
