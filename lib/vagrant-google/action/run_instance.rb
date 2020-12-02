@@ -42,67 +42,73 @@ module VagrantPlugins
           zone = env[:machine].provider_config.zone
 
           # Get the configs
-          zone_config            = env[:machine].provider_config.get_zone_config(zone)
-          image                  = zone_config.image
-          image_family           = zone_config.image_family
-          image_project_id       = zone_config.image_project_id
-          instance_group         = zone_config.instance_group
-          name                   = zone_config.name
-          machine_type           = zone_config.machine_type
-          disk_size              = zone_config.disk_size
-          disk_name              = zone_config.disk_name
-          disk_type              = zone_config.disk_type
-          network                = zone_config.network
-          network_project_id     = zone_config.network_project_id
-          subnetwork             = zone_config.subnetwork
-          metadata               = zone_config.metadata
-          labels                 = zone_config.labels
-          tags                   = zone_config.tags
-          can_ip_forward         = zone_config.can_ip_forward
-          use_private_ip         = zone_config.use_private_ip
-          external_ip            = zone_config.external_ip
-          network_ip             = zone_config.network_ip
-          preemptible            = zone_config.preemptible
-          auto_restart           = zone_config.auto_restart
-          on_host_maintenance    = zone_config.on_host_maintenance
-          autodelete_disk        = zone_config.autodelete_disk
-          service_account_scopes = zone_config.scopes
-          service_account        = zone_config.service_account
-          project_id             = zone_config.google_project_id
-          additional_disks       = zone_config.additional_disks
-          accelerators           = zone_config.accelerators
+          zone_config                 = env[:machine].provider_config.get_zone_config(zone)
+          image                       = zone_config.image
+          image_family                = zone_config.image_family
+          image_project_id            = zone_config.image_project_id
+          instance_group              = zone_config.instance_group
+          name                        = zone_config.name
+          machine_type                = zone_config.machine_type
+          disk_size                   = zone_config.disk_size
+          disk_name                   = zone_config.disk_name
+          disk_type                   = zone_config.disk_type
+          network                     = zone_config.network
+          network_project_id          = zone_config.network_project_id
+          subnetwork                  = zone_config.subnetwork
+          metadata                    = zone_config.metadata
+          labels                      = zone_config.labels
+          tags                        = zone_config.tags
+          can_ip_forward              = zone_config.can_ip_forward
+          use_private_ip              = zone_config.use_private_ip
+          external_ip                 = zone_config.external_ip
+          network_ip                  = zone_config.network_ip
+          preemptible                 = zone_config.preemptible
+          auto_restart                = zone_config.auto_restart
+          on_host_maintenance         = zone_config.on_host_maintenance
+          autodelete_disk             = zone_config.autodelete_disk
+          service_account_scopes      = zone_config.scopes
+          service_account             = zone_config.service_account
+          project_id                  = zone_config.google_project_id
+          additional_disks            = zone_config.additional_disks
+          accelerators                = zone_config.accelerators
+          enable_secure_boot          = zone_config.enable_secure_boot
+          enable_vtpm                 = zone_config.enable_vtpm
+          enable_integrity_monitoring = zone_config.enable_integrity_monitoring
 
           # Launch!
           env[:ui].info(I18n.t("vagrant_google.launching_instance"))
-          env[:ui].info(" -- Name:            #{name}")
-          env[:ui].info(" -- Project:         #{project_id}")
-          env[:ui].info(" -- Type:            #{machine_type}")
-          env[:ui].info(" -- Disk type:       #{disk_type}")
-          env[:ui].info(" -- Disk size:       #{disk_size} GB")
-          env[:ui].info(" -- Disk name:       #{disk_name}")
-          env[:ui].info(" -- Image:           #{image}")
-          env[:ui].info(" -- Image family:    #{image_family}")
-          env[:ui].info(" -- Image Project:   #{image_project_id}") if image_project_id
-          env[:ui].info(" -- Instance Group:  #{instance_group}")
-          env[:ui].info(" -- Zone:            #{zone}") if zone
-          env[:ui].info(" -- Network:         #{network}") if network
-          env[:ui].info(" -- Network Project: #{network_project_id}") if network_project_id
-          env[:ui].info(" -- Subnetwork:      #{subnetwork}") if subnetwork
-          env[:ui].info(" -- Metadata:        '#{metadata}'")
-          env[:ui].info(" -- Labels:          '#{labels}'")
-          env[:ui].info(" -- Network tags:    '#{tags}'")
-          env[:ui].info(" -- IP Forward:      #{can_ip_forward}")
-          env[:ui].info(" -- Use private IP:  #{use_private_ip}")
-          env[:ui].info(" -- External IP:     #{external_ip}")
-          env[:ui].info(" -- Network IP:      #{network_ip}")
-          env[:ui].info(" -- Preemptible:     #{preemptible}")
-          env[:ui].info(" -- Auto Restart:    #{auto_restart}")
-          env[:ui].info(" -- On Maintenance:  #{on_host_maintenance}")
-          env[:ui].info(" -- Autodelete Disk: #{autodelete_disk}")
-          env[:ui].info(" -- Scopes:          #{service_account_scopes}") if service_account_scopes
-          env[:ui].info(" -- Service Account: #{service_account}") if service_account
-          env[:ui].info(" -- Additional Disks:#{additional_disks}")
-          env[:ui].info(" -- Accelerators:    #{accelerators}")
+          env[:ui].info(" -- Name:                 #{name}")
+          env[:ui].info(" -- Project:              #{project_id}")
+          env[:ui].info(" -- Type:                 #{machine_type}")
+          env[:ui].info(" -- Disk type:            #{disk_type}")
+          env[:ui].info(" -- Disk size:            #{disk_size} GB")
+          env[:ui].info(" -- Disk name:            #{disk_name}")
+          env[:ui].info(" -- Image:                #{image}")
+          env[:ui].info(" -- Image family:         #{image_family}")
+          env[:ui].info(" -- Image Project:        #{image_project_id}") if image_project_id
+          env[:ui].info(" -- Instance Group:       #{instance_group}")
+          env[:ui].info(" -- Zone:                 #{zone}") if zone
+          env[:ui].info(" -- Network:              #{network}") if network
+          env[:ui].info(" -- Network Project:      #{network_project_id}") if network_project_id
+          env[:ui].info(" -- Subnetwork:           #{subnetwork}") if subnetwork
+          env[:ui].info(" -- Metadata:             '#{metadata}'")
+          env[:ui].info(" -- Labels:               '#{labels}'")
+          env[:ui].info(" -- Network tags:         '#{tags}'")
+          env[:ui].info(" -- IP Forward:           #{can_ip_forward}")
+          env[:ui].info(" -- Use private IP:       #{use_private_ip}")
+          env[:ui].info(" -- External IP:          #{external_ip}")
+          env[:ui].info(" -- Network IP:           #{network_ip}")
+          env[:ui].info(" -- Preemptible:          #{preemptible}")
+          env[:ui].info(" -- Auto Restart:         #{auto_restart}")
+          env[:ui].info(" -- On Maintenance:       #{on_host_maintenance}")
+          env[:ui].info(" -- Autodelete Disk:      #{autodelete_disk}")
+          env[:ui].info(" -- Scopes:               #{service_account_scopes}") if service_account_scopes
+          env[:ui].info(" -- Service Account:      #{service_account}") if service_account
+          env[:ui].info(" -- Additional Disks:     #{additional_disks}")
+          env[:ui].info(" -- Accelerators:         #{accelerators}")
+          env[:ui].info(" -- Secure Boot:          #{enable_secure_boot}") if enable_secure_boot
+          env[:ui].info(" -- vTPM:                 #{enable_vtpm}") if enable_vtpm
+          env[:ui].info(" -- Integrity Monitoring: #{enable_integrity_monitoring}") if enable_integrity_monitoring
 
           # Munge image config
           if image_family
@@ -143,6 +149,9 @@ module VagrantPlugins
             accelerators_url.push({ :accelerator_type => accelerator_type,
                                     :accelerator_count => accelerator_count })
           end
+
+          # Munge shieldedInstance config
+          shielded_instance_config = { :enable_secure_boot => enable_secure_boot, :enable_vtpm => enable_vtpm, :enable_integrity_monitoring => enable_integrity_monitoring }
 
           begin
             request_start_time = Time.now.to_i
@@ -258,24 +267,25 @@ module VagrantPlugins
             end
 
             defaults = {
-              :name                => name,
-              :zone                => zone,
-              :machine_type        => machine_type,
-              :disk_size           => disk_size,
-              :disk_type           => disk_type,
-              :image               => image,
-              :network_interfaces  => network_interfaces,
-              :metadata            => { :items => metadata.each.map { |k, v| {:key => k.to_s, :value => v.to_s} } },
-              :labels              => labels,
-              :tags                => { :items => tags },
-              :can_ip_forward      => can_ip_forward,
-              :use_private_ip      => use_private_ip,
-              :external_ip         => external_ip,
-              :network_ip          => network_ip,
-              :disks               => disks,
-              :scheduling          => scheduling,
-              :service_accounts    => service_accounts,
-              :guest_accelerators  => accelerators_url
+              :name                     => name,
+              :zone                     => zone,
+              :machine_type             => machine_type,
+              :disk_size                => disk_size,
+              :disk_type                => disk_type,
+              :image                    => image,
+              :network_interfaces       => network_interfaces,
+              :metadata                 => { :items => metadata.each.map { |k, v| {:key => k.to_s, :value => v.to_s} } },
+              :labels                   => labels,
+              :tags                     => { :items => tags },
+              :can_ip_forward           => can_ip_forward,
+              :use_private_ip           => use_private_ip,
+              :external_ip              => external_ip,
+              :network_ip               => network_ip,
+              :disks                    => disks,
+              :scheduling               => scheduling,
+              :service_accounts         => service_accounts,
+              :guest_accelerators       => accelerators_url,
+              :shielded_instance_config => shielded_instance_config,
             }
             server = env[:google_compute].servers.create(defaults)
             @logger.info("Machine '#{zone}:#{name}' created.")

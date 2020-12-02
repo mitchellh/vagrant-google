@@ -188,40 +188,58 @@ module VagrantPlugins
       # @return [Array<Hash>]
       attr_accessor :accelerators
 
+      # whether the instance has Secure Boot enabled
+      #
+      # @return Boolean
+      attr_accessor :enable_secure_boot
+
+      # whether the instance has the vTPM enabled
+      #
+      # @return Boolean
+      attr_accessor :enable_vtpm
+
+      # whether the instance has integrity monitoring enabled
+      #
+      # @return Boolean
+      attr_accessor :enable_integrity_monitoring
+
       def initialize(zone_specific=false)
-        @google_json_key_location = UNSET_VALUE
-        @google_project_id   = UNSET_VALUE
-        @image               = UNSET_VALUE
-        @image_family        = UNSET_VALUE
-        @image_project_id    = UNSET_VALUE
-        @instance_group      = UNSET_VALUE
-        @machine_type        = UNSET_VALUE
-        @disk_size           = UNSET_VALUE
-        @disk_name           = UNSET_VALUE
-        @disk_type           = UNSET_VALUE
-        @metadata            = {}
-        @name                = UNSET_VALUE
-        @network             = UNSET_VALUE
-        @network_project_id  = UNSET_VALUE
-        @subnetwork          = UNSET_VALUE
-        @tags                = []
-        @labels              = {}
-        @can_ip_forward      = UNSET_VALUE
-        @external_ip         = UNSET_VALUE
-        @network_ip          = UNSET_VALUE
-        @use_private_ip      = UNSET_VALUE
-        @autodelete_disk     = UNSET_VALUE
-        @preemptible         = UNSET_VALUE
-        @auto_restart        = UNSET_VALUE
-        @on_host_maintenance = UNSET_VALUE
-        @instance_ready_timeout = UNSET_VALUE
-        @zone                = UNSET_VALUE
-        @scopes              = UNSET_VALUE
-        @service_accounts    = UNSET_VALUE
-        @service_account     = UNSET_VALUE
-        @additional_disks    = []
-        @setup_winrm_password = UNSET_VALUE
-        @accelerators        = []
+        @google_json_key_location    = UNSET_VALUE
+        @google_project_id           = UNSET_VALUE
+        @image                       = UNSET_VALUE
+        @image_family                = UNSET_VALUE
+        @image_project_id            = UNSET_VALUE
+        @instance_group              = UNSET_VALUE
+        @machine_type                = UNSET_VALUE
+        @disk_size                   = UNSET_VALUE
+        @disk_name                   = UNSET_VALUE
+        @disk_type                   = UNSET_VALUE
+        @metadata                    = {}
+        @name                        = UNSET_VALUE
+        @network                     = UNSET_VALUE
+        @network_project_id          = UNSET_VALUE
+        @subnetwork                  = UNSET_VALUE
+        @tags                        = []
+        @labels                      = {}
+        @can_ip_forward              = UNSET_VALUE
+        @external_ip                 = UNSET_VALUE
+        @network_ip                  = UNSET_VALUE
+        @use_private_ip              = UNSET_VALUE
+        @autodelete_disk             = UNSET_VALUE
+        @preemptible                 = UNSET_VALUE
+        @auto_restart                = UNSET_VALUE
+        @on_host_maintenance         = UNSET_VALUE
+        @instance_ready_timeout      = UNSET_VALUE
+        @zone                        = UNSET_VALUE
+        @scopes                      = UNSET_VALUE
+        @service_accounts            = UNSET_VALUE
+        @service_account             = UNSET_VALUE
+        @additional_disks            = []
+        @setup_winrm_password        = UNSET_VALUE
+        @accelerators                = []
+        @enable_secure_boot          = UNSET_VALUE
+        @enable_vtpm                 = UNSET_VALUE
+        @enable_integrity_monitoring = UNSET_VALUE
 
         # Internal state (prefix with __ so they aren't automatically
         # merged)
@@ -399,6 +417,15 @@ module VagrantPlugins
         if @service_accounts
           @scopes = @service_accounts
         end
+
+        # enable_secure_boot defaults to nil
+        @enable_secure_boot = nil if @enable_secure_boot == UNSET_VALUE
+
+        # enable_vtpm defaults to nil
+        @enable_vtpm = nil if @enable_vtpm == UNSET_VALUE
+
+        # enable_integrity_monitoring defaults to nil
+        @enable_integrity_monitoring = nil if @enable_integrity_monitoring == UNSET_VALUE
 
         # Compile our zone specific configurations only within
         # NON-zone-SPECIFIC configurations.

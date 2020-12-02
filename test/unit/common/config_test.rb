@@ -30,27 +30,30 @@ describe VagrantPlugins::Google::Config do
       end
     end
 
-    its("name")                   { should match "i-[0-9]{10}-[0-9a-f]{4}" }
-    its("image")                  { should be_nil }
-    its("image_family")           { should be_nil }
-    its("image_project_id")       { should be_nil }
-    its("instance_group")         { should be_nil }
-    its("zone")                   { should == "us-central1-f" }
-    its("network")                { should == "default" }
-    its("machine_type")           { should == "n1-standard-1" }
-    its("disk_size")              { should == 10 }
-    its("disk_name")              { should be_nil }
-    its("disk_type")              { should == "pd-standard" }
-    its("instance_ready_timeout") { should == 20 }
-    its("metadata")               { should == {} }
-    its("tags")                   { should == [] }
-    its("labels")                 { should == {} }
-    its("scopes")                 { should == nil }
-    its("additional_disks")       { should == [] }
-    its("preemptible")            { should be_falsey }
-    its("auto_restart")           { should }
-    its("on_host_maintenance")    { should == "MIGRATE" }
-    its("accelerators")           { should == [] }
+    its("name")                        { should match "i-[0-9]{10}-[0-9a-f]{4}" }
+    its("image")                       { should be_nil }
+    its("image_family")                { should be_nil }
+    its("image_project_id")            { should be_nil }
+    its("instance_group")              { should be_nil }
+    its("zone")                        { should == "us-central1-f" }
+    its("network")                     { should == "default" }
+    its("machine_type")                { should == "n1-standard-1" }
+    its("disk_size")                   { should == 10 }
+    its("disk_name")                   { should be_nil }
+    its("disk_type")                   { should == "pd-standard" }
+    its("instance_ready_timeout")      { should == 20 }
+    its("metadata")                    { should == {} }
+    its("tags")                        { should == [] }
+    its("labels")                      { should == {} }
+    its("scopes")                      { should == nil }
+    its("additional_disks")            { should == [] }
+    its("preemptible")                 { should be_falsey }
+    its("auto_restart")                { should }
+    its("on_host_maintenance")         { should == "MIGRATE" }
+    its("accelerators")                { should == [] }
+    its("enable_secure_boot")          { should be_nil }
+    its("enable_vtpm")                 { should be_nil }
+    its("enable_integrity_monitoring") { should be_nil }
   end
 
   describe "overriding defaults" do
@@ -58,8 +61,28 @@ describe VagrantPlugins::Google::Config do
     # simple boilerplate test, so I cut corners here. It just sets
     # each of these attributes to "foo" in isolation, and reads the value
     # and asserts the proper result comes back out.
-    [:name, :image, :image_family, :image_project_id, :zone, :instance_ready_timeout, :machine_type, :disk_size, :disk_name, :disk_type,
-     :network, :network_project_id, :metadata, :labels, :can_ip_forward, :external_ip, :autodelete_disk].each do |attribute|
+    [
+        :name,
+        :image,
+        :image_family,
+        :image_project_id,
+        :zone,
+        :instance_ready_timeout,
+        :machine_type,
+        :disk_size,
+        :disk_name,
+        :disk_type,
+        :network,
+        :network_project_id,
+        :metadata,
+        :labels,
+        :can_ip_forward,
+        :external_ip,
+        :autodelete_disk,
+        :enable_secure_boot,
+        :enable_vtpm,
+        :enable_integrity_monitoring,
+    ].each do |attribute|
 
       it "should not default #{attribute} if overridden" do
         instance.send("#{attribute}=".to_sym, "foo")
