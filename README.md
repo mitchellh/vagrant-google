@@ -16,7 +16,7 @@ The maintainers for this plugin are @temikus(primary), @erjohnso(backup).
 * Boot Google Compute Engine instances.
 * SSH into the instances.
 * Provision the instances with any built-in Vagrant provisioner.
-* Synced folder support via Vagrant's 
+* Synced folder support via Vagrant's
 [rsync action](https://www.vagrantup.com/docs/synced-folders/rsync.html).
 * Define zone-specific configurations so Vagrant can manage machines in
   multiple zones.
@@ -73,8 +73,8 @@ Service Account for API Access.
 ## Quick Start
 
 After installing the plugin (instructions above), the quickest way to get
-started is to actually use a dummy Google box from Atlas and specify all the 
-details manually within a `config.vm.provider` block. 
+started is to actually use a dummy Google box from Atlas and specify all the
+details manually within a `config.vm.provider` block.
 
 So first, make a Vagrantfile that looks like the following, filling in
 your information where necessary:
@@ -86,9 +86,9 @@ Vagrant.configure("2") do |config|
   config.vm.provider :google do |google, override|
     google.google_project_id = "YOUR_GOOGLE_CLOUD_PROJECT_ID"
     google.google_json_key_location = "/path/to/your/private-key.json"
-    
+
     google.image_family = 'ubuntu-1604-lts'
-    
+
     override.ssh.username = "USERNAME"
     override.ssh.private_key_path = "~/.ssh/id_rsa"
     #override.ssh.private_key_path = "~/.ssh/google_compute_engine"
@@ -99,10 +99,10 @@ end
 
 And then run `vagrant up --provider=google`.
 
-This will start a latest version of Ubuntu 16.04 LTS instance in the 
-`us-central1-f` zone, with an `n1-standard-1` machine, and the `"default"` 
-network within your project. And assuming your SSH information (see below) was 
-filled in properly within your Vagrantfile, SSH and provisioning will work as 
+This will start a latest version of Ubuntu 16.04 LTS instance in the
+`us-central1-f` zone, with an `n1-standard-1` machine, and the `"default"`
+network within your project. And assuming your SSH information (see below) was
+filled in properly within your Vagrantfile, SSH and provisioning will work as
 well.
 
 Note that normally a lot of this boilerplate is encoded within the box file,
@@ -165,13 +165,13 @@ configuration for this provider.
 This provider exposes quite a few provider-specific configuration options:
 
 * `google_json_key_location` - The location of the JSON private key file matching your
-  Service Account.  
+  Service Account.
   (Can also be configured with `GOOGLE_JSON_KEY_LOCATION` environment variable.)
-* `google_project_id` - The Project ID for your Google Cloud Platform account.  
+* `google_project_id` - The Project ID for your Google Cloud Platform account.
   (Can also be configured with `GOOGLE_PROJECT_ID` environment variable.)
 * `image` - The image name to use when booting your instance.
-* `image_family` - Specify an "image family" to pull the latest image from. For example: `centos-7` 
-will pull the most recent CentOS 7 image. For more info, refer to 
+* `image_family` - Specify an "image family" to pull the latest image from. For example: `centos-7`
+will pull the most recent CentOS 7 image. For more info, refer to
 [Google Image documentation](https://cloud.google.com/compute/docs/images#image_families).
 * `image_project_id` - The ID of the GCP project to search for the `image` or `image_family`.
 * `instance_group` - Unmanaged instance group to add the machine to. If one
@@ -206,8 +206,8 @@ will pull the most recent CentOS 7 image. For more info, refer to
   utility aliases, for example:
   `['storage-full', 'bigquery', 'https://www.googleapis.com/auth/compute']`.
 * `service_account` - The IAM service account email to use for the instance.
-* `additional_disks` - An array of additional disk configurations. `disk_size` is default to `10`GB; 
-  `disk_name` is default to `name` + "-additional-disk-#{index}"; `disk_type` is default to `pd-standard`; 
+* `additional_disks` - An array of additional disk configurations. `disk_size` is default to `10`GB;
+  `disk_name` is default to `name` + "-additional-disk-#{index}"; `disk_type` is default to `pd-standard`;
   `autodelete_disk` is default to `true`. Here is an example of configuration.
   ```ruby
     [{
@@ -233,6 +233,9 @@ will pull the most recent CentOS 7 image. For more info, refer to
 
   google.on_host_maintenance = "TERMINATE"
   ```
+* `enable_secure_boot` - For [Shielded VM](https://cloud.google.com/security/shielded-cloud/shielded-vm), whether to enable Secure Boot.
+* `enable_vtpm` - For [Shielded VM](https://cloud.google.com/security/shielded-cloud/shielded-vm), whether to enable vTPM.
+* `enable_integrity_monitoring` - For [Shielded VM](https://cloud.google.com/security/shielded-cloud/shielded-vm), whether to enable Integrity monitoring.
 
 These can be set like typical provider-specific configuration:
 
@@ -293,7 +296,7 @@ emit a warning, but will otherwise boot the GCE machine.
 ## Synced Folders
 
 Since plugin version 2.0, this is implemented via built-in `SyncedFolders` action.
-See Vagrant's [rsync action](https://www.vagrantup.com/docs/synced-folders/rsync.html) 
+See Vagrant's [rsync action](https://www.vagrantup.com/docs/synced-folders/rsync.html)
 documentation for more info.
 
 ## Development

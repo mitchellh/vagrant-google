@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project         = "vagrant-google"
 
-  s.add_runtime_dependency "fog-google", "~> 1.10.0"
+  s.add_runtime_dependency "fog-google", "~> 1.12.0"
 
   # This is a restriction to avoid errors on `failure_message_for_should`
   # TODO: revise after vagrant_spec goes past >0.0.1 (at master@e623a56)
