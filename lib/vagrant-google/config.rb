@@ -287,12 +287,10 @@ module VagrantPlugins
           result.instance_variable_set(:@__zone_config, new_zone_config)
 
           # Merge in the metadata
-          result.metadata.merge!(self.metadata)
-          result.metadata.merge!(other.metadata)
+          result.metadata = self.metadata.merge(other.metadata)
 
           # Merge in the labels
-          result.labels.merge!(self.labels)
-          result.labels.merge!(other.labels)
+          result.labels = self.labels.merge(other.labels)
 
           # Merge in the tags
           result.tags |= self.tags
