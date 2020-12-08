@@ -25,7 +25,7 @@ end
 
 # Extracts all github users contributed since last tag
 def users_since_last_tag
-  `git --no-pager log $(git describe --tags --abbrev=0)..HEAD --grep="Merge" --pretty=format:"%s" | cut -d' ' -f 6 | cut -d/ -f1 | uniq`
+  `git --no-pager log $(git describe --tags --abbrev=0)..HEAD --grep="Merge" --pretty=format:"%s" | cut -d' ' -f 6 | cut -d/ -f1 | sort | uniq`
 end
 
 namespace :changelog do
