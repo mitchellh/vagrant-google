@@ -5,7 +5,7 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 ## Next
 
 
-# 2.6.0 (December 2020)
+## 2.6.0 (December 2020)
 
 ### User-facing
 
