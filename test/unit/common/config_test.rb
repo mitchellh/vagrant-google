@@ -51,9 +51,9 @@ describe VagrantPlugins::Google::Config do
     its("auto_restart")                { should }
     its("on_host_maintenance")         { should == "MIGRATE" }
     its("accelerators")                { should == [] }
-    its("enable_secure_boot")          { should be_nil }
-    its("enable_vtpm")                 { should be_nil }
-    its("enable_integrity_monitoring") { should be_nil }
+    its("enable_secure_boot")          { should be_falsey }
+    its("enable_vtpm")                 { should be_falsey }
+    its("enable_integrity_monitoring") { should be_falsey }
   end
 
   describe "overriding defaults" do

@@ -419,13 +419,13 @@ module VagrantPlugins
         end
 
         # enable_secure_boot defaults to nil
-        @enable_secure_boot = nil if @enable_secure_boot == UNSET_VALUE
+        @enable_secure_boot = false if @enable_secure_boot == UNSET_VALUE
 
         # enable_vtpm defaults to nil
-        @enable_vtpm = nil if @enable_vtpm == UNSET_VALUE
+        @enable_vtpm = false if @enable_vtpm == UNSET_VALUE
 
         # enable_integrity_monitoring defaults to nil
-        @enable_integrity_monitoring = nil if @enable_integrity_monitoring == UNSET_VALUE
+        @enable_integrity_monitoring = false if @enable_integrity_monitoring == UNSET_VALUE
 
         # Compile our zone specific configurations only within
         # NON-zone-SPECIFIC configurations.
