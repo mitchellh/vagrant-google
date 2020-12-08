@@ -32,6 +32,9 @@ namespace :changelog do
   task :generate do
     insert_after_line("CHANGELOG.md", changes_since_last_tag, /^## Next/)
     printf("Users contributed since last release:\n")
-    printf(users_since_last_tag)
+    contributors = users_since_last_tag.split("\n").map { |name| "@" + name }
+    printf("Huge thanks to all our contributors 🎆\n")
+    printf("Special thanks to: " + contributors.join(" ") + "\n")
+    printf("\nI'll merge this and release the gem once all tests pass.\n")
   end
 end
