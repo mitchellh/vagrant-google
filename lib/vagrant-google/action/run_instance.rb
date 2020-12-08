@@ -267,26 +267,33 @@ module VagrantPlugins
             end
 
             defaults = {
-              :name                     => name,
-              :zone                     => zone,
-              :machine_type             => machine_type,
-              :disk_size                => disk_size,
-              :disk_type                => disk_type,
-              :image                    => image,
-              :network_interfaces       => network_interfaces,
-              :metadata                 => { :items => metadata.each.map { |k, v| {:key => k.to_s, :value => v.to_s} } },
-              :labels                   => labels,
-              :tags                     => { :items => tags },
-              :can_ip_forward           => can_ip_forward,
-              :use_private_ip           => use_private_ip,
-              :external_ip              => external_ip,
-              :network_ip               => network_ip,
-              :disks                    => disks,
-              :scheduling               => scheduling,
-              :service_accounts         => service_accounts,
-              :guest_accelerators       => accelerators_url,
-              :shielded_instance_config => shielded_instance_config,
+              :name               => name,
+              :zone               => zone,
+              :machine_type       => machine_type,
+              :disk_size          => disk_size,
+              :disk_type          => disk_type,
+              :image              => image,
+              :network_interfaces => network_interfaces,
+              :metadata           => { :items => metadata.each.map { |k, v| { :key => k.to_s, :value => v.to_s } } },
+              :labels             => labels,
+              :tags               => { :items => tags },
+              :can_ip_forward     => can_ip_forward,
+              :use_private_ip     => use_private_ip,
+              :external_ip        => external_ip,
+              :network_ip         => network_ip,
+              :disks              => disks,
+              :scheduling         => scheduling,
+              :service_accounts   => service_accounts,
+              :guest_accelerators => accelerators_url
             }
+
+            # XXX HACK - only add  of the parameters are set in :shielded_instance_config we need to drop the field from
+            # the API call otherwise we'll error out with Google::Apis::ClientError
+            # TODO(temikus): Remove if the API changes, see internal GOOG ref: b/175063371
+            if shielded_instance_config.has_value?(true)
+              defaults[:shielded_instance_config] = shielded_instance_config
+            end
+
             server = env[:google_compute].servers.create(defaults)
             @logger.info("Machine '#{zone}:#{name}' created.")
           rescue *FOG_ERRORS => e
