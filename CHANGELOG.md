@@ -5,6 +5,31 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 ## Next
 
 
+### User-facing
+
+#### Added
+
+- \#248 Add support for modifying the configuration of Shielded VM [lcy0321]
+- \#244 Add accelerator (GPU) configuration [johanvdhaegen]
+- \#216 Add support for Windows hosts through WinRM [dvanbrug]
+
+#### Fixed
+
+- \#246 Fix config override during metadata merge [mavin]
+- \#249 Fix shielded API failures on non-shielded VM's [temikus]
+- \#227 Fix additional disks being auto-deleted unless a disk type is specified [chrisgavin]
+
+### Development
+
+#### Fixed
+
+- \#247 chore: Update Gemfile with new `vagrant-spec` branch name [mavin]
+- \#241 Fix unfortunate CI `on:` trigger typo [temikus]
+- \#240 Update development environment, add CI functionality [Temikus]
+- \#239 Remove old fixup in Gemfile [Temikus]
+- \#237 Bump image size for test skeleton [Temikus]
+
+
 ## 2.5.0 (September 2019)
 
 ### User-facing
