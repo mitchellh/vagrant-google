@@ -14,3 +14,12 @@ Style/StringLiterals:
 
 Style/IfUnlessModifier:
   Enabled: false
+
+Metrics/LineLength:
+  Max: 120
+
+Layout/HashAlignment:
+  EnforcedHashRocketStyle: table
+
+Style/HashSyntax:
+  EnforcedStyle: no_mixed_keys
