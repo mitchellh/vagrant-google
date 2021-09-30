@@ -193,6 +193,11 @@ module VagrantPlugins
       # @return Boolean
       attr_accessor :enable_secure_boot
 
+      # whether the instance has a display enabled
+      #
+      # @return Boolean
+      attr_accessor :enable_display
+
       # whether the instance has the vTPM enabled
       #
       # @return Boolean
@@ -238,6 +243,7 @@ module VagrantPlugins
         @setup_winrm_password        = UNSET_VALUE
         @accelerators                = []
         @enable_secure_boot          = UNSET_VALUE
+        @enable_display              = UNSET_VALUE
         @enable_vtpm                 = UNSET_VALUE
         @enable_integrity_monitoring = UNSET_VALUE
 
@@ -420,6 +426,9 @@ module VagrantPlugins
 
         # enable_secure_boot defaults to nil
         @enable_secure_boot = false if @enable_secure_boot == UNSET_VALUE
+
+        # enable_display defaults to nil
+        @enable_display = false if @enable_display == UNSET_VALUE
 
         # enable_vtpm defaults to nil
         @enable_vtpm = false if @enable_vtpm == UNSET_VALUE
