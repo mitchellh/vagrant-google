@@ -35,7 +35,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec-legacy_formatters"
 
   s.add_development_dependency "rake", ">= 13.0.1"
-  s.add_development_dependency "rspec", ">= 3.5.0", "<= 3.6"
+  s.add_development_dependency "rspec", ">= 3.10", "< 4.0"
   s.add_development_dependency "rspec-its", "~> 1.2"
   s.add_development_dependency "rubocop", "~> 0.83"
   s.add_development_dependency "rubocop-performance", "~> 1.5.2"
