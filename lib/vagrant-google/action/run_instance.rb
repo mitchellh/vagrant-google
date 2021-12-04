@@ -113,10 +113,17 @@ module VagrantPlugins
           env[:ui].info(" -- Integrity Monitoring: #{enable_integrity_monitoring}") if enable_integrity_monitoring
 
           # Munge image config
-          if image_family
-            image = env[:google_compute].images.get_from_family(image_family, image_project_id).self_link
-          else
-            image = env[:google_compute].images.get(image, image_project_id).self_link
+          begin
+            if image_family
+              image_source = "image_family: #{image_family}, image_project_id: #{image_project_id}"
+              image = env[:google_compute].images.get_from_family(image_family, image_project_id).self_link
+            else
+              image_source = "image: #{image}, image_project_id: #{image_project_id}"
+              image = env[:google_compute].images.get(image, image_project_id).self_link
+            end
+          rescue NoMethodError
+            raise Errors::ImageNotFound,
+                  :image => image_source
           end
 
           # Munge network configs

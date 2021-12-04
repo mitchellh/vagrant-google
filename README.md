@@ -74,7 +74,6 @@ Vagrant.configure("2") do |config|
     google.google_project_id = "YOUR_GOOGLE_CLOUD_PROJECT_ID"
     google.google_json_key_location = "/path/to/your/private-key.json"
 
-    google.image_project_id = 'ubuntu-os-cloud'
     google.image_family = 'ubuntu-2004-lts'
 
     override.ssh.username = "USERNAME"
