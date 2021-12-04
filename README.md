@@ -5,13 +5,13 @@
 [gem]: https://rubygems.org/gems/vagrant-google
 [gemnasium]: https://gemnasium.com/mitchellh/vagrant-google
 
-This is a [Vagrant](http://www.vagrantup.com) 2.0.3+ plugin that adds an
-[Google Compute Engine](http://cloud.google.com/compute/) (GCE) provider to
+This is a [Vagrant](https://www.vagrantup.com) 2.0.3+ plugin that adds an
+[Google Compute Engine](https://cloud.google.com/compute/) (GCE) provider to
 Vagrant, allowing Vagrant to control and provision instances in GCE.
 
 The maintainers for this plugin are @temikus(primary), @erjohnso(backup).
 
-## Features
+# Features
 
 * Boot Google Compute Engine instances.
 * SSH into the instances.
@@ -21,62 +21,49 @@ The maintainers for this plugin are @temikus(primary), @erjohnso(backup).
 * Define zone-specific configurations so Vagrant can manage machines in
   multiple zones.
 
-## Usage
-
-Install using standard Vagrant 1.1+ plugin installation methods.  After
-installing, `vagrant up` and specify the `google` provider.  For example,
-
-```sh
-$ vagrant plugin install vagrant-google
-...
-$ vagrant up --provider=google
-...
-```
-
-Of course, prior to this you'll need to obtain a GCE-compatible box file for
-Vagrant. You may also need to ensure you have a ruby-dev and other utilities
-such as GNU make installed prior to installing the plugin.
+#  Usage
 
 ## Google Cloud Platform Setup
 
-Prior to using this plugin, you will first need to make sure you have a
-Google Cloud Platform account, enable Google Compute Engine, and create a
-Service Account for API Access.
+Prior to using this plugin, you will need:
+* Google Cloud Platform account with a project,
+* Google Compute Engine API enabled,
+* Service Account with appropriate GCE API permissions and a JSON private key
+  as credentials,
+* Your public SSH key added as GCE metadata in the project.
+
+For this do the following:
 
 1. Log in with your Google Account and go to
    [Google Cloud Platform](https://cloud.google.com) and click on the
    `Try it free` button.
-1. Create a new project and remember to record the `Project ID`
-1. Next, enable the
-   [Google Compute Engine API](https://console.cloud.google.com/apis/api/compute_component/)
+2. Create a new project and remember to record the `Project ID`
+3. Next, enable the
+   [Google Compute Engine API](https://console.cloud.google.com/apis/library/compute.googleapis.com)
    for your project in the API console. If prompted, review and agree to the
    terms of service.
-1. While still in the API Console, go to
-   [Credentials subsection](https://console.cloud.google.com/apis/credentials),
-   and click `Create credentials` -> `Service account key`. In the
-   next dialog, create a new service account, select `JSON` key type and
-   click `Create`.
-1. Download the JSON private key and save this file in a secure
-   and reliable location.  This key file will be used to authorize all API
-   requests to Google Compute Engine.
-1. Still on the same page, click on
-   [Manage service accounts](https://console.cloud.google.com/permissions/serviceaccounts)
-   link to go to IAM console. Copy the `Service account id` value of the service
-   account you just selected. (it should end with `gserviceaccount.com`) You will
-   need this email address and the location of the private key file to properly
-   configure this Vagrant plugin.
-1. Add the SSH key you're going to use to GCE Metadata in `Compute` ->
+4. While still in the API & Services, go to
+   [Credentials subsection](https://console.cloud.google.com/apis/api/compute.googleapis.com/credentials),
+   and click `Create credentials` -> `Service account`.
+5. Create a Service Account with any name (f.e. `vagrant`) and grant it
+   a `Compute Admin` role.
+6. Open the new service account page and click on the `Keys` tab. 
+   Click `Add key` -> `Create new key`, choose JSON. Download the JSON private key
+   and save this file in a secure and reliable location.
+7. Add the public SSH key you're going to use to GCE Metadata in `Compute` ->
    `Compute Engine` -> `Metadata` section of the console, `SSH Keys` tab. (Read
    the [SSH Support](https://github.com/mitchellh/vagrant-google#ssh-support)
    readme section for more information.)
 
-## Quick Start
+## Vagrant Setup
 
-After installing the plugin (instructions above), the quickest way to get
-started is to actually use a dummy Google box from Atlas and specify all the
-details manually within a `config.vm.provider` block.
+Install as a Vagrant plugin:
 
-So first, make a Vagrantfile that looks like the following, filling in
+```sh
+vagrant plugin install vagrant-google
+```
+
+Make a `Vagrantfile` that looks like the following, filling in
 your information where necessary:
 
 ```ruby
@@ -87,19 +74,22 @@ Vagrant.configure("2") do |config|
     google.google_project_id = "YOUR_GOOGLE_CLOUD_PROJECT_ID"
     google.google_json_key_location = "/path/to/your/private-key.json"
 
-    google.image_family = 'ubuntu-1604-lts'
+    google.image_project_id = 'ubuntu-os-cloud'
+    google.image_family = 'ubuntu-2004-lts'
 
     override.ssh.username = "USERNAME"
     override.ssh.private_key_path = "~/.ssh/id_rsa"
-    #override.ssh.private_key_path = "~/.ssh/google_compute_engine"
   end
 
 end
 ```
 
-And then run `vagrant up --provider=google`.
+Run:
+```sh
+vagrant up --provider=google
+```
 
-This will start a latest version of Ubuntu 16.04 LTS instance in the
+This will start the latest version of Ubuntu 20.04 LTS instance in the
 `us-central1-f` zone, with an `n1-standard-1` machine, and the `"default"`
 network within your project. And assuming your SSH information (see below) was
 filled in properly within your Vagrantfile, SSH and provisioning will work as
@@ -124,7 +114,7 @@ default, `gcloud compute` creates a key pair named
 
 Note that you can use the more standard `~/.ssh/id_rsa[.pub]` files, but you
 will need to manually add your public key to the GCE metadata service so your
-VMs will pick up the the key. Note that they public key is typically
+VMs will pick up the key. Note that the public key is typically
 prefixed with the username, so that the daemon on the VM adds the public key
 to the correct user account.
 
@@ -174,6 +164,7 @@ This provider exposes quite a few provider-specific configuration options:
 will pull the most recent CentOS 7 image. For more info, refer to
 [Google Image documentation](https://cloud.google.com/compute/docs/images#image_families).
 * `image_project_id` - The ID of the GCP project to search for the `image` or `image_family`.
+  For example: `centos-cloud` for Centos 7/8/Stream image families.
 * `instance_group` - Unmanaged instance group to add the machine to. If one
   doesn't exist it will be created.
 * `instance_ready_timeout` - The number of seconds to wait for the instance
@@ -269,7 +260,7 @@ Vagrant.configure("2") do |config|
 
     google.zone_config "us-central1-f" do |zone1f|
         zone1f.name = "testing-vagrant"
-        zone1f.image = "debian-9-stretch-v20180611"
+        zone1f.image = "debian-9-stretch-v20211105"
         zone1f.machine_type = "n1-standard-4"
         zone1f.zone = "us-central1-f"
         zone1f.metadata = {'custom' => 'metadata', 'testing' => 'foobarbaz'}
@@ -299,10 +290,10 @@ Since plugin version 2.0, this is implemented via built-in `SyncedFolders` actio
 See Vagrant's [rsync action](https://www.vagrantup.com/docs/synced-folders/rsync.html)
 documentation for more info.
 
-## Development
+# Development
 
 To work on the `vagrant-google` plugin, clone this repository, and use
-[Bundler](http://gembundler.com) to get the dependencies:
+[Bundler](https://gembundler.com) to get the dependencies:
 
 ```sh
 $ bundle
@@ -351,8 +342,8 @@ $ bundle exec rake acceptance:full
  20+ minutes to run.
 - Since those are live instances, **you will be billed** for running them.
 
-## Changelog
+# Changelog
 See [CHANGELOG.md](CHANGELOG.md)
 
-## License
+# License
 Apache 2.0; see [LICENSE](LICENSE) for details.
