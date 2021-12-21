@@ -43,6 +43,10 @@ module VagrantPlugins
       class RsyncError < VagrantGoogleError
         error_key(:rsync_error)
       end
+
+      class ImageNotFound < VagrantGoogleError
+        error_key(:image_not_found)
+      end
     end
   end
 end

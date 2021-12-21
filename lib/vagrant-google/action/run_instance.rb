@@ -114,10 +114,16 @@ module VagrantPlugins
 
           # Munge image config
           if image_family
-            image = env[:google_compute].images.get_from_family(image_family, image_project_id).self_link
+            image_source = "image_family: #{image_family}, image_project_id: #{image_project_id}"
+            image = env[:google_compute].images.get_from_family(image_family, image_project_id)
           else
-            image = env[:google_compute].images.get(image, image_project_id).self_link
+            image_source = "image: #{image}, image_project_id: #{image_project_id}"
+            image = env[:google_compute].images.get(image, image_project_id)
           end
+          unless image
+            raise Errors::ImageNotFound, :image => image_source
+          end
+          image = image.self_link
 
           # Munge network configs
           if network != 'default'

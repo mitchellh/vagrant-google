@@ -104,6 +104,9 @@ en:
       disk_type_error: |-
         Specified disk type is not available in the region selected.
         Disk type requested: %{disktype}
+      image_not_found: |-
+        Specified image family or image not found: %{image}
+
 #-------------------------------------------------------------------------------
 # Translations for machine states
 #-------------------------------------------------------------------------------
