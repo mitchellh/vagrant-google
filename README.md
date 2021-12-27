@@ -5,7 +5,7 @@
 [gem]: https://rubygems.org/gems/vagrant-google
 [gemnasium]: https://gemnasium.com/mitchellh/vagrant-google
 
-This is a [Vagrant](https://www.vagrantup.com) 2.0.3+ plugin that adds an
+This is a [Vagrant](https://www.vagrantup.com) plugin that adds an
 [Google Compute Engine](https://cloud.google.com/compute/) (GCE) provider to
 Vagrant, allowing Vagrant to control and provision instances in GCE.
 
@@ -21,18 +21,18 @@ The maintainers for this plugin are @temikus(primary), @erjohnso(backup).
 * Define zone-specific configurations so Vagrant can manage machines in
   multiple zones.
 
-#  Usage
+# Requirements
+
+* Google Cloud Platform (GCP) account,
+* a GCP project with:
+  * Google Compute Engine API enabled,
+  * Service Account with `Compute Admin` role and a JSON private key as credentials,
+  * Your public SSH key added as GCE metadata.
+* Vagrant 2.0.3+
 
 ## Google Cloud Platform Setup
 
-Prior to using this plugin, you will need:
-* Google Cloud Platform account with a project,
-* Google Compute Engine API enabled,
-* Service Account with appropriate GCE API permissions and a JSON private key
-  as credentials,
-* Your public SSH key added as GCE metadata in the project.
-
-For this do the following:
+Do the following:
 
 1. Log in with your Google Account and go to
    [Google Cloud Platform](https://cloud.google.com) and click on the
@@ -62,6 +62,8 @@ Install as a Vagrant plugin:
 ```sh
 vagrant plugin install vagrant-google
 ```
+
+# Usage
 
 Make a `Vagrantfile` that looks like the following, filling in
 your information where necessary:
