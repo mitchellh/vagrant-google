@@ -25,8 +25,7 @@ The maintainers for this plugin are @temikus(primary), @erjohnso(backup).
 
 * Google Cloud Platform (GCP) account,
 * a GCP project with:
-  * Google Compute Engine API enabled,
-  * Service Account with `Compute Admin` role and a JSON private key as credentials,
+  * Google Compute Engine API enabled
   * Your public SSH key added as GCE metadata.
 * Vagrant 2.0.3+
 
@@ -38,22 +37,49 @@ Do the following:
    [Google Cloud Platform](https://cloud.google.com) and click on the
    `Try it free` button.
 2. Create a new project and remember to record the `Project ID`
-3. Next, enable the
+3. Enable the
    [Google Compute Engine API](https://console.cloud.google.com/apis/library/compute.googleapis.com)
    for your project in the API console. If prompted, review and agree to the
    terms of service.
-4. While still in the API & Services, go to
-   [Credentials subsection](https://console.cloud.google.com/apis/api/compute.googleapis.com/credentials),
-   and click `Create credentials` -> `Service account`.
-5. Create a Service Account with any name (f.e. `vagrant`) and grant it
-   a `Compute Admin` role.
-6. Open the new service account page and click on the `Keys` tab. 
-   Click `Add key` -> `Create new key`, choose JSON. Download the JSON private key
-   and save this file in a secure and reliable location.
-7. Add the public SSH key you're going to use to GCE Metadata in `Compute` ->
+4. Install the [Cloud SDK](https://cloud.google.com/sdk/docs/install)
+5. Run `[gcloud auth appplication-default login](https://cloud.google.com/sdk/gcloud/reference/auth/application-default/login)
+   to create your credentials. (Alternatively, you may use a service account, see **Using a Service Account** section).
+6. Add the public SSH key you're going to use to GCE Metadata in `Compute` ->
    `Compute Engine` -> `Metadata` section of the console, `SSH Keys` tab. (Read
    the [SSH Support](https://github.com/mitchellh/vagrant-google#ssh-support)
    readme section for more information.)
+
+### Using a Service Account
+
+The `[appplication-default login](https://cloud.google.com/sdk/gcloud/reference/auth/application-default/login)
+method is intended to be used for developing code on a local environment - this is typically Vagrant's use-case
+as well. However, if this is not your use-case, you will want to use a credential not tied to your local environment:
+a service account.
+
+To use a service account:
+
+1. While still in the API & Services, go to
+   [Credentials subsection](https://console.cloud.google.com/apis/api/compute.googleapis.com/credentials),
+   and click `Create credentials` -> `Service account`.
+2. Create a Service Account with any name (f.e. `vagrant`) and grant it
+   a `Compute Admin` role.
+3. Open the new service account page and click on the `Keys` tab. 
+   Click `Add key` -> `Create new key`, choose JSON. Download the JSON private key
+   and save this file in a secure and reliable location.
+
+Then include the private key in your Vagrantfile's `provider` block as a `google_json_key_location`
+attribute:
+
+```ruby
+Vagrant.configure("2") do |config|
+  # ... other stuff
+
+  config.vm.provider :google do |google|
+    google.google_project_id = "YOUR_GOOGLE_CLOUD_PROJECT_ID"
+    google.google_json_key_location = "/path/to/your/private-key.json"
+  end
+end
+```
 
 ## Vagrant Setup
 
@@ -74,8 +100,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.provider :google do |google, override|
     google.google_project_id = "YOUR_GOOGLE_CLOUD_PROJECT_ID"
-    google.google_json_key_location = "/path/to/your/private-key.json"
-
     google.image_family = 'ubuntu-2004-lts'
 
     override.ssh.username = "USERNAME"
