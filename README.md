@@ -291,6 +291,33 @@ Since plugin version 2.0, this is implemented via built-in `SyncedFolders` actio
 See Vagrant's [rsync action](https://www.vagrantup.com/docs/synced-folders/rsync.html)
 documentation for more info.
 
+## Automatic shutdown
+
+To save money you may want to ensure you don't forget to shut down your instances
+when you stop using them.
+
+A very basic solution for this is to use Vagrant's provisioning feature to plan
+automatic shutdown of the vm after given time after each `vagrant up`:
+
+```ruby
+# Plan automatic shutdown of machine to prevent unwanted costs
+config.vm.provision "auto-shutdown", type: "shell", run: "always",
+  inline: "shutdown -P +480" # = 60 minutes * 8 hours
+```
+
+## Print external IP
+
+You may want to know your machine's external IP f.e. to put it in your Ansible inventory
+or open the app you deploy in it in your browser.
+
+To automate printing it IP you can also use the Vagrant's provisioning feature:
+
+```ruby
+# Print the external IP
+config.vm.provision "print-ip", type: "shell", run: "always",
+  inline: "echo External IP: $(curl -s icanhazip.com)"
+```
+
 # Development
 
 To work on the `vagrant-google` plugin, clone this repository, and use
