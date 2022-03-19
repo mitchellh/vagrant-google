@@ -9,7 +9,7 @@ This is a [Vagrant](https://www.vagrantup.com) plugin that adds an
 [Google Compute Engine](https://cloud.google.com/compute/) (GCE) provider to
 Vagrant, allowing Vagrant to control and provision instances in GCE.
 
-The maintainers for this plugin are @temikus(primary), @erjohnso(backup).
+*NOTE:* The plugin is currently looking for maintainers, please contact @temikus.
 
 # Features
 
