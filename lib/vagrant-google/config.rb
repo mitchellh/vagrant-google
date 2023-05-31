@@ -208,6 +208,11 @@ module VagrantPlugins
       # @return Boolean
       attr_accessor :enable_integrity_monitoring
 
+      # The list of resource policies for instance.
+      #
+      # @return [Array]
+      attr_accessor :resource_policies
+
       def initialize(zone_specific=false)
         @google_json_key_location    = UNSET_VALUE
         @google_project_id           = UNSET_VALUE
@@ -246,6 +251,7 @@ module VagrantPlugins
         @enable_display              = UNSET_VALUE
         @enable_vtpm                 = UNSET_VALUE
         @enable_integrity_monitoring = UNSET_VALUE
+        @resource_policies           = []
 
         # Internal state (prefix with __ so they aren't automatically
         # merged)
