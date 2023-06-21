@@ -252,7 +252,7 @@ will pull the most recent CentOS 7 image. For more info, refer to
 * `enable_secure_boot` - For [Shielded VM](https://cloud.google.com/security/shielded-cloud/shielded-vm), whether to enable Secure Boot.
 * `enable_vtpm` - For [Shielded VM](https://cloud.google.com/security/shielded-cloud/shielded-vm), whether to enable vTPM.
 * `enable_integrity_monitoring` - For [Shielded VM](https://cloud.google.com/security/shielded-cloud/shielded-vm), whether to enable Integrity monitoring.
-
+* `resource_policies` - Adds [Resource Policies](https://cloud.google.com/compute/docs/reference/rest/v1/resourcePolicies) to given instance.
 These can be set like typical provider-specific configuration:
 
 ```ruby

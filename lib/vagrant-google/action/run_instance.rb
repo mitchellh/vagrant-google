@@ -40,6 +40,7 @@ module VagrantPlugins
 
           # Get the zone we're going to booting up in
           zone = env[:machine].provider_config.zone
+          region = zone.split('-')[0..1].join('-')
 
           # Get the configs
           zone_config                 = env[:machine].provider_config.get_zone_config(zone)
@@ -75,6 +76,7 @@ module VagrantPlugins
           enable_display              = zone_config.enable_display
           enable_vtpm                 = zone_config.enable_vtpm
           enable_integrity_monitoring = zone_config.enable_integrity_monitoring
+          resource_policies           = zone_config.resource_policies
 
           # Launch!
           env[:ui].info(I18n.t("vagrant_google.launching_instance"))
@@ -111,6 +113,8 @@ module VagrantPlugins
           env[:ui].info(" -- Display Device:       #{enable_display}") if enable_display
           env[:ui].info(" -- vTPM:                 #{enable_vtpm}") if enable_vtpm
           env[:ui].info(" -- Integrity Monitoring: #{enable_integrity_monitoring}") if enable_integrity_monitoring
+          env[:ui].info(" -- Resource policies:    #{resource_policies}") if resource_policies != []
+
 
           # Munge image config
           if image_family
@@ -128,7 +132,7 @@ module VagrantPlugins
           # Munge network configs
           if network != 'default'
             network = "projects/#{network_project_id}/global/networks/#{network}"
-            subnetwork  = "projects/#{network_project_id}/regions/#{zone.split('-')[0..1].join('-')}/subnetworks/#{subnetwork}"
+            subnetwork  = "projects/#{network_project_id}/regions/#{region}/subnetworks/#{subnetwork}"
           else
             network = "global/networks/default"
           end
@@ -163,6 +167,12 @@ module VagrantPlugins
 
           # Munge displayDevice config
           display_device = { :enable_display => enable_display }
+
+          resource_policies_urls = []
+          resource_policies.each do |policy|
+            resource_policies_url = "https://compute.googleapis.com/compute/v1/projects/#{project_id}/regions/#{region}/resourcePolicies/#{policy}"
+            resource_policies_urls.push(resource_policies_url)
+          end
 
           begin
             request_start_time = Time.now.to_i
@@ -295,7 +305,8 @@ module VagrantPlugins
               :disks              => disks,
               :scheduling         => scheduling,
               :service_accounts   => service_accounts,
-              :guest_accelerators => accelerators_url
+              :guest_accelerators => accelerators_url,
+              :resource_policies  => resource_policies_urls
             }
 
             # XXX HACK - only add  of the parameters are set in :shielded_instance_config we need to drop the field from
