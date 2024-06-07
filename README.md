@@ -42,7 +42,7 @@ Do the following:
    for your project in the API console. If prompted, review and agree to the
    terms of service.
 4. Install the [Cloud SDK](https://cloud.google.com/sdk/docs/install)
-5. Run `[gcloud auth appplication-default login](https://cloud.google.com/sdk/gcloud/reference/auth/application-default/login)
+5. Run `[gcloud auth application-default login](https://cloud.google.com/sdk/gcloud/reference/auth/application-default/login)
    to create your credentials. (Alternatively, you may use a service account, see **Using a Service Account** section).
 6. Add the public SSH key you're going to use to GCE Metadata in `Compute` ->
    `Compute Engine` -> `Metadata` section of the console, `SSH Keys` tab. (Read
